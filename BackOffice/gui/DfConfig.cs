@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BackOffice.object1;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -15,17 +16,21 @@ namespace BackOffice
         int line1 = 30, line2 = 57, line3=85, line4=105, line41=120, line5=270, ControlHeight=21, lineGap=5;
 
         int colRow = 0, colItmCod = 1, colItmAstCod = 2, colDsc = 3, colInsNam = 4, colTypTime = 5, colRateTyp = 6, colRate = 7;
-        int colCnt = 5;
+        int colCnt = 6;
         Label lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lb10, lb11, lb12, lb13,lb14, lb15, lb16, lb17, lb18, lb19;
         TextBox txtCode, txtNameT, txtNameE, txtSNameT, txtSNameE, txtDtrCode, txtTaxID, txtAddr, txtPhone, txtPrnNo, txtAppointmentCnt, txtBankNo, txtSalaryMin;
         ComboBox cboPNameT, cboPNameE, cboDtrTyp, cboDtrCat, cboMedicalField;
         GroupBox gb1, gb2;
         DateTimePicker dtpWorkStart;
-        Button btnSearch, btnGen, btnCopy;
+        Button btnSearch, btnGen, btnCopy, btnSave;
         DataGridView dgvView;
+
+        ComboBoxItem cboI;
 
         BackOfficeControl boC;
         ConnectDB conn;
+
+        Doctor dtr;
         public DfConfig(BackOfficeControl boc)
         {
             this.FormBorderStyle = FormBorderStyle.None;
@@ -36,7 +41,12 @@ namespace BackOffice
         private void initConfig()
         {
             initCompoment();
+            dtr = new Doctor();
+            cboI = new ComboBoxItem();
             setDgvH();
+            cboPNameT = boC.getCboTitleDrT(cboPNameT);
+            cboPNameE = boC.getCboTitleDrE(cboPNameE);
+            cboMedicalField = boC.getCboMedicalField(cboMedicalField);
         }
         private void initCompoment()
         {
@@ -187,6 +197,7 @@ namespace BackOffice
             txtDtrCode.Size = new System.Drawing.Size(100, ControlHeight);
             gb1.Controls.Add(txtDtrCode);
             txtDtrCode.Location = new System.Drawing.Point(grd3+100, line1);
+            txtDtrCode.KeyUp += new KeyEventHandler(txtDtrCode_KeyUp);
 
             lb10 = new Label();
             lb10.Font = boC.fV1;
@@ -343,6 +354,14 @@ namespace BackOffice
             gb1.Controls.Add(btnCopy);
             btnCopy.Location = new System.Drawing.Point(grd2, line41);
 
+            btnSave = new Button();
+            btnSave.Font = boC.fV1;
+            btnSave.Text = "Save";
+            btnSave.Size = new System.Drawing.Size(100, ControlHeight + 7);
+            gb1.Controls.Add(btnSave);
+            btnSave.Location = new System.Drawing.Point(grd4, line41);
+            btnSave.Click += new EventHandler(btnSave_Click);
+
             gb2 = new GroupBox();
             gb2.Text = "เงื่อนไขแพทย์ (DF)";
             gb2.Font = boC.fV1;
@@ -376,16 +395,9 @@ namespace BackOffice
             dgvView.Columns[colItmAstCod].HeaderText = "รหัสรอง";
             dgvView.Columns[colDsc].HeaderText = "รายการ";
             dgvView.Columns[colInsNam].HeaderText = "insur name";
-            //dgvView.Columns[colTypTime].HeaderText = "ประเภทค่าแพทย์";
+            dgvView.Columns[colTypTime].HeaderText = "ประเภทค่าแพทย์";
             //dgvView.Columns[colRateTyp].HeaderText = "Rate Type";
             //dgvView.Columns[colRate].HeaderText = "Rate";
-
-            DataGridViewComboBoxColumn typTime = new DataGridViewComboBoxColumn();
-            var list11 = new List<string>() { "ในเวลา", "นอกเวลา"};
-            typTime.DataSource = list11;
-            typTime.HeaderText = "ประเภทค่าแพทย์";
-            typTime.DataPropertyName = "Money";
-            dgvView.Columns.AddRange(typTime);
 
             DataGridViewComboBoxColumn RateTyp = new DataGridViewComboBoxColumn();
             var list12 = new List<string>() { "%", "บาท", "ตามแพทย์ เขียนdf" };
@@ -415,7 +427,7 @@ namespace BackOffice
                 "From insmst insm ";
             DataTable dtInc = new DataTable();
             dtInc = conn.selectData(sql, "bit");
-            rowCnt = ((dtItm.Rows.Count * dtInc.Rows.Count) + 1);
+            rowCnt = ((dtItm.Rows.Count * dtInc.Rows.Count*2) + 1);
 
             dgvView.Rows.Clear();
             //dgvView.ColumnCount = colCnt + 1;
@@ -425,19 +437,70 @@ namespace BackOffice
                 //dgvView[colRow, i].Value = (i + 1);
                 for (int j=0;j< dtItm.Rows.Count; j++)
                 {
-                    if (i >= 86) continue;
+                    if (i >= rowCnt) continue;
                     if (k >= dtInc.Rows.Count) continue;
                     dgvView[colRow, i].Value = (i + 1);
                     dgvView[colItmCod, i].Value = dtItm.Rows[j]["itmcod"].ToString().Trim();
                     dgvView[colItmAstCod, i].Value = dtItm.Rows[j]["itmastcod"].ToString().Trim();
                     dgvView[colDsc, i].Value = dtItm.Rows[j]["itmkornam"].ToString().Trim();
                     dgvView[colInsNam, i].Value = dtInc.Rows[k]["inscodnam"].ToString().Trim();
+                    dgvView[colTypTime, i].Value = "ในเวลา";
+                    dgvView[colRateTyp, i].Value = "%";
+                    dgvView[colRate, i].Value = "100";
+                    dgvView.Rows[i].DefaultCellStyle.BackColor = Color.DarkKhaki;
+                    i++;
+
+                    dgvView[colRow, i].Value = (i + 1);
+                    dgvView[colItmCod, i].Value = dtItm.Rows[j]["itmcod"].ToString().Trim();
+                    dgvView[colItmAstCod, i].Value = dtItm.Rows[j]["itmastcod"].ToString().Trim();
+                    dgvView[colDsc, i].Value = dtItm.Rows[j]["itmkornam"].ToString().Trim();
+                    dgvView[colInsNam, i].Value = dtInc.Rows[k]["inscodnam"].ToString().Trim();
+                    dgvView[colTypTime, i].Value = "นอกเวลา";
+                    dgvView[colRateTyp, i].Value = "%";
+                    dgvView[colRate, i].Value = "100";
                     if (j != (dtItm.Rows.Count-1))
                     {
                         i++;
                     }
                 }
                 k++;
+            }
+        }
+        private void setControl()
+        {
+            dtr = boC.dtrDB.selectByPk(boC.DtrCode);
+            txtCode.Text = dtr.Code;
+            txtNameT.Text = dtr.DtrFnameT;
+            txtSNameT.Text = dtr.DtrSnameT;
+            txtNameE.Text = dtr.DtrFnameT;
+        }
+        private void getDoctor()
+        {
+            dtr.Code = txtCode.Text;
+            dtr.DtrFnameT = txtNameT.Text;
+            dtr.DtrSnameT = txtSNameT.Text;
+            cboI = (ComboBoxItem)cboMedicalField.SelectedItem;
+            dtr.DtrMedicalField = cboI.Value;
+        }
+        private void openDtView1()
+        {
+            boC.DtrCode = "";
+            DfView1 frm = new DfView1(boC);
+            frm.StartPosition = FormStartPosition.CenterParent;
+            frm.ShowDialog(this);
+
+            if (!boC.DtrCode.Equals(""))
+            {
+                txtCode.Text = boC.DtrCode;
+                txtDtrCode.Text = boC.DtrCode;
+                setControl();
+            }
+        }
+        private void txtDtrCode_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.F2)
+            {
+                openDtView1();
             }
         }
         private void btnGen_Click(object sender, EventArgs e)
@@ -447,9 +510,11 @@ namespace BackOffice
         private void btnSearch_Click(object sender, EventArgs e)
         {
             //genDf();
-            DfView1 frm = new DfView1(boC);
-            frm.StartPosition = FormStartPosition.CenterParent;
-            frm.ShowDialog(this);
+            openDtView1();
+        }
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            getDoctor();
         }
     }
 }

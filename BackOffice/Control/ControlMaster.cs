@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace BackOffice
 {
-    class ControlMaster
+    public class ControlMaster
     {
         ConnectDB conn, connBIT;
         DataTable dtTit = new DataTable();
@@ -67,5 +67,17 @@ namespace BackOffice
             }
             return ret;
         }
+        public DataTable selectMedicalField()
+        {
+            String sql = "";
+            DataTable dt = new DataTable();
+            sql = "SELECT *  " +
+                "FROM bithis.depmst1  " +
+                "Where depgrpcod in ('GS','PED','OBGY','MED') and depcod <> 'D888' Order By depkornam";
+            dt = conn.selectData(sql, "orc_bit");
+
+            return dt;
+        }
+        
     }
 }

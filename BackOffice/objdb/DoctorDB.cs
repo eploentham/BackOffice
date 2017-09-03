@@ -27,9 +27,11 @@ namespace BackOffice.objdb
             dtr.Code = "code";
             dtr.DtrCatCode = "dtr_cat_code";
             dtr.DtrCode = "dtr_code";
-            dtr.DtrFname = "dtr_fname";
+            dtr.DtrFnameT = "dtr_fname_t";
+            dtr.DtrFnameE = "dtr_fname_e";
             dtr.DtrMedicalField = "dtr_medical_field";
-            dtr.DtrSname = "dtr_sname";
+            dtr.DtrSnameE = "dtr_sname_e";
+            dtr.DtrSnameT = "dtr_sname_t";
             dtr.DtrTitCode = "dtr_tit_code";
             dtr.DtrTypCode = "dtr_typ_code";
             dtr.Phone = "phone";
@@ -51,9 +53,11 @@ namespace BackOffice.objdb
             p.Code = dt.Rows[0][dtr.Code].ToString();
             p.DtrCatCode = dt.Rows[0][dtr.DtrCatCode].ToString();
             p.DtrCode = dt.Rows[0][dtr.DtrCode].ToString();
-            p.DtrFname = dt.Rows[0][dtr.DtrFname].ToString();
+            p.DtrFnameE = dt.Rows[0][dtr.DtrFnameE].ToString();
+            p.DtrFnameT = dt.Rows[0][dtr.DtrFnameT].ToString();
             p.DtrMedicalField = dt.Rows[0][dtr.DtrMedicalField].ToString();
-            p.DtrSname = dt.Rows[0][dtr.DtrSname].ToString();
+            p.DtrSnameT = dt.Rows[0][dtr.DtrSnameT].ToString();
+            p.DtrSnameE = dt.Rows[0][dtr.DtrSnameE].ToString();
             p.DtrTitCode = dt.Rows[0][dtr.DtrTitCode].ToString();
             p.DtrTypCode = dt.Rows[0][dtr.DtrTypCode].ToString();
             p.Phone = dt.Rows[0][dtr.Phone].ToString();
@@ -69,13 +73,24 @@ namespace BackOffice.objdb
             Doctor item;
             String sql = "";
             DataTable dt = new DataTable();
-
             sql = "Select * From " + dtr.table + " Where " + dtr.pkField + "='" + Code + "'";
 
             dt = conn.selectData(sql, "orc_ba");
             item = dt.Rows.Count > 0 ? setData(new Doctor(), dt) : new Doctor();
 
             return item;
+        }
+        public DataTable selectAll()
+        {
+            Doctor item;
+            String sql = "";
+            DataTable dt = new DataTable();
+            sql = "Select * From " + dtr.table + " Where active = '1'";
+
+            dt = conn.selectData(sql, "orc_ba");
+            //item = dt.Rows.Count > 0 ? setData(new Doctor(), dt) : new Doctor();
+
+            return dt;
         }
         private String insert(Doctor p)
         {
@@ -90,16 +105,16 @@ namespace BackOffice.objdb
                 p.Active = "1";
                 sql = "Insert Into " + dtr.table + "(" + dtr.pkField + "," + dtr.Active + "," + dtr.Address + "," +
                     dtr.AppointmnetCnt + "," + dtr.BankNO + "," + dtr.DtrCatCode + "," +
-                    dtr.DtrCode + "," + dtr.DtrFname + "," + dtr.DtrMedicalField + "," +
-                    dtr.DtrSname + "," + dtr.DtrTitCode + "," + dtr.DtrTypCode + "," +
+                    dtr.DtrCode + "," + dtr.DtrFnameT + "," + dtr.DtrMedicalField + "," +
+                    dtr.DtrSnameT + "," + dtr.DtrTitCode + "," + dtr.DtrTypCode + "," +
                     dtr.Phone + "," + dtr.Remark + "," + dtr.SalaryMin + "," +
-                    dtr.Sort1 + "," + dtr.TaxID + ") " +
+                    dtr.Sort1 + "," + dtr.TaxID + "," + dtr.DtrFnameE + "," + dtr.DtrSnameE + ") " +
                     "Values('" + p.Code + "','" + p.Active + "','" + p.Address + "','" +
                     p.AppointmnetCnt + "','" + p.BankNO + "','" + p.DtrCatCode + "','" +
-                    p.DtrCode + "','" + p.DtrFname + "','" + p.DtrMedicalField + "','" +
-                    p.DtrSname + "','" + p.DtrTitCode + "','" + p.DtrTypCode + "','" +
+                    p.DtrCode + "','" + p.DtrFnameT + "','" + p.DtrMedicalField + "','" +
+                    p.DtrSnameT + "','" + p.DtrTitCode + "','" + p.DtrTypCode + "','" +
                     p.Phone + "','" + p.Remark + "','" + p.SalaryMin + "','" +
-                    p.Sort1 + "','" + p.TaxID + "') ";
+                    p.Sort1 + "','" + p.TaxID + "','" + p.DtrFnameE + "','" + p.DtrSnameE + "') ";
                 chk = conn.ExecuteNonQuery(sql, "orc_ba");
                 //chk = p.RowNumber;
                 chk = p.Code;
@@ -122,16 +137,18 @@ namespace BackOffice.objdb
                     dtr.BankNO + "='" + p.BankNO + "'," +
                     dtr.DtrCatCode + "='" + p.DtrCatCode + "'," +
                     dtr.DtrCode + "='" + p.DtrCode + "'," +
-                    dtr.DtrFname + "='" + p.DtrFname + "'," +
+                    dtr.DtrFnameT + "='" + p.DtrFnameT + "'," +
                     dtr.DtrMedicalField + "='" + p.DtrMedicalField + "'," +
-                    dtr.DtrSname + "='" + p.DtrSname + "'," +
+                    dtr.DtrSnameT + "='" + p.DtrSnameT + "'," +
                     dtr.DtrTitCode + "='" + p.DtrTitCode + "'," +
                     dtr.DtrTypCode + "='" + p.DtrTypCode + "'," +
                     dtr.Phone + "='" + p.Phone + "', " +
                     dtr.Remark + "='" + p.Remark + "', " +
                     dtr.SalaryMin + "='" + p.SalaryMin + "', " +
                     dtr.Sort1 + "='" + p.Sort1 + "', " +
-                    dtr.TaxID + "='" + p.TaxID + "' " +
+                    dtr.TaxID + "='" + p.TaxID + "', " +
+                    dtr.DtrFnameE + "='" + p.DtrFnameE + "', " +
+                    dtr.DtrSnameE + "='" + p.DtrSnameE + "' " +
 
                     "Where " + dtr.pkField + "='" + p.Code + "'";
                 chk = conn.ExecuteNonQuery(sql, "orc_ba");

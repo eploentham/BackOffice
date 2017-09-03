@@ -16,24 +16,22 @@ namespace BackOffice
         BackOfficeControl boC;
         Boolean flagHost = false;
         int colCnt = 20, colRow = 0, colPatientName = 1, colHnno = 2, colDate = 3, colTime = 4, colBilNum = 5, colRcpNum = 6, colTotal = 7, colAskAmt = 8, colDisAmt = 9, colPayAmt = 10;
-
-        private void btnTestConnect_Click(object sender, EventArgs e)
-        {
-            tabMain tabm = new tabMain();
-            tabm.Show();
-        }
-
         int colCasAmt = 11, colCrdAmt = 12, colUpdDtm = 13, colAccDte = 14, colPatTyp = 15, colDtrCod = 16, colUidNam = 19, colDtrNam = 17, colUidCod = 18, colInsNam = 19, colDf = 20;
+
         private void btnDF_Click(object sender, EventArgs e)
         {
             dfView frm = new dfView(boC);
             frm.ShowDialog(this);
         }
-
+        private void btnTestConnect_Click(object sender, EventArgs e)
+        {
+            tabMain tabm = new tabMain();
+            tabm.Show();
+        }
         private void ImportData_Load(object sender, EventArgs e)
         {
 
-        }        
+        }
 
         private void ImportData_Resize(object sender, EventArgs e)
         {

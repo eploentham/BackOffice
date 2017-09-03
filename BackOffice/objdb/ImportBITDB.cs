@@ -193,13 +193,13 @@ namespace BackOffice
                     dtr.BankNO = "";
                     if (aa.Length == 2)
                     {
-                        dtr.DtrFname = aa[0].Trim();
-                        dtr.DtrSname = aa[1].Trim();
+                        dtr.DtrFnameT = aa[0].Trim();
+                        dtr.DtrSnameT = aa[1].Trim();
                     }else if (aa.Length == 3)
                     {
                         dtr.DtrTitCode = cm.getTitCod(aa[0].Trim());
-                        dtr.DtrFname = aa[1].Trim();
-                        dtr.DtrSname = aa[2].Trim();
+                        dtr.DtrFnameT = aa[1].Trim();
+                        dtr.DtrSnameT = aa[2].Trim();
                     }
                         //dtr.DtrFname = (aa.Length > 1) ? aa[0].Trim() : "";
                         //dtr.DtrSname = (aa.Length > 2) ? aa[2].Trim() : "";

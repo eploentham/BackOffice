@@ -53,7 +53,7 @@ namespace BackOffice
 
             lb2 = new Label();
             lb2.Font = boC.fV1;
-            lb2.Text = "ค้าหา";
+            lb2.Text = "ค้นหา";
             lb2.AutoSize = true;
             Controls.Add(lb2);
             lb2.Location = new System.Drawing.Point(grd2, boC.formFirstLineY);

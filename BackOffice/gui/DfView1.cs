@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -36,15 +37,17 @@ namespace BackOffice
             initCompoment();            
             this.Size = new System.Drawing.Size(800, 500);            
             //this.Location = new System.Drawing.Point(boC.formFirstLineX-20, line1-20);
-            this.Opacity = 0.8;
-            this.BackColor = Color.LimeGreen;
+            //this.Opacity = 0.7;
+            this.BackColor = Color.DarkSlateGray;
             //this.TransparencyKey = Color.LimeGreen;
             setDgvH();
+            setDgv();
         }
         private void initCompoment()
         {
             lb1 = new Label();
-            lb1.Font = boC.fV1;
+            lb1.Font = boC.fV1B;
+            lb1.ForeColor = Color.White;
             lb1.Text = "รหัสแพทย์";
             lb1.AutoSize = true;
             Controls.Add(lb1);
@@ -56,6 +59,7 @@ namespace BackOffice
             txtCode.Size = new System.Drawing.Size(100, ControlHeight);
             Controls.Add(txtCode);
             txtCode.Location = new System.Drawing.Point(grd1, boC.formFirstLineY);
+            txtCode.KeyUp += new KeyEventHandler(txtCode_KeyUp);
 
             btnSearch = new Button();
             btnSearch.Font = boC.fV1;
@@ -70,9 +74,59 @@ namespace BackOffice
             dgvView.Size = new System.Drawing.Size(760, 460);
             Controls.Add(dgvView);
             dgvView.Location = new System.Drawing.Point(boC.formFirstLineX, line1);
+            dgvView.KeyDown += new KeyEventHandler(dgvView_KeyDown);
+        }
+        private void txtCode_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                dgvView.Focus();
+                
+                //return;
+            }else if (txtCode.Text.Length > 2)
+            {
+                int rowIndex = -1;
+                foreach (DataGridViewRow row in dgvView.Rows)
+                {
+                    if (row.Cells[colDtrCod].Value.ToString().Length >= txtCode.Text.Length)
+                    {
+                        if (row.Cells[colDtrCod].Value.ToString().Substring(0, txtCode.Text.Length).Equals(txtCode.Text))
+                        {
+                            rowIndex = row.Index;
+                            dgvView.CurrentCell = dgvView.Rows[rowIndex].Cells[0];
+                            dgvView.Rows[dgvView.CurrentCell.RowIndex].Selected = true;
+                            break;
+                        }
+                        else if ((row.Cells[colDtrName].Value.ToString().Length >= txtCode.Text.Length) && (row.Cells[colDtrName].Value.ToString().Substring(0, txtCode.Text.Length).Equals(txtCode.Text)))
+                        {
+                            rowIndex = row.Index;
+                            dgvView.CurrentCell = dgvView.Rows[rowIndex].Cells[0];
+                            dgvView.Rows[dgvView.CurrentCell.RowIndex].Selected = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        private void dgvView_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                boC.DtrCode = dgvView[colDtrCod, dgvView.CurrentCell.RowIndex].Value.ToString().Trim();
+                this.Dispose();
+            }
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Escape) this.Close();
+            bool res = base.ProcessCmdKey(ref msg, keyData);
+            return res;
         }
         private void setDgvH()
         {
+            dgvView.AllowUserToAddRows = false;
+            dgvView.EditMode = DataGridViewEditMode.EditProgrammatically;
             dgvView.Rows.Clear();
             dgvView.ColumnCount = colCnt;
             //dgvView.RowCount = dt.Rows.Count + 1;
@@ -84,32 +138,30 @@ namespace BackOffice
             dgvView.Columns[colCatName].Width = 220;
 
             dgvView.Columns[colRow].HeaderText = "ลำดับ";
-            dgvView.Columns[colDtrCod].HeaderText = "รหัสหลัก";
-            dgvView.Columns[colDtrName].HeaderText = "รหัสรอง";
-            dgvView.Columns[colTypeName].HeaderText = "รายการ";
-            dgvView.Columns[colCatName].HeaderText = "insur name";            
-
-            DataGridViewComboBoxColumn typTime = new DataGridViewComboBoxColumn();
-            var list11 = new List<string>() { "ในเวลา", "นอกเวลา" };
-            typTime.DataSource = list11;
-            typTime.HeaderText = "ประเภทค่าแพทย์";
-            typTime.DataPropertyName = "Money";
-            dgvView.Columns.AddRange(typTime);
-
-            DataGridViewComboBoxColumn RateTyp = new DataGridViewComboBoxColumn();
-            var list12 = new List<string>() { "%", "บาท", "ตามแพทย์ เขียนdf" };
-            RateTyp.DataSource = list12;
-            RateTyp.HeaderText = "Rate Type";
-            RateTyp.DataPropertyName = "Money";
-            RateTyp.Width = 150;
-            dgvView.Columns.AddRange(RateTyp);
-
-            DataGridViewTextBoxColumn rate = new DataGridViewTextBoxColumn();
-            rate.HeaderText = "Rate";
-            dgvView.Columns.AddRange(rate);
+            dgvView.Columns[colDtrCod].HeaderText = "รหัส";
+            dgvView.Columns[colDtrName].HeaderText = "ชื่อ-นามสกุล";
+            dgvView.Columns[colTypeName].HeaderText = "สาขาแพทย์";
+            dgvView.Columns[colCatName].HeaderText = "ประเภทแพทย์";
+            dgvView.Columns[colMedicalField].HeaderText = "สาขาแพทย์";
 
             Font font = new Font("Microsoft Sans Serif", 10);
+
             dgvView.Font = font;
+        }
+        private void setDgv()
+        {
+            DataTable dt = new DataTable();
+            dt = boC.dtrDB.selectAll();
+            dgvView.RowCount = dt.Rows.Count;
+            for(int i = 0; i < dt.Rows.Count; i++)
+            {
+                dgvView[colRow, i].Value = (i + 1);
+                dgvView[colDtrCod, i].Value = dt.Rows[i]["code"].ToString().Trim();
+                dgvView[colDtrName, i].Value = dt.Rows[i]["dtr_fname_t"].ToString().Trim()+" "+ dt.Rows[i]["dtr_sname_t"].ToString().Trim();
+                dgvView[colTypeName, i].Value = dt.Rows[i]["dtr_typ_code"].ToString().Trim();
+                dgvView[colCatName, i].Value = dt.Rows[i]["dtr_cat_code"].ToString().Trim();
+                dgvView[colMedicalField, i].Value = dt.Rows[i]["dtr_medical_field"].ToString().Trim();
+            }
         }
     }
 }

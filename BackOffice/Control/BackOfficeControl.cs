@@ -164,5 +164,30 @@ namespace BackOffice
                 return iSale.Value;
             }
         }
+        public DataTable selectItmMstDtr()
+        {
+            DataTable dt = new DataTable();
+            String sql = "Select itmm.*  "
+                            + "From ItmMst1 itmm "
+                            + "Where  itmm.itmsrvopd = '11'  " +
+                            "order by itmm.itminccod ";
+            DataTable dtItm = new DataTable();
+            dt = conn.selectData(sql, "orc_bit");
+            return dt;
+        }
+        public DataTable selectInsMst()
+        {
+            DataTable dt = new DataTable();
+            String sql = "";
+            sql = "Select insm.* " +
+                "From insmst1 insm ";
+            DataTable dtInc = new DataTable();
+            dt = conn.selectData(sql, "orc_bit");
+            return dt;
+        }
+        public void saveDoctor(Doctor dtr)
+        {
+            dtrDB.insertDoctor(dtr);
+        }
     }
 }

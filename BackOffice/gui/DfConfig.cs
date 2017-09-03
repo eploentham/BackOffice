@@ -28,14 +28,14 @@ namespace BackOffice
         ComboBoxItem cboI;
 
         BackOfficeControl boC;
-        ConnectDB conn;
+        //ConnectDB conn;
 
         Doctor dtr;
         public DfConfig(BackOfficeControl boc)
         {
             this.FormBorderStyle = FormBorderStyle.None;
             boC = boc;
-            conn = new ConnectDB("bit");
+            //conn = new ConnectDB("bit");
             initConfig();
         }
         private void initConfig()
@@ -411,22 +411,32 @@ namespace BackOffice
             rate.HeaderText = "Rate";
             dgvView.Columns.AddRange(rate);
 
+            DataGridViewCheckBoxColumn rate1 = new DataGridViewCheckBoxColumn();
+            rate1.HeaderText = "%";
+            //rate1.
+            dgvView.Columns.AddRange(rate1);
+            DataGridViewCheckBoxColumn rate2 = new DataGridViewCheckBoxColumn();
+            rate2.HeaderText = "บาท";
+            dgvView.Columns.AddRange(rate2);
+
             Font font = new Font("Microsoft Sans Serif", 10);
             dgvView.Font = font;
         }
         private void genDf()
         {
             int rowCnt = 0, k=0;
-            String sql = "Select itmm.*  "
-                            + "From ItmMst itmm "                            
-                            + "Where  itmm.itmsrvopd = '11'  " +
-                            "order by itmm.itminccod ";
-            DataTable dtItm = new DataTable();
-            dtItm = conn.selectData(sql, "bit");
-            sql = "Select insm.* " +
-                "From insmst insm ";
-            DataTable dtInc = new DataTable();
-            dtInc = conn.selectData(sql, "bit");
+            //String sql = "Select itmm.*  "
+            //                + "From ItmMst itmm "                            
+            //                + "Where  itmm.itmsrvopd = '11'  " +
+            //                "order by itmm.itminccod ";
+            //DataTable dtItm = new DataTable();
+            //dtItm =  conn.selectData(sql, "bit");
+            DataTable dtItm = boC.selectItmMstDtr();
+            //sql = "Select insm.* " +
+            //    "From insmst insm ";
+            //DataTable dtInc = new DataTable();
+            //dtInc = conn.selectData(sql, "bit");
+            DataTable dtInc = boC.selectInsMst();
             rowCnt = ((dtItm.Rows.Count * dtInc.Rows.Count*2) + 1);
 
             dgvView.Rows.Clear();
@@ -473,14 +483,23 @@ namespace BackOffice
             txtNameT.Text = dtr.DtrFnameT;
             txtSNameT.Text = dtr.DtrSnameT;
             txtNameE.Text = dtr.DtrFnameT;
+            ComboBoxItem cb = new ComboBoxItem();
+            cb.Value = dtr.DtrMedicalField; ;
+            cboMedicalField.SelectedItem = cb;
         }
         private void getDoctor()
         {
+            dtr = new Doctor();
             dtr.Code = txtCode.Text;
             dtr.DtrFnameT = txtNameT.Text;
             dtr.DtrSnameT = txtSNameT.Text;
             cboI = (ComboBoxItem)cboMedicalField.SelectedItem;
             dtr.DtrMedicalField = cboI.Value;
+        }
+        private void saveDoctor()
+        {
+            getDoctor();
+            boC.saveDoctor(dtr);
         }
         private void openDtView1()
         {
@@ -514,7 +533,7 @@ namespace BackOffice
         }
         private void btnSave_Click(object sender, EventArgs e)
         {
-            getDoctor();
+            saveDoctor();
         }
     }
 }

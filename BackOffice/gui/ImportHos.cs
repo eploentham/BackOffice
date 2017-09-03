@@ -154,6 +154,8 @@ namespace BackOffice
 
             boC.iBITDB.ImportDepMst();
 
+            boC.iBITDB.ImportItmMst();
+
             btnImport.Enabled = true;
         }
         private void getData()

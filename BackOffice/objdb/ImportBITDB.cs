@@ -389,5 +389,40 @@ namespace BackOffice
                 conn.ExecuteNonQuery(sql, "orc_bit");
             }
         }
+        public void ImportItmMst()
+        {
+            String sql = "", col = "", sql1 = "";
+            StringBuilder dat = new StringBuilder();
+            StringBuilder dat1 = new StringBuilder();
+            DataTable dt = new DataTable();
+            sql = "Delete From itmmst1 ";
+            conn.ExecuteNonQuery(sql, "orc_bit");
+
+            sql = "Select * " +
+                "From itmmst ";
+            dt = connBIT.selectData(sql, "bit");
+
+            foreach (DataColumn column in dt.Columns)
+            {
+                col += column.ColumnName + ",";
+            }
+            col = col.Length > 0 ? col.Substring(0, col.Length - 1) : "";
+
+            sql1 = "Insert Into itmmst1(" + col + ") ";
+            //for(int i = 0; i < dt.Rows.Count; i++)
+            foreach (DataRow row in dt.Rows)
+            {
+                dat.Clear();
+                dat1.Clear();
+                foreach (DataColumn dc in dt.Columns)
+                {
+                    //dat += "'"+row[dc].ToString().Trim()+"',";
+                    dat.Append("'").Append(row[dc].ToString().Trim()).Append("'").Append(",");
+                }
+                dat1.Append(dat.ToString(0, dat.Length - 1));
+                sql = sql1 + " Values(" + dat1.ToString() + ")";
+                conn.ExecuteNonQuery(sql, "orc_bit");
+            }
+        }
     }
 }

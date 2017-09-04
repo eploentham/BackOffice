@@ -485,7 +485,7 @@ namespace BackOffice
             txtNameE.Text = dtr.DtrFnameT;
             ComboBoxItem cb = new ComboBoxItem();
             cb.Value = dtr.DtrMedicalField; ;
-            cboMedicalField.SelectedItem = cb;
+            cboMedicalField.Text = boC.getMedecalFieldName(dtr.DtrMedicalField);
         }
         private void getDoctor()
         {
@@ -495,6 +495,13 @@ namespace BackOffice
             dtr.DtrSnameT = txtSNameT.Text;
             cboI = (ComboBoxItem)cboMedicalField.SelectedItem;
             dtr.DtrMedicalField = cboI.Value;
+        }
+        private void saveDoctorRate()
+        {
+            for(int i = 0; i < dgvView.RowCount; i++)
+            {
+
+            }
         }
         private void saveDoctor()
         {

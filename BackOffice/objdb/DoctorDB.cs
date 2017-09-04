@@ -73,7 +73,9 @@ namespace BackOffice.objdb
             Doctor item;
             String sql = "";
             DataTable dt = new DataTable();
-            sql = "Select * From " + dtr.table + " Where " + dtr.pkField + "='" + Code + "'";
+            sql = "Select dtr.* " +
+                "From " + dtr.table + " dtr " +
+                "Where dtr." + dtr.pkField + "='" + Code + "'";
 
             dt = conn.selectData(sql, "orc_ba");
             item = dt.Rows.Count > 0 ? setData(new Doctor(), dt) : new Doctor();

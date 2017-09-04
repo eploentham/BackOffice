@@ -30,7 +30,7 @@ namespace BackOffice
         public ControlMaster cm;
 
         public String DtrCode="";
-        public DataTable dtDep;
+        public DataTable dtDep, dtDtrTit, dtTit, dtDtrCat, dtDtrTyp;
         public BackOfficeControl()
         {
             conn = new ConnectDB("orc_bit");
@@ -46,6 +46,9 @@ namespace BackOffice
             dtrRDB = new DoctorRateDB(connORCBA);
             cm = new ControlMaster(conn, connBIT);
             dtDep = cm.selectMedicalField();
+            dtDtrTit = selectTitleDtr();
+            dtDtrCat = selectDtrCat();
+            dtDtrTyp = selectDtrTyp();
         }
         public String getMedecalFieldName(String code)
         {
@@ -55,6 +58,58 @@ namespace BackOffice
                 if (dtDep.Rows[i]["depcod"].ToString().Equals(code))
                 {
                     txt = dtDep.Rows[i]["depkornam"].ToString();
+                    break;
+                }
+            }
+            return txt;
+        }
+        public String getDtrCatName(String code)
+        {
+            String txt = "";
+            for (int i = 0; i < dtDtrCat.Rows.Count; i++)
+            {
+                if (dtDtrCat.Rows[i]["init_val"].ToString().Equals(code))
+                {
+                    txt = dtDtrCat.Rows[i]["init_name_t"].ToString();
+                    break;
+                }
+            }
+            return txt;
+        }
+        public String getDtrTypName(String code)
+        {
+            String txt = "";
+            for (int i = 0; i < dtDtrTyp.Rows.Count; i++)
+            {
+                if (dtDtrTyp.Rows[i]["init_val"].ToString().Equals(code))
+                {
+                    txt = dtDtrTyp.Rows[i]["init_name_t"].ToString();
+                    break;
+                }
+            }
+            return txt;
+        }
+        public String getTitleNameT(String code)
+        {
+            String txt = "";
+            for (int i = 0; i < dtDtrTit.Rows.Count; i++)
+            {
+                if (dtDtrTit.Rows[i]["dtlcod"].ToString().Equals(code))
+                {
+                    txt = dtDtrTit.Rows[i]["dtlcodnam"].ToString();
+                    break;
+                }
+            }
+            return txt;
+        }
+        public String getTitleNameE(String code)
+        {
+            String txt = "";
+            for (int i = 0; i < dtDtrTit.Rows.Count; i++)
+            {
+                if (dtDtrTit.Rows[i]["dtlcod"].ToString().Equals(code))
+                {
+                    txt = dtDtrTit.Rows[i]["dtlcodval"].ToString();
                     break;
                 }
             }
@@ -77,12 +132,12 @@ namespace BackOffice
         public ComboBox getCboTitleT(ComboBox c)
         {
             ComboBoxItem item = new ComboBoxItem();
-            DataTable dt = selectTitle();
-            for (int i = 0; i < dt.Rows.Count; i++)
+            //DataTable dt = selectTitle();
+            for (int i = 0; i < dtDtrTit.Rows.Count; i++)
             {
                 item = new ComboBoxItem();
-                item.Value = dt.Rows[i]["dtlcod"].ToString();
-                item.Text = dt.Rows[i]["dtlcodnam"].ToString();
+                item.Value = dtDtrTit.Rows[i]["dtlcod"].ToString();
+                item.Text = dtDtrTit.Rows[i]["dtlcodnam"].ToString();
                 c.Items.Add(item);
                 //c.Items.Add(new );
             }
@@ -91,40 +146,40 @@ namespace BackOffice
         public ComboBox getCboTitleE(ComboBox c)
         {
             ComboBoxItem item = new ComboBoxItem();
-            DataTable dt = selectTitle();
-            for (int i = 0; i < dt.Rows.Count; i++)
+            //DataTable dt = selectTitle();
+            for (int i = 0; i < dtDtrTit.Rows.Count; i++)
             {
                 item = new ComboBoxItem();
-                item.Value = dt.Rows[i]["dtlcod"].ToString();
-                item.Text = dt.Rows[i]["dtlcodnam"].ToString();
+                item.Value = dtDtrTit.Rows[i]["dtlcod"].ToString();
+                item.Text = dtDtrTit.Rows[i]["dtlcodnam"].ToString();
                 c.Items.Add(item);
                 //c.Items.Add(new );
             }
             return c;
         }
-        public ComboBox getCboTitleDrT(ComboBox c)
+        public ComboBox getCboDtrTitleT(ComboBox c)
         {
             ComboBoxItem item = new ComboBoxItem();
-            DataTable dt = selectTitleDr();
-            for (int i = 0; i < dt.Rows.Count; i++)
+            //DataTable dt = selectTitleDr();
+            for (int i = 0; i < dtDtrTit.Rows.Count; i++)
             {
                 item = new ComboBoxItem();
-                item.Value = dt.Rows[i]["dtlcod"].ToString();
-                item.Text = dt.Rows[i]["dtlcodnam"].ToString();
+                item.Value = dtDtrTit.Rows[i]["dtlcod"].ToString();
+                item.Text = dtDtrTit.Rows[i]["dtlcodnam"].ToString();
                 c.Items.Add(item);
                 //c.Items.Add(new );
             }
             return c;
         }
-        public ComboBox getCboTitleDrE(ComboBox c)
+        public ComboBox getCboDtrTitleE(ComboBox c)
         {
             ComboBoxItem item = new ComboBoxItem();
-            DataTable dt = selectTitleDr();
-            for (int i = 0; i < dt.Rows.Count; i++)
+            //DataTable dt = selectTitleDr();
+            for (int i = 0; i < dtDtrTit.Rows.Count; i++)
             {
                 item = new ComboBoxItem();
-                item.Value = dt.Rows[i]["dtlcod"].ToString();
-                item.Text = dt.Rows[i]["dtlcodval"].ToString();
+                item.Value = dtDtrTit.Rows[i]["dtlcod"].ToString();
+                item.Text = dtDtrTit.Rows[i]["dtlcodval"].ToString();
                 c.Items.Add(item);
                 //c.Items.Add(new );
             }
@@ -141,16 +196,66 @@ namespace BackOffice
 
             return dt;
         }
-        public DataTable selectTitleDr()
+        public DataTable selectTitleDtr()
         {
             String sql = "";
-            DataTable dt = new DataTable();
+            //DataTable dt = new DataTable();
             sql = "SELECT *  " +
                 "FROM DtlMst1  " +
                 "Where DtlTblCod = 'TITCOD' and dtlcod in ('04','06') Order By DtlCod";
-            dt = conn.selectData(sql, "orc_bit");
+            dtDtrTit = conn.selectData(sql, "orc_bit");
 
-            return dt;
+            return dtDtrTit;
+        }
+        public DataTable selectDtrTyp()
+        {
+            String sql = "";
+            //DataTable dt = new DataTable();
+            sql = "SELECT *  " +
+                "FROM b_master_initial  " +
+                "Where init_dep = 'dtr' and init_code = 'typ' Order By sort1";
+            dtDtrTyp = connORCBA.selectData(sql, "orc_ba");
+
+            return dtDtrTyp;
+        }
+        public DataTable selectDtrCat()
+        {
+            String sql = "";
+            //DataTable dt = new DataTable();
+            sql = "SELECT *  " +
+                "FROM b_master_initial  " +
+                "Where init_dep = 'dtr' and init_code = 'cat' Order By sort1";
+            dtDtrCat = connORCBA.selectData(sql, "orc_ba");
+
+            return dtDtrCat;
+        }
+        public ComboBox getCboDtrTyp(ComboBox c)
+        {
+            ComboBoxItem item = new ComboBoxItem();
+            //DataTable dt = selectTitleDr();
+            for (int i = 0; i < dtDtrTyp.Rows.Count; i++)
+            {
+                item = new ComboBoxItem();
+                item.Value = dtDtrTyp.Rows[i]["init_val"].ToString();
+                item.Text = dtDtrTyp.Rows[i]["init_name_t"].ToString();
+                c.Items.Add(item);
+                //c.Items.Add(new );
+            }
+            return c;
+        }
+        public ComboBox getCboDtrCat(ComboBox c)
+        {
+            ComboBoxItem item = new ComboBoxItem();
+            //DataTable dt = selectTitleDr();
+            for (int i = 0; i < dtDtrCat.Rows.Count; i++)
+            {
+                item = new ComboBoxItem();
+                item.Value = dtDtrCat.Rows[i]["init_val"].ToString();
+                item.Text = dtDtrCat.Rows[i]["init_name_t"].ToString();
+                c.Items.Add(item);
+                //c.Items.Add(new );
+            }
+            return c;
         }
         public ComboBox getCboMedicalField(ComboBox c)
         {
@@ -219,6 +324,10 @@ namespace BackOffice
         {
             dtrDB.insertDoctor(dtr);
         }
+        public void saveDoctorRaate(DoctorRate dtrR)
+        {
+            dtrRDB.insertDoctorRate(dtrR);
+        }
         public String ThaiBaht(string txt)
         {
             string bahtTxt, n, bahtTH = "";
@@ -276,6 +385,25 @@ namespace BackOffice
                 }
             }
             return bahtTH;
+        }
+        public DataTable selectDtrImport(String dailyDate)
+        {
+            String sql = "select psp.PspPatNam, psp.PspSurNam, orp.OrpChtNum   " +
+                            " , uidm.UidNam as UidNam, uidd.UidNam as dtrNam, odr.odritmcod, odr.odrastcod, odr.odrseq, odr.odrocmnum  " +
+                            ", insm.inscodnam, orp.orptotamt, itmm.Itmkornam, odr.odritmcod, odr.odrastcod, itmm.itmsrvopd, drf.*  "
+                            + "From drfrcp1 drf "
+                            + "left join OrpInf1 orp on drf.DrfRcpNum = orp.OrpRcpNum  and orp.Orpocmnum = drf.drfocmnum   "
+                            + "left join OdrInf1 odr on odr.OdrOcmNum = orp.OrpOcmNum  "
+                            + "left join UidMst1 uidm on uidm.UidCod = drf.drfuidcod   "
+                            + "left join UidMst1 uidd on uidd.UidCod = drf.drfdtrcod  "
+                            + "left join pspinf1 psp on orp.OrpChtNum = psp.PspChtNum    "
+                            + "left join InsMst1 insm on insm.InsCod = orp.OrpInsCod  "
+                            + "inner join ItmMst1 itmm on itmm.ItmCod = odr.OdrItmCod and itmm.ItmAstCod = odr.OdrAstCod "
+                            + "Where  orp.OrpCtrCod = 'TOTAL' and drfodrdtm >='" + dailyDate + "0000' and drfodrdtm <='" + dailyDate + "2359' and itmm.ItmSrvOpd = '11' " +
+                            "order by drf.drfodrdtm, drf.drfodrseq ";
+            DataTable dt = new DataTable();
+            dt = conn.selectData(sql, "orc_bit");
+            return dt;
         }
     }
 }

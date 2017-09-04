@@ -156,6 +156,8 @@ namespace BackOffice
 
             boC.iBITDB.ImportItmMst();
 
+            boC.iBITDB.ImportOdrInf(dailyDate);
+
             btnImport.Enabled = true;
         }
         private void getData()

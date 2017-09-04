@@ -20,6 +20,8 @@ namespace BackOffice
         ConnectDB conn;
 
         int colCnt = 18, colRow = 0, colPatientName = 1, colHnno = 2, colDate = 3, colTime = 4, colBilNum = 5, colRcpNum = 6, colTotal = 7, coldrfodrcod = 8, coldtlcodnam = 9, colDf = 10;
+        int coldtrcod = 11, coldtrnam = 12, colUpdDtm = 14, colPatTyp = 13, colUidNam = 16, colUidCod = 15, colInsNam = 17;
+
 
         private void ImportDF_Load(object sender, EventArgs e)
         {
@@ -39,7 +41,7 @@ namespace BackOffice
 
         }
 
-        int coldtrcod = 11, coldtrnam = 12, colUpdDtm = 14, colPatTyp = 13, colUidNam = 16, colUidCod = 15, colInsNam = 17;
+        
         public ImportDF(BackOfficeControl boc)
         {
             this.FormBorderStyle = FormBorderStyle.None;
@@ -138,17 +140,18 @@ namespace BackOffice
             //                +"left join UidMst uidm on uidm.UidCod = orp.OrpUidCod "
             //                +"left join UidMst uidd on uidd.UidCod = orp.OrpDtrCod "
             //                + "left join InsMst insm on insm.InsCod = orp.OrpInsCod ";
-            String sql = "select psp.PspPatNam, psp.PspSurNam, orp.OrpChtNum, drf.drfodrcod, drf.drfdtrcod, drf.drfocmnum, drf.drfpattyp, drf.drfodramt, drf.drfodrdtm, drf.drfinccod, drf.drfbilnum " +
-                            " , drf.drfuidcod,drf.drfodrcod, dtlm.dtlcodnam, uidm.UidNam as UidNam, uidd.UidNam as dtrName, drf.drfrcpnum, drf.drfrcpnum, drf.drfuidcod " +
-                            ", insm.InsCodNam, orp.orptotamt, drf.drfodrdtm  "
+            String sql = "select psp.PspPatNam, psp.PspSurNam, orp.OrpChtNum, drf.drfodrcod, drf.drfdtrcod, drf.drfocmnum, drf.drfpattyp, drf.drfodramt, drf.drfodrdtm, drf.drfinccod, drf.drfbilnum  " +
+                            " , drf.drfuidcod,drf.drfodrcod, uidm.UidNam as UidNam, uidd.UidNam as dtrName, drf.drfrcpnum, drf.drfrcpnum, drf.drfuidcod  " +
+                            ", insm.InsCodNam, orp.orptotamt, drf.drfodrdtm  , itmm.ItmKorNam  "
                             + "From drfrcp drf "
-                            + "left join dtlmst dtlm on drf.drfodrcod = dtlm.dtlcodval  "
-                            + "left join UidMst uidm on uidm.UidCod = drf.drfuidcod  "
-                            + "left join UidMst uidd on uidd.UidCod = drf.drfdtrcod "
-                            + "left join orpinf orp on orp.Orpocmnum = drf.drfocmnum "
+                            + "left join OrpInf orp on drf.DrfRcpNum = orp.OrpRcpNum  and orp.Orpocmnum = drf.drfocmnum   "
+                            + "left join OdrInf odr on odr.OdrOcmNum = orp.OrpOcmNum  "
+                            + "left join UidMst uidm on uidm.UidCod = drf.drfuidcod   "
+                            + "left join UidMst uidd on uidd.UidCod = drf.drfdtrcod  "
                             + "left join pspinf psp on orp.OrpChtNum = psp.PspChtNum    "
                             + "left join InsMst insm on insm.InsCod = orp.OrpInsCod  "
-                            + "Where  orp.OrpCtrCod = 'TOTAL' and drfodrdtm >='" + dailyDate + "0000' and drfodrdtm <='" + dailyDate + "2359' " +
+                            + "inner join ItmMst itmm on itmm.ItmCod = odr.OdrItmCod and itmm.ItmAstCod = odr.OdrAstCod "
+                            + "Where  orp.OrpCtrCod = 'TOTAL' and drfodrdtm >='" + dailyDate + "0000' and drfodrdtm <='" + dailyDate + "2359' and itmm.ItmSrvOpd = '11' " +
                             "order by drf.drfodrdtm, drf.drfodrseq ";
             DataTable dt = new DataTable();
 
@@ -173,7 +176,7 @@ namespace BackOffice
                 dgvView[colTotal, i].Value = dt.Rows[i]["orptotamt"].ToString();
 
                 dgvView[coldrfodrcod, i].Value = dt.Rows[i]["drfodrcod"].ToString();
-                dgvView[coldtlcodnam, i].Value = dt.Rows[i]["dtlcodnam"].ToString();
+                dgvView[coldtlcodnam, i].Value = dt.Rows[i]["ItmKorNam"].ToString();
                 dgvView[colDf, i].Value = dt.Rows[i]["drfodramt"].ToString();
                 dgvView[coldtrcod, i].Value = dt.Rows[i]["drfdtrcod"].ToString();
                 dgvView[coldtrnam, i].Value = dt.Rows[i]["dtrName"].ToString();

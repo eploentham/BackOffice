@@ -9,5 +9,6 @@ namespace BackOffice.object1
     public class DoctorRate : Persistent
     {
         public String RateId = "", RateCode = "", DtrCode = "", ItmCod = "", ItmAstCod = "", Desc = "", InsCode = "", InsCodeName = "", ItmKorNam = "", Active = "", TypTime = "", RateTyp = "", Rate = "", Remark = "";
+        public String row1 = "";
     }
 }

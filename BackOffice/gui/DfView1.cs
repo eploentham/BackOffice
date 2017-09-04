@@ -35,7 +35,7 @@ namespace BackOffice
         private void initConfig()
         {
             initCompoment();            
-            this.Size = new System.Drawing.Size(800, 500);            
+            this.Size = new System.Drawing.Size(900, 500);            
             //this.Location = new System.Drawing.Point(boC.formFirstLineX-20, line1-20);
             //this.Opacity = 0.7;
             this.BackColor = Color.DarkSlateGray;
@@ -71,7 +71,7 @@ namespace BackOffice
 
             dgvView = new DataGridView();
             dgvView.Font = boC.fV1;
-            dgvView.Size = new System.Drawing.Size(760, 460);
+            dgvView.Size = new System.Drawing.Size(880, 460);
             Controls.Add(dgvView);
             dgvView.Location = new System.Drawing.Point(boC.formFirstLineX, line1);
             dgvView.KeyDown += new KeyEventHandler(dgvView_KeyDown);
@@ -133,15 +133,16 @@ namespace BackOffice
             dgvView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvView.Columns[colRow].Width = 50;
             dgvView.Columns[colDtrCod].Width = 80;
-            dgvView.Columns[colDtrName].Width = 80;
-            dgvView.Columns[colTypeName].Width = 500;
-            dgvView.Columns[colCatName].Width = 220;
+            dgvView.Columns[colDtrName].Width = 300;
+            dgvView.Columns[colTypeName].Width = 140;
+            dgvView.Columns[colCatName].Width = 100;
+            dgvView.Columns[colMedicalField].Width = 150;
 
             dgvView.Columns[colRow].HeaderText = "ลำดับ";
             dgvView.Columns[colDtrCod].HeaderText = "รหัส";
             dgvView.Columns[colDtrName].HeaderText = "ชื่อ-นามสกุล";
-            dgvView.Columns[colTypeName].HeaderText = "สาขาแพทย์";
-            dgvView.Columns[colCatName].HeaderText = "ประเภทแพทย์";
+            dgvView.Columns[colTypeName].HeaderText = "ประเภทแพทย์";
+            dgvView.Columns[colCatName].HeaderText = "ชนิดแพทย์";
             dgvView.Columns[colMedicalField].HeaderText = "สาขาแพทย์";
 
             Font font = new Font("Microsoft Sans Serif", 10);
@@ -158,9 +159,9 @@ namespace BackOffice
                 dgvView[colRow, i].Value = (i + 1);
                 dgvView[colDtrCod, i].Value = dt.Rows[i]["code"].ToString().Trim();
                 dgvView[colDtrName, i].Value = dt.Rows[i]["dtr_fname_t"].ToString().Trim()+" "+ dt.Rows[i]["dtr_sname_t"].ToString().Trim();
-                dgvView[colTypeName, i].Value = dt.Rows[i]["dtr_typ_code"].ToString().Trim();
-                dgvView[colCatName, i].Value = dt.Rows[i]["dtr_cat_code"].ToString().Trim();
-                dgvView[colMedicalField, i].Value = dt.Rows[i]["dtr_medical_field"].ToString().Trim();
+                dgvView[colTypeName, i].Value = boC.getDtrTypName( dt.Rows[i]["dtr_typ_code"].ToString().Trim());
+                dgvView[colCatName, i].Value = boC.getDtrCatName(dt.Rows[i]["dtr_cat_code"].ToString().Trim());
+                dgvView[colMedicalField, i].Value = boC.getMedecalFieldName(dt.Rows[i]["dtr_medical_field"].ToString().Trim());
             }
         }
     }

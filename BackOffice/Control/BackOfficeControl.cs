@@ -13,7 +13,7 @@ namespace BackOffice
 {
     public class BackOfficeControl
     {
-        ConnectDB conn, connBIT, connORCBA;
+        ConnectDB connORCBIT, connBIT, connORCBA;
 
         static String fontName = "Microsoft Sans Serif";
         public String backColor1 = "#1E1E1E";
@@ -28,12 +28,14 @@ namespace BackOffice
         public DoctorDB dtrDB;
         public DoctorRateDB dtrRDB;
         public ControlMaster cm;
+        public DfTDoctorDB dfDB;
+        public DfTDoctorDetailDB dfDDB;
 
         public String DtrCode="";
         public DataTable dtDep, dtDtrTit, dtTit, dtDtrCat, dtDtrTyp;
         public BackOfficeControl()
         {
-            conn = new ConnectDB("orc_bit");
+            connORCBIT = new ConnectDB("orc_bit");
             connBIT = new ConnectDB("bit");
             connORCBA = new ConnectDB("orc_ba");
             fontSize9 = 9.75f;
@@ -44,7 +46,10 @@ namespace BackOffice
             iBITDB = new ImportBITDB();
             dtrDB = new DoctorDB(connORCBA);
             dtrRDB = new DoctorRateDB(connORCBA);
-            cm = new ControlMaster(conn, connBIT);
+            dfDB = new DfTDoctorDB(connORCBIT,connORCBA);
+            dfDDB = new DfTDoctorDetailDB(connORCBIT, connORCBA);
+            cm = new ControlMaster(connORCBIT, connBIT);
+
             dtDep = cm.selectMedicalField();
             dtDtrTit = selectTitleDtr();
             dtDtrCat = selectDtrCat();
@@ -192,7 +197,7 @@ namespace BackOffice
             sql = "SELECT *  " +
                 "FROM DtlMst1  " +
                 "Where DtlTblCod = 'TITCOD' Order By DtlCod";
-            dt = conn.selectData(sql, "orc_bit");
+            dt = connORCBIT.selectData(sql, "orc_bit");
 
             return dt;
         }
@@ -203,7 +208,7 @@ namespace BackOffice
             sql = "SELECT *  " +
                 "FROM DtlMst1  " +
                 "Where DtlTblCod = 'TITCOD' and dtlcod in ('04','06') Order By DtlCod";
-            dtDtrTit = conn.selectData(sql, "orc_bit");
+            dtDtrTit = connORCBIT.selectData(sql, "orc_bit");
 
             return dtDtrTit;
         }
@@ -307,7 +312,7 @@ namespace BackOffice
                             + "Where  itmm.itmsrvopd = '11'  " +
                             "order by itmm.itminccod ";
             DataTable dtItm = new DataTable();
-            dt = conn.selectData(sql, "orc_bit");
+            dt = connORCBIT.selectData(sql, "orc_bit");
             return dt;
         }
         public DataTable selectInsMst()
@@ -317,7 +322,7 @@ namespace BackOffice
             sql = "Select insm.* " +
                 "From insmst1 insm ";
             DataTable dtInc = new DataTable();
-            dt = conn.selectData(sql, "orc_bit");
+            dt = connORCBIT.selectData(sql, "orc_bit");
             return dt;
         }
         public void saveDoctor(Doctor dtr)
@@ -386,23 +391,10 @@ namespace BackOffice
             }
             return bahtTH;
         }
-        public DataTable selectDtrImport(String dailyDate)
+        public DataTable selectDtrAutoImport(String dailyDate)
         {
-            String sql = "select psp.PspPatNam, psp.PspSurNam, orp.OrpChtNum   " +
-                            " , uidm.UidNam as UidNam, uidd.UidNam as dtrNam, odr.odritmcod, odr.odrastcod, odr.odrseq, odr.odrocmnum  " +
-                            ", insm.inscodnam, orp.orptotamt, itmm.Itmkornam, odr.odritmcod, odr.odrastcod, itmm.itmsrvopd, drf.*  "
-                            + "From drfrcp1 drf "
-                            + "left join OrpInf1 orp on drf.DrfRcpNum = orp.OrpRcpNum  and orp.Orpocmnum = drf.drfocmnum   "
-                            + "left join OdrInf1 odr on odr.OdrOcmNum = orp.OrpOcmNum  "
-                            + "left join UidMst1 uidm on uidm.UidCod = drf.drfuidcod   "
-                            + "left join UidMst1 uidd on uidd.UidCod = drf.drfdtrcod  "
-                            + "left join pspinf1 psp on orp.OrpChtNum = psp.PspChtNum    "
-                            + "left join InsMst1 insm on insm.InsCod = orp.OrpInsCod  "
-                            + "inner join ItmMst1 itmm on itmm.ItmCod = odr.OdrItmCod and itmm.ItmAstCod = odr.OdrAstCod "
-                            + "Where  orp.OrpCtrCod = 'TOTAL' and drfodrdtm >='" + dailyDate + "0000' and drfodrdtm <='" + dailyDate + "2359' and itmm.ItmSrvOpd = '11' " +
-                            "order by drf.drfodrdtm, drf.drfodrseq ";
             DataTable dt = new DataTable();
-            dt = conn.selectData(sql, "orc_bit");
+            dt = dfDB.selectDfToImport(dailyDate);
             return dt;
         }
     }

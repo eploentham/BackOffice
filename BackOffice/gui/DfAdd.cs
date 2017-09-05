@@ -19,6 +19,8 @@ namespace BackOffice
         int coldtrcod = 11, coldtrnam = 12, colUpdDtm = 14, colPatTyp = 13, colUidNam = 16, colUidCod = 15, colInsNam = 17, colDfId = 18, colDrfSeqNum = 19, colActive=20;
         int colItmCod = 21, colItmAstCod = 22, colOdrSeq=23, colOdrOcmNum=24, colDF=25;
 
+        int colDfCnt = 9, colDfRow = 0, colDfItmNam = 1, colDfItmCod = 2, colDfItmAstCod = 3, colDfQty = 4, colDfPrc = 5, colDfAmt = 6, colDfDfId=7, colDfDfDId=8, colDfOdrCod=9;
+
         DateTimePicker dtpDf;
         DataGridView dgvView, dgvDf;
         Label lb1, lb2, lb3;
@@ -29,6 +31,8 @@ namespace BackOffice
 
         BackOfficeControl boC;
         ConnectDB conn;
+
+        Boolean pageLoad = false;
         public DfAdd(BackOfficeControl boc)
         {
             this.FormBorderStyle = FormBorderStyle.None;
@@ -40,6 +44,7 @@ namespace BackOffice
         {
             initCompoment();
             setDgvViewH();
+            setDgvDfH();
         }
         private void initCompoment()
         {
@@ -127,7 +132,81 @@ namespace BackOffice
             dgvDf.Size = new System.Drawing.Size(600, 110);
             Controls.Add(dgvDf);
             dgvDf.Location = new System.Drawing.Point(grd5, boC.formFirstLineY);
+            dgvView.SelectionChanged += DgvView_SelectionChanged;
 
+        }
+
+        private void DgvView_SelectionChanged(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            if (pageLoad)
+            {
+                return;
+            }
+            if ((dgvView.CurrentRow.Index+1) >= dgvView.RowCount)
+            {
+                return;
+            }
+            //throw new NotImplementedException();
+            DataTable dt = new DataTable();
+            String dfid = "";
+            dfid = dgvView[colDfId,dgvView.CurrentRow.Index].Value.ToString();
+            dt = boC.dfDDB.selectByDfId(dfid);
+            dgvDf.RowCount = dt.Rows.Count + 1;
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                dgvDf[colDfRow, i].Value = (i + 1);
+                dgvDf[colDfItmNam, i].Value = dt.Rows[i]["itmkornam"].ToString().Trim();
+                dgvDf[colDfItmCod, i].Value = dt.Rows[i]["itmcod"].ToString().Trim();
+                dgvDf[colDfItmAstCod, i].Value = dt.Rows[i]["itmastcod"].ToString().Trim();
+                dgvDf[colDfQty, i].Value = dt.Rows[i]["odrqty"].ToString().Trim();
+                dgvDf[colDfPrc, i].Value = dt.Rows[i]["odrprc"].ToString().Trim();
+                //dgvDf[colDfAmt, i].Value = dt.Rows[i]["odramt"].ToString().Trim();
+                dgvDf[colDfDfId, i].Value = dt.Rows[i]["df_id"].ToString().Trim();
+                dgvDf[colDfDfDId, i].Value = dt.Rows[i]["df_detail_id"].ToString().Trim();
+                dgvDf[colDfOdrCod, i].Value = dt.Rows[i]["drfodrcod"].ToString().Trim();
+            }
+        }
+
+        private void DgvView_RowEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            
+        }
+        private void setDgvDfH()
+        {
+            //dgvDf.FullRowSelect = true;
+            dgvDf.Rows.Clear();
+            dgvDf.ColumnCount = colDfCnt + 1;
+            //dgvView.RowCount = dt.Rows.Count + 1;
+            dgvDf.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvDf.Columns[colDfRow].Width = 50;
+            dgvDf.Columns[colDfItmNam].Width = 250;
+            dgvDf.Columns[colDfItmCod].Width = 80;
+            dgvDf.Columns[colDfItmAstCod].Width = 120;
+            dgvDf.Columns[colDfQty].Width = 85;
+            dgvDf.Columns[colDfPrc].Width = 120;
+            dgvDf.Columns[colDfAmt].Width = 120;
+            dgvDf.Columns[colDfDfId].Width = 120;
+            dgvDf.Columns[colDfDfDId].Width = 120;
+            dgvDf.Columns[colDfOdrCod].Width = 120;
+
+
+            dgvDf.Columns[colDfRow].HeaderText = "ลำดับ";
+            dgvDf.Columns[colDfItmNam].HeaderText = "รายการตรวจ";
+            dgvDf.Columns[colDfItmCod].HeaderText = "code";
+            dgvDf.Columns[colDfItmAstCod].HeaderText = "ast code";
+            dgvDf.Columns[colDfQty].HeaderText = "qty";
+            dgvDf.Columns[colDfPrc].HeaderText = "price";
+            dgvDf.Columns[colDfAmt].HeaderText = "amount";
+            dgvDf.Columns[colDfDfId].HeaderText = "DfDfId";
+            dgvDf.Columns[colDfDfDId].HeaderText = "DfDfDId";
+            dgvDf.Columns[colDfOdrCod].HeaderText = "odrcod";
+
+            dgvDf.Columns[colDfDfId].Visible = false;
+            dgvDf.Columns[colDfDfDId].Visible = false;
+            
+            Font font = new Font("Microsoft Sans Serif", 10);
+            dgvView.Font = font;
         }
         private void setDgvViewH()
         {
@@ -138,8 +217,8 @@ namespace BackOffice
             dgvView.Columns[colRow].Width = 50;
             dgvView.Columns[colPatientName].Width = 250;
             dgvView.Columns[colHnno].Width = 80;
-            dgvView.Columns[colDate].Width = 120;
-            dgvView.Columns[colTime].Width = 85;
+            dgvView.Columns[colDate].Width = 90;
+            dgvView.Columns[colTime].Width = 65;
             dgvView.Columns[colBilNum].Width = 120;
             dgvView.Columns[colRcpNum].Width = 85;
             dgvView.Columns[colTotal].Width = 85;
@@ -150,7 +229,7 @@ namespace BackOffice
             dgvView.Columns[coldtrcod].Width = 70;
             dgvView.Columns[coldtrnam].Width = 150;
             dgvView.Columns[colPatTyp].Width = 50;
-            dgvView.Columns[colUpdDtm].Width = 75;
+            dgvView.Columns[colUpdDtm].Width = 90;
             dgvView.Columns[colUidCod].Width = 140;
             dgvView.Columns[colUidNam].Width = 50;
             dgvView.Columns[colInsNam].Width = 80;
@@ -182,16 +261,25 @@ namespace BackOffice
             dgvView.Columns[colOdrOcmNum].Visible = false;
             dgvView.Columns[colItmAstCod].Visible = false;
             dgvView.Columns[colItmCod].Visible = false;
+            dgvView.Columns[coldrfodrcod].Visible = false;
+            dgvView.Columns[coldtlcodnam].Visible = false;
+
+            dgvView.Columns[colUpdDtm].Visible = false;
+            dgvView.Columns[colUidCod].Visible = false;
+            dgvView.Columns[colUidNam].Visible = false;
+            dgvView.Columns[colBilNum].Visible = false;
             Font font = new Font("Microsoft Sans Serif", 10);
             dgvView.Font = font;
         }
         private void getDataDf()
         {
+            pageLoad = true;
             DataTable dt = new DataTable();
             String dailyDate = "";
             dailyDate = dtpDf.Value.Year.ToString() + dtpDf.Value.ToString("MMdd");
 
-            dt = boC.selectDtrImport(dailyDate);
+            dt = boC.selectDtrAutoImport(dailyDate);
+
             dgvView.Rows.Clear();
             dgvView.ColumnCount = colCnt + 1;
             dgvView.RowCount = dt.Rows.Count + 1;
@@ -214,24 +302,24 @@ namespace BackOffice
                 dgvView[coldrfodrcod, i].Value = dt.Rows[i]["drfodrcod"].ToString();
                 dgvView[coldtlcodnam, i].Value = dt.Rows[i]["ItmKorNam"].ToString();
                 dgvView[colDf, i].Value = dt.Rows[i]["drfodramt"].ToString();
-                dgvView[coldtrcod, i].Value = dt.Rows[i]["drfdtrcod"].ToString();
-                dgvView[coldtrnam, i].Value = dt.Rows[i]["dtrNam"].ToString();
+                dgvView[coldtrcod, i].Value = dt.Rows[i]["dtr_code"].ToString();
+                dgvView[coldtrnam, i].Value = dt.Rows[i]["dtr_name"].ToString();
                 dgvView[colPatTyp, i].Value = dt.Rows[i]["drfpattyp"].ToString();
                 dgvView[colUpdDtm, i].Value = dt.Rows[i]["drfodrdtm"].ToString().Trim();
-                dgvView[colItmAstCod, i].Value = dt.Rows[i]["odrastcod"].ToString().Trim();
+                //dgvView[colItmAstCod, i].Value = dt.Rows[i]["odrastcod"].ToString().Trim();
                 dgvView[colUidCod, i].Value = dt.Rows[i]["drfuidcod"].ToString().Trim();
-                dgvView[colUidNam, i].Value = dt.Rows[i]["UidNam"].ToString().Trim();
-                dgvView[colInsNam, i].Value = dt.Rows[i]["UidNam"].ToString().Trim();
+                //dgvView[colUidNam, i].Value = dt.Rows[i]["UidNam"].ToString().Trim();
+                dgvView[colInsNam, i].Value = dt.Rows[i][boC.dfDB.dfDtr.InsCodNam].ToString().Trim();
 
                 dgvView[colDate, i].Value = dt.Rows[i]["drfodrdtm"].ToString().Substring(0, 8);
                 dgvView[colTime, i].Value = dt.Rows[i]["drfodrdtm"].ToString().Substring(8);
-                dgvView[colItmCod, i].Value = dt.Rows[i]["odritmcod"].ToString().Trim();
-                dgvView[colOdrSeq, i].Value = dt.Rows[i]["odrseq"].ToString().Trim();
-                dgvView[colOdrOcmNum, i].Value = dt.Rows[i]["odrocmnum"].ToString().Trim();
+                //dgvView[colItmCod, i].Value = dt.Rows[i]["odritmcod"].ToString().Trim();
+                //dgvView[colOdrSeq, i].Value = dt.Rows[i]["odrseq"].ToString().Trim();
+                //dgvView[colOdrOcmNum, i].Value = dt.Rows[i]["odrocmnum"].ToString().Trim();
 
                 dgvView[colActive, i].Value = "1";
-                dgvView[colDfId, i].Value = "-";
-                dgvView[colDrfSeqNum, i].Value = dt.Rows[i]["drfseqnum"].ToString().Trim();
+                dgvView[colDfId, i].Value = dt.Rows[i]["df_id"].ToString();
+                //dgvView[colDrfSeqNum, i].Value = dt.Rows[i]["drfseqnum"].ToString().Trim();
                 if ((i % 2) != 0)
                 {
                     dgvView.Rows[i].DefaultCellStyle.BackColor = Color.DarkKhaki;
@@ -241,7 +329,9 @@ namespace BackOffice
                     //dgvView.Rows[i].DefaultCellStyle.BackColor = Color.DarkKhaki;
                 }
             }
+            pageLoad = false;
         }
+        
         private void btnSearch_Click(object sender, EventArgs e)
         {
             getDataDf();
@@ -280,7 +370,7 @@ namespace BackOffice
                 df.InsCodNam = dgvView[colInsNam, i].Value.ToString();
                 df.DrfSeqNum = dgvView[colDrfSeqNum, i].Value.ToString();
                 df.ItmAstCod = dgvView[colItmAstCod, i].Value.ToString();
-                df.ItmCod = dgvView[colItmCod, i].Value.ToString();
+                df.InsCod = dgvView[colItmCod, i].Value.ToString();
                 df.ItmKorNam = dgvView[coldtlcodnam, i].Value.ToString();
                 df.ItmSrvOpd = "";
                 df.MonthId = "";

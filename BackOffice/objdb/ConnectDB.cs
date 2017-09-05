@@ -172,6 +172,7 @@ namespace BackOffice
             }
             return toReturn;
         }
+
         public String ExecuteNonQuery(String sql, String host)
         {
             String toReturn = "";
@@ -232,6 +233,104 @@ namespace BackOffice
                     connORCBA.Open();
                     _rowsAffected = com.ExecuteNonQuery();
                     toReturn = _rowsAffected.ToString();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("ExecuteNonQuery::Error occured.", ex);
+                    toReturn = ex.Message;
+                }
+                finally
+                {
+                    //_mainConnection.Close();
+                    connORCBA.Close();
+                    com.Dispose();
+                }
+            }
+            else if (host == "orc_bit")
+            {
+                MySqlCommand com = new MySqlCommand();
+                com.CommandText = sql;
+                com.Connection = connORCBIT;
+                try
+                {
+                    connORCBIT.Open();
+                    _rowsAffected = com.ExecuteNonQuery();
+                    toReturn = _rowsAffected.ToString();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("ExecuteNonQuery::Error occured.", ex);
+                    toReturn = ex.Message;
+                }
+                finally
+                {
+                    //_mainConnection.Close();
+                    connORCBIT.Close();
+                    com.Dispose();
+                }
+            }
+            return toReturn;
+        }
+        public String ExecuteNonQueryAutoIncrement(String sql, String host)
+        {
+            String toReturn = "";
+            if (host == "bit")
+            {
+                SqlCommand comMainhis = new SqlCommand();
+                comMainhis.CommandText = sql;
+                comMainhis.CommandType = CommandType.Text;
+                comMainhis.Connection = connBIT;
+                try
+                {
+                    connBIT.Open();
+                    _rowsAffected = comMainhis.ExecuteNonQuery();
+                    toReturn = _rowsAffected.ToString();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("ExecuteNonQuery::Error occured.", ex);
+                    toReturn = ex.Message;
+                }
+                finally
+                {
+                    //_mainConnection.Close();
+                    connBIT.Close();
+                    comMainhis.Dispose();
+                }
+            }
+            else if (host == "orc_ma")
+            {
+                MySqlCommand com = new MySqlCommand();
+                com.CommandText = sql;
+                com.Connection = connORCMA;
+                try
+                {
+                    connORCMA.Open();
+                    _rowsAffected = com.ExecuteNonQuery();
+                    toReturn = _rowsAffected.ToString();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("ExecuteNonQuery::Error occured.", ex);
+                    toReturn = ex.Message;
+                }
+                finally
+                {
+                    //_mainConnection.Close();
+                    connORCMA.Close();
+                    com.Dispose();
+                }
+            }
+            else if (host == "orc_ba")
+            {
+                MySqlCommand com = new MySqlCommand();
+                com.CommandText = sql;
+                com.Connection = connORCBA;
+                try
+                {
+                    connORCBA.Open();
+                    _rowsAffected = com.ExecuteNonQuery();
+                    toReturn = com.LastInsertedId.ToString();
                 }
                 catch (Exception ex)
                 {

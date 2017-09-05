@@ -10,7 +10,7 @@ namespace BackOffice.object1
     {
         public String DfId="", DtrCode = "", DrfSeqNum = "", drfodrcod = "", DrfOcmNum = "", DrfRcpNum, DrfCalNum = "", DrfPatTyp = "", DrfOdrSeq = "", DrfGrpSeq = "", DrfOspTyp = "";
         public String DrfOdrAmt = "", DrfOdrDtm = "", DrfIncCod = "", DrfRcpSeq = "", DrfDivYon = "", DrfBilNum = "", DrfCtrCodv, DrfCtrSeq = "", DrfCurStt = "", DrfUpdDtm, DrfUidCod = "";
-        public String Active = "", MonthId = "", YearId = "", StatusApprove="", StatusDoc="", PspPatNam="", PspSurNam="", OrpChtNum="", InsCodNam="", orptotamt="", ItmKorNam="", ItmCod="", ItmAstCod="", ItmSrvOpd="";
-        public String df = "";
+        public String Active = "", MonthId = "", YearId = "", StatusApprove="", StatusDoc="", PspPatNam="", PspSurNam="", OrpChtNum="", InsCodNam="", orptotamt="", ItmKorNam="", InsCod="", ItmAstCod="", ItmSrvOpd="";
+        public String df = "", DtrName="";
     }
 }

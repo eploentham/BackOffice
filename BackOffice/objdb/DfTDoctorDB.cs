@@ -15,6 +15,7 @@ namespace BackOffice
         public DoctorRate dtrR;
         public DfTDoctor dfDtr;
         public DfTDoctorDetailDB dfDtrDDB;
+        private DoctorRateDB dtrRDB;
         public DfTDoctorDB(ConnectDB orc_bit, ConnectDB connorc_ba)
         {
             connORCBIT = orc_bit;
@@ -26,6 +27,7 @@ namespace BackOffice
             dtrR = new DoctorRate();
             dfDtr = new DfTDoctor();
             dfDtrDDB = new DfTDoctorDetailDB(connORCBIT, connORCBA);
+            dtrRDB = new DoctorRateDB(connORCBA);
             dfDtr.Active = "active";
             dfDtr.DfId = "df_id";
             dfDtr.DrfBilNum = "DrfBilNum";
@@ -85,7 +87,7 @@ namespace BackOffice
         {
             DataTable dt = new DataTable();
             String sql = "";
-            sql = "SELECT dtr_code, dtr_name, sum(df) as df " +
+            sql = "SELECT dtr_code, dtr_name  " +
                 "FROM df_t_doctor " +
                 "where status_doc = '0' and status_approve = '0' and active = '1' " +
                 "Group By dtr_code; ";
@@ -234,6 +236,8 @@ namespace BackOffice
                     dtD = selectDtrDImport(df.DrfRcpNum);
                     for(int j = 0; j < dtD.Rows.Count; j++)
                     {
+                        DoctorRate dtrR = new DoctorRate();
+                        String df1 = dtrRDB.calDf(dtD.Rows[j]["DrfDtrCod"].ToString().Trim(), dtD.Rows[j]["odritmcod"].ToString().Trim(), dtD.Rows[j]["odrastcod"].ToString().Trim(), Decimal.Parse(dtD.Rows[j]["odramt"].ToString().Trim()));
                         DfTDoctorDetail dfD = new DfTDoctorDetail();
                         dfD.Active = "1";
                         dfD.DfId = id;
@@ -272,7 +276,7 @@ namespace BackOffice
                         dfD.StatusApprove = "0";
                         dfD.StatusDoc = "0";
                         dfD.YearId = "";
-                        dfD.df = "0";
+                        dfD.df = df1;
                         dfD.DtrName = dt.Rows[i]["dtrNam"].ToString().Trim();
                         dfDtrDDB.insert(dfD);
                     }
@@ -353,6 +357,21 @@ namespace BackOffice
             {
                 //MessageBox.Show("Error " + ex.ToString(), "update Doctor");
             }
+            return chk;
+        }
+        public String updateDf(String DfId, String df)
+        {
+            String sql = "", chk = "";
+            sql = "Update " + dfDtr.table + " Set " + dfDtr.df + " = "+df+" " +
+                "Where " + dfDtr.pkField + "='" + DfId + "'";
+            try
+            {
+                chk = connORCBA.ExecuteNonQuery(sql, "orc_ba");
+            }
+            catch (Exception ex)
+            {
+            }
+
             return chk;
         }
     }

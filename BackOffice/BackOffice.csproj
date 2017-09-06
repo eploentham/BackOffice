@@ -134,6 +134,7 @@
     <Compile Include="objdb\ConnectDB.cs" />
     <Compile Include="objdb\DfTDoctorDB.cs" />
     <Compile Include="objdb\DfTDoctorDetailDB.cs" />
+    <Compile Include="objdb\DfTDoctorMonthlyDB.cs" />
     <Compile Include="objdb\DoctorDB.cs" />
     <Compile Include="objdb\DoctorRateDB.cs" />
     <Compile Include="objdb\ImportBITDB.cs" />
@@ -141,6 +142,7 @@
     <Compile Include="object1\ComboBoxItem.cs" />
     <Compile Include="object1\DfTDoctor.cs" />
     <Compile Include="object1\DfTDoctorDetail.cs" />
+    <Compile Include="object1\DfTDoctorMonthly.cs" />
     <Compile Include="object1\Doctor.cs" />
     <Compile Include="object1\DoctorRate.cs" />
     <Compile Include="object1\MaterialSkinManager.cs" />

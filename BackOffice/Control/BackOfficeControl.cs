@@ -391,7 +391,7 @@ namespace BackOffice
             }
             return bahtTH;
         }
-        public DataTable selectDtrAutoImport(String dailyDate)
+        public DataTable genDtrAutoImport(String dailyDate)
         {
             DataTable dt = new DataTable();
             dt = dfDB.selectDfToImport(dailyDate);

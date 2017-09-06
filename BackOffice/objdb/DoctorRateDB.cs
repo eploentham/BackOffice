@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BackOffice.objdb
+namespace BackOffice
 {
     public class DoctorRateDB
     {
@@ -39,6 +39,27 @@ namespace BackOffice.objdb
             dtrR.table = "df_b_doctor_rate";
             dtrR.pkField = "rate_id";
         }
+        private void setData(DoctorRate p, DataTable dt)
+        {
+            //p = new Doctor();
+            p.Active = dt.Rows[0][dtrR.Active].ToString();
+            p.Desc = dt.Rows[0][dtrR.Desc].ToString();
+            p.Desc = dt.Rows[0][dtrR.Desc].ToString();
+            p.DtrCode = dt.Rows[0][dtrR.DtrCode].ToString();
+            p.InsCode = dt.Rows[0][dtrR.InsCode].ToString();
+            p.InsCodeName = dt.Rows[0][dtrR.InsCodeName].ToString();
+            p.ItmAstCod = dt.Rows[0][dtrR.ItmAstCod].ToString();
+            p.ItmCod = dt.Rows[0][dtrR.ItmCod].ToString();
+            p.ItmKorNam = dt.Rows[0][dtrR.ItmKorNam].ToString();
+            p.Rate = dt.Rows[0][dtrR.Rate].ToString();
+            p.RateCode = dt.Rows[0][dtrR.RateCode].ToString();
+            p.RateId = dt.Rows[0][dtrR.RateId].ToString();
+            p.RateTyp = dt.Rows[0][dtrR.RateTyp].ToString();
+            p.Remark = dt.Rows[0][dtrR.Remark].ToString();
+            p.TypTime = dt.Rows[0][dtrR.TypTime].ToString();
+            p.row1 = dt.Rows[0][dtrR.row1].ToString();
+            //return p;
+        }
         public DataTable selectByDoctor(String dtrCode)
         {
             Doctor item;
@@ -50,6 +71,33 @@ namespace BackOffice.objdb
             //item = dt.Rows.Count > 0 ? setData(new Doctor(), dt) : new Doctor();
 
             return dt;
+        }
+        public DoctorRate selectRateByDoctorItmCodeFullTime(String dtrCode, String itmcod, String itmastcod)
+        {
+            DoctorRate item = new DoctorRate();
+            String sql = "";
+            DataTable dt = new DataTable();
+            sql = "Select * From " + dtrR.table + " Where active = '1' and " + dtrR.DtrCode + " = '" + dtrCode + "' and "+dtrR.ItmCod+" ='"+itmcod+"' and "+dtrR.ItmAstCod+" = '"+itmastcod+"'";
+
+            dt = conn.selectData(sql, "orc_ba");
+            if (dt.Rows.Count > 0)
+            {
+                setData(item, dt);
+            }
+
+            return item;
+        }
+        public String calDf(String dtrCode, String itmcod, String itmastcod, Decimal df)
+        {
+            //String df = "";
+            Decimal df1 = 0;
+            DoctorRate item = new DoctorRate();
+            item = selectRateByDoctorItmCodeFullTime(dtrCode, itmcod, itmastcod);
+            if (item.RateTyp.Equals("%"))
+            {
+                df1 = df * (Decimal.Parse(item.Rate) / 100);
+            }
+            return df1.ToString();
         }
         private String insert(DoctorRate p)
         {

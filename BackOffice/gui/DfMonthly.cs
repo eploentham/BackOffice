@@ -88,6 +88,14 @@ namespace BackOffice
             btnSave.Location = new System.Drawing.Point(grd51, boC.formFirstLineY);
             btnSave.Click += new EventHandler(btnSave_Click);
 
+            btnGen = new Button();
+            btnGen.Font = boC.fV1;
+            btnGen.Text = "ออกเลขที่เอกสาร";
+            btnGen.Size = new System.Drawing.Size(80, ControlHeight + 5);
+            Controls.Add(btnGen);
+            btnGen.Location = new System.Drawing.Point(grd6, boC.formFirstLineY);
+            //btnGen.Click += new EventHandler(btnGen_Click);
+
             dgvView = new DataGridView();
             dgvView.Font = boC.fV1;
             dgvView.Size = new System.Drawing.Size(boC.tcW - 20, boC.tcH - 122);
@@ -122,10 +130,11 @@ namespace BackOffice
             dgvView.RowCount = dt.Rows.Count + 1;
             for (int i = 0; i < dt.Rows.Count; i++)
             {
+                String df = boC.dfDDB.selectDfDtrCodeMonthly(dt.Rows[i]["dtr_code"].ToString().Trim());
                 dgvView[colRow, i].Value = (i + 1);
                 dgvView[colDtrCode, i].Value = dt.Rows[i]["dtr_code"].ToString().Trim();
                 dgvView[colDtrName, i].Value = dt.Rows[i]["dtr_name"].ToString().Trim();
-                dgvView[colDf, i].Value = dt.Rows[i]["df"].ToString().Trim();
+                dgvView[colDf, i].Value = df;
             }
         }
         private void btnSave_Click(object sender, EventArgs e)

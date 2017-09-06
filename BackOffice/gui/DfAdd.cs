@@ -19,7 +19,7 @@ namespace BackOffice
         int coldtrcod = 11, coldtrnam = 12, colUpdDtm = 14, colPatTyp = 13, colUidNam = 16, colUidCod = 15, colInsNam = 17, colDfId = 18, colDrfSeqNum = 19, colActive=20;
         int colItmCod = 21, colItmAstCod = 22, colOdrSeq=23, colOdrOcmNum=24, colDF=25;
 
-        int colDfCnt = 9, colDfRow = 0, colDfItmNam = 1, colDfItmCod = 2, colDfItmAstCod = 3, colDfQty = 4, colDfPrc = 5, colDfAmt = 6, colDfDfId=7, colDfDfDId=8, colDfOdrCod=9;
+        int colDfCnt = 10, colDfRow = 0, colDfItmNam = 1, colDfItmCod = 2, colDfItmAstCod = 3, colDfQty = 4, colDfPrc = 5, colDfAmt = 6, colDfDf=7, colDfDfId=8, colDfDfDId=9, colDfOdrCod=10;
 
         DateTimePicker dtpDf;
         DataGridView dgvView, dgvDf;
@@ -196,7 +196,8 @@ namespace BackOffice
                 dgvDf[colDfItmAstCod, i].Value = dt.Rows[i]["itmastcod"].ToString().Trim();
                 dgvDf[colDfQty, i].Value = dt.Rows[i]["odrqty"].ToString().Trim();
                 dgvDf[colDfPrc, i].Value = dt.Rows[i]["odrprc"].ToString().Trim();
-                //dgvDf[colDfAmt, i].Value = dt.Rows[i]["odramt"].ToString().Trim();
+                dgvDf[colDfAmt, i].Value = Decimal.Parse(dt.Rows[i]["odrqty"].ToString()) * Decimal.Parse(dt.Rows[i]["odrprc"].ToString());
+                dgvDf[colDfDf, i].Value = dt.Rows[i]["df"].ToString().Trim();
                 dgvDf[colDfDfId, i].Value = dt.Rows[i]["df_id"].ToString().Trim();
                 dgvDf[colDfDfDId, i].Value = dt.Rows[i]["df_detail_id"].ToString().Trim();
                 dgvDf[colDfOdrCod, i].Value = dt.Rows[i]["drfodrcod"].ToString().Trim();
@@ -221,6 +222,7 @@ namespace BackOffice
             dgvDf.Columns[colDfQty].Width = 85;
             dgvDf.Columns[colDfPrc].Width = 120;
             dgvDf.Columns[colDfAmt].Width = 120;
+            dgvDf.Columns[colDfDf].Width = 120;
             dgvDf.Columns[colDfDfId].Width = 120;
             dgvDf.Columns[colDfDfDId].Width = 120;
             dgvDf.Columns[colDfOdrCod].Width = 120;
@@ -233,6 +235,7 @@ namespace BackOffice
             dgvDf.Columns[colDfQty].HeaderText = "qty";
             dgvDf.Columns[colDfPrc].HeaderText = "price";
             dgvDf.Columns[colDfAmt].HeaderText = "amount";
+            dgvDf.Columns[colDfDf].HeaderText = "df";
             dgvDf.Columns[colDfDfId].HeaderText = "DfDfId";
             dgvDf.Columns[colDfDfDId].HeaderText = "DfDfDId";
             dgvDf.Columns[colDfOdrCod].HeaderText = "odrcod";
@@ -316,7 +319,7 @@ namespace BackOffice
 
             dailyDate = dtpDf.Value.Year.ToString() + dtpDf.Value.ToString("MMdd");
 
-            dt = boC.selectDtrAutoImport(dailyDate);
+            dt = boC.genDtrAutoImport(dailyDate);
 
             dgvView.Rows.Clear();
             dgvView.ColumnCount = colCnt + 1;
@@ -433,12 +436,26 @@ namespace BackOffice
                 df.orptotamt = dgvView[colTotal, i].Value.ToString();
                 df.PspPatNam = dgvView[colPatientName, i].Value.ToString();
                 df.PspSurNam = dgvView[colPatientName, i].Value.ToString();
-                df.StatusApprove = "";
-                df.StatusDoc = "";
+                df.StatusApprove = "0";
+                df.StatusDoc = "0";
                 df.YearId = cboY.Value;                
                 df.df = "";
 
             }
+        }
+        private void saveDf1()
+        {
+            //cboM = (ComboBoxItem)cboYear.SelectedItem;
+
+            if (dgvDf[colDfDfDId, dgvDf.CurrentRow.Index].Value == null)
+            {
+                return;
+            }
+            String id = dgvDf[colDfDfDId, dgvDf.CurrentRow.Index].Value.ToString();
+            String df = dgvDf[colDfDf, dgvDf.CurrentRow.Index].Value.ToString();
+
+            boC.dfDDB.updateDf(id, df);
+
         }
     }
 }

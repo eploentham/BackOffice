@@ -27,6 +27,9 @@ namespace BackOffice
         }
         private void initConfig()
         {
+            //string screenWidth = Screen.PrimaryScreen.Bounds.Width.ToString();
+            //string screenHeight = Screen.PrimaryScreen.Bounds.Height.ToString();
+
             boC = new BackOfficeControl();
             //Font ftV1 = new Font(tabControl1.Font.Name,9.75f, FontStyle.Bold);
             //ftV1.f
@@ -158,7 +161,7 @@ namespace BackOffice
         }
         private void showMenu()
         {
-            TreeNode node;
+            TreeNode node, node1;
             tV1.Nodes.Add("BackOffice", "Back Office");
             node = tV1.Nodes["BackOffice"].Nodes.Add("ImportData","นำเข้า ข้อมูล");
             node.Nodes.Add("ImportHos","นำเข้า ข้อมูลโรงพยาบาล");
@@ -168,6 +171,8 @@ namespace BackOffice
             node.Nodes.Add("DfAdd", "ตรวจข้อมูล ค่าแพทย์");
             node.Nodes.Add("DfMonthly", "ทำค่าแพทย์ ประจำเดือน");
             node.Nodes.Add("DfSpec", "ทำค่าแพทย์ เฉพาะกิจ");
+            node1 = node.Nodes.Add("DfReport", "รายงาน ค่าแพทย์ ");
+            node1.Nodes.Add("DfReport", "รายงาน");
 
             node = tV1.Nodes["BackOffice"].Nodes.Add("AR", "ลูกหนี้");
             node.Nodes.Add("AR", "ข้อมูลลูกหนี้");
@@ -196,6 +201,12 @@ namespace BackOffice
             else if (e.Node.Name.Equals("DfAdd"))
             {
                 DfAdd frm = new DfAdd(boC);
+                frm.FormBorderStyle = FormBorderStyle.None;
+                AddNewTab(frm, e.Node.Text);
+            }
+            else if (e.Node.Name.Equals("DfMonthly"))
+            {
+                DfMonthly frm = new DfMonthly(boC);
                 frm.FormBorderStyle = FormBorderStyle.None;
                 AddNewTab(frm, e.Node.Text);
             }

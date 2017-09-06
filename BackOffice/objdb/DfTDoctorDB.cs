@@ -81,6 +81,17 @@ namespace BackOffice
 
             return dt;
         }
+        public DataTable selectDfMonthly()
+        {
+            DataTable dt = new DataTable();
+            String sql = "";
+            sql = "SELECT dtr_code, dtr_name, sum(df) as df " +
+                "FROM df_t_doctor " +
+                "where status_doc = '0' and status_approve = '0' and active = '1' " +
+                "Group By dtr_code; ";
+            dt = connORCBA.selectData(sql, "orc_ba");
+            return dt;
+        }
         public int selectCntByDoctor(String dtrCode, String curDate)
         {
             Doctor item;

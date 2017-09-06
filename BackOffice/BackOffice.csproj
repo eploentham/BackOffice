@@ -71,6 +71,9 @@
     <Compile Include="Control\MaterialProgressBar.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="gui\DfMonthly.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="gui\MaterialForm.cs">
       <SubType>Form</SubType>
     </Compile>

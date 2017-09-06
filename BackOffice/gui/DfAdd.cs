@@ -12,8 +12,8 @@ namespace BackOffice
 {
     class DfAdd : Form
     {
-        int grd0 = 0, grd1 = 100, grd2 = 240, grd3 = 320, grd4 = 570, grd5 = 650, grd6 = 820, grd7 = 900, grd8 = 1070, grd9 = 1200;
-        int line1 = 30, line2 = 57, line3 = 85, line4 = 105, line41 = 120, line5 = 270, ControlHeight = 21, lineGap = 5;
+        int grd0 = 0, grd1 = 100, grd2 = 240, grd3 = 320, grd31=370, grd4 = 570, grd5 = 650, grd6 = 820, grd7 = 900, grd8 = 1070, grd9 = 1200;
+        int line1 = 30, line2 = 57, line3 = 85, line4 = 105, line41 = 120, line42=200, line5 = 270, ControlHeight = 21, lineGap = 5;
 
         int colCnt = 25, colRow = 0, colPatientName = 1, colHnno = 2, colDate = 3, colTime = 4, colBilNum = 5, colRcpNum = 6, colTotal = 7, coldrfodrcod = 8, coldtlcodnam = 9, colDf = 10;
         int coldtrcod = 11, coldtrnam = 12, colUpdDtm = 14, colPatTyp = 13, colUidNam = 16, colUidCod = 15, colInsNam = 17, colDfId = 18, colDrfSeqNum = 19, colActive=20;
@@ -23,14 +23,15 @@ namespace BackOffice
 
         DateTimePicker dtpDf;
         DataGridView dgvView, dgvDf;
-        Label lb1, lb2, lb3;
+        Label lb1, lb2, lb3, lb4, lb5;
         TextBox txtSearch;
         Button btnSearch, btnSave, btnGen;
-        ComboBox cboDoctor;
+        ComboBox cboDoctor, cboMonth, cboYear;
         CheckBox chkOR;
 
         BackOfficeControl boC;
         ConnectDB conn;
+        ComboBoxItem cboM, cboY;
 
         Boolean pageLoad = false;
         public DfAdd(BackOfficeControl boc)
@@ -43,8 +44,12 @@ namespace BackOffice
         private void initConfig()
         {
             initCompoment();
+            cboM = new ComboBoxItem();
+            cboY = new ComboBoxItem();
             setDgvViewH();
             setDgvDfH();
+            boC.setCboMonth(cboMonth);
+            boC.setCboYear(cboYear);
         }
         private void initCompoment()
         {
@@ -70,20 +75,6 @@ namespace BackOffice
             btnSearch.Location = new System.Drawing.Point(grd2, boC.formFirstLineY);
             btnSearch.Click += new EventHandler(btnSearch_Click);
 
-            lb2 = new Label();
-            lb2.Font = boC.fV1;
-            lb2.Text = "ค้นหา";
-            lb2.AutoSize = true;
-            Controls.Add(lb2);
-            lb2.Location = new System.Drawing.Point(grd2, boC.formFirstLineY);
-
-            txtSearch = new TextBox();
-            txtSearch.Font = boC.fV1;
-            txtSearch.Text = "";
-            txtSearch.Size = new System.Drawing.Size(100, ControlHeight);
-            Controls.Add(txtSearch);
-            txtSearch.Location = new System.Drawing.Point(grd3, boC.formFirstLineY);
-
             lb3 = new Label();
             lb3.Font = boC.fV1;
             lb3.Text = "เลือกแพทย์";
@@ -98,12 +89,55 @@ namespace BackOffice
             Controls.Add(cboDoctor);
             cboDoctor.Location = new System.Drawing.Point(grd1, line1);
 
+            lb2 = new Label();
+            lb2.Font = boC.fV1;
+            lb2.Text = "ค้นหา";
+            lb2.AutoSize = true;
+            Controls.Add(lb2);
+            lb2.Location = new System.Drawing.Point(grd3, line1);
+
+            txtSearch = new TextBox();
+            txtSearch.Font = boC.fV1;
+            txtSearch.Text = "";
+            txtSearch.Size = new System.Drawing.Size(100, ControlHeight);
+            Controls.Add(txtSearch);
+            txtSearch.Location = new System.Drawing.Point(grd31, line1);
+
             chkOR = new CheckBox();
             chkOR.Font = boC.fV1;
             chkOR.Text = "เฉพาะรายการผ่าตัด";
             chkOR.Size = new System.Drawing.Size(200, ControlHeight);
+            chkOR.AutoSize = true;
             Controls.Add(chkOR);
-            chkOR.Location = new System.Drawing.Point(grd3, line1);
+            chkOR.Location = new System.Drawing.Point(grd31+txtSearch.Width+10, line1);
+
+            lb4 = new Label();
+            lb4.Font = boC.fV1;
+            lb4.Text = "ประจำเดือน";
+            lb4.AutoSize = true;
+            Controls.Add(lb4);
+            lb4.Location = new System.Drawing.Point(boC.formFirstLineX, line2);
+
+            cboMonth = new ComboBox();
+            cboMonth.Font = boC.fV1;
+            cboMonth.Text = "";
+            cboMonth.Size = new System.Drawing.Size(200, ControlHeight);
+            Controls.Add(cboMonth);
+            cboMonth.Location = new System.Drawing.Point(grd1, line2);
+
+            lb5 = new Label();
+            lb5.Font = boC.fV1;
+            lb5.Text = "ประจำปี";
+            lb5.AutoSize = true;
+            Controls.Add(lb5);
+            lb5.Location = new System.Drawing.Point(grd3, line2);
+
+            cboYear = new ComboBox();
+            cboYear.Font = boC.fV1;
+            cboYear.Text = "";
+            cboYear.Size = new System.Drawing.Size(200, ControlHeight);
+            Controls.Add(cboYear);
+            cboYear.Location = new System.Drawing.Point(grd31, line2);
 
             btnSave = new Button();
             btnSave.Font = boC.fV1;
@@ -123,13 +157,13 @@ namespace BackOffice
 
             dgvView = new DataGridView();
             dgvView.Font = boC.fV1;
-            dgvView.Size = new System.Drawing.Size(boC.tcW - 20, boC.tcH - 160);
+            dgvView.Size = new System.Drawing.Size(boC.tcW - 20, boC.tcH - 233);
             Controls.Add(dgvView);
-            dgvView.Location = new System.Drawing.Point(boC.formFirstLineX, line41);
+            dgvView.Location = new System.Drawing.Point(boC.formFirstLineX, line42);
 
             dgvDf = new DataGridView();
             dgvDf.Font = boC.fV1;
-            dgvDf.Size = new System.Drawing.Size(600, 110);
+            dgvDf.Size = new System.Drawing.Size(boC.tcW - grd4 - 96, 190);
             Controls.Add(dgvDf);
             dgvDf.Location = new System.Drawing.Point(grd5, boC.formFirstLineY);
             dgvView.SelectionChanged += DgvView_SelectionChanged;
@@ -153,6 +187,7 @@ namespace BackOffice
             dfid = dgvView[colDfId,dgvView.CurrentRow.Index].Value.ToString();
             dt = boC.dfDDB.selectByDfId(dfid);
             dgvDf.RowCount = dt.Rows.Count + 1;
+            dgvDf.Columns[colDfItmNam].HeaderText = "รายการตรวจ ของ "+ dgvView[colPatientName, dgvView.CurrentRow.Index].Value.ToString();
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 dgvDf[colDfRow, i].Value = (i + 1);
@@ -276,6 +311,9 @@ namespace BackOffice
             pageLoad = true;
             DataTable dt = new DataTable();
             String dailyDate = "";
+            Boolean chk = false;
+            ComboBoxItem item = new ComboBoxItem();
+
             dailyDate = dtpDf.Value.Year.ToString() + dtpDf.Value.ToString("MMdd");
 
             dt = boC.selectDtrAutoImport(dailyDate);
@@ -302,7 +340,7 @@ namespace BackOffice
                 dgvView[coldrfodrcod, i].Value = dt.Rows[i]["drfodrcod"].ToString();
                 dgvView[coldtlcodnam, i].Value = dt.Rows[i]["ItmKorNam"].ToString();
                 dgvView[colDf, i].Value = dt.Rows[i]["drfodramt"].ToString();
-                dgvView[coldtrcod, i].Value = dt.Rows[i]["dtr_code"].ToString();
+                dgvView[coldtrcod, i].Value = dt.Rows[i]["dtr_code"].ToString().Trim();
                 dgvView[coldtrnam, i].Value = dt.Rows[i]["dtr_name"].ToString();
                 dgvView[colPatTyp, i].Value = dt.Rows[i]["drfpattyp"].ToString();
                 dgvView[colUpdDtm, i].Value = dt.Rows[i]["drfodrdtm"].ToString().Trim();
@@ -328,6 +366,22 @@ namespace BackOffice
                 {
                     //dgvView.Rows[i].DefaultCellStyle.BackColor = Color.DarkKhaki;
                 }
+                chk = false;
+                foreach (ComboBoxItem cc in cboDoctor.Items)
+                {
+                    if (cc.Value.Equals(dt.Rows[i]["dtr_code"].ToString().Trim()))
+                    {
+                        chk = true;
+                        break;
+                    }
+                }
+                if (!chk)
+                {
+                    item = new ComboBoxItem();
+                    item.Value = dt.Rows[i]["dtr_code"].ToString();
+                    item.Text = dt.Rows[i]["dtr_name"].ToString();
+                    cboDoctor.Items.Add(item);
+                }
             }
             pageLoad = false;
         }
@@ -338,6 +392,7 @@ namespace BackOffice
         }
         private void saveDf()
         {
+            cboM = (ComboBoxItem)cboYear.SelectedItem;            
             for (int i = 0; i < dgvView.RowCount; i++)
             {
                 if (dgvView[colHnno, i].Value == null)
@@ -373,14 +428,14 @@ namespace BackOffice
                 df.InsCod = dgvView[colItmCod, i].Value.ToString();
                 df.ItmKorNam = dgvView[coldtlcodnam, i].Value.ToString();
                 df.ItmSrvOpd = "";
-                df.MonthId = "";
+                df.MonthId = cboM.Value;
                 df.OrpChtNum = dgvView[colHnno, i].Value.ToString();
                 df.orptotamt = dgvView[colTotal, i].Value.ToString();
                 df.PspPatNam = dgvView[colPatientName, i].Value.ToString();
                 df.PspSurNam = dgvView[colPatientName, i].Value.ToString();
                 df.StatusApprove = "";
                 df.StatusDoc = "";
-                df.YearId = "";
+                df.YearId = cboY.Value;                
                 df.df = "";
 
             }

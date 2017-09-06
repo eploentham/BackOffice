@@ -397,5 +397,103 @@ namespace BackOffice
             dt = dfDB.selectDfToImport(dailyDate);
             return dt;
         }
+        public String FormatTime(String t)
+        {
+            String aa = "";
+            aa = "0000" + t;
+            if (aa.Length >= 4)
+            {
+                aa = aa.Substring(aa.Length - 4, 2) + ":" + aa.Substring(aa.Length - 2);
+            }
+            return aa;
+        }
+        public String getMonth(String monthId)
+        {
+            if (monthId == "01")
+            {
+                return "มกราคม";
+            }
+            else if (monthId == "02")
+            {
+                return "กุมภาพันธ์";
+            }
+            else if (monthId == "03")
+            {
+                return "มีนาคม";
+            }
+            else if (monthId == "04")
+            {
+                return "เมษายน";
+            }
+            else if (monthId == "05")
+            {
+                return "พฤษภาคม";
+            }
+            else if (monthId == "06")
+            {
+                return "มิถุนายน";
+            }
+            else if (monthId == "07")
+            {
+                return "กรกฎาคม";
+            }
+            else if (monthId == "08")
+            {
+                return "สิงหาคม";
+            }
+            else if (monthId == "09")
+            {
+                return "กันยายน";
+            }
+            else if (monthId == "10")
+            {
+                return "ตุลาคม";
+            }
+            else if (monthId == "11")
+            {
+                return "พฤศจิกายน";
+            }
+            else if (monthId == "12")
+            {
+                return "ธันวาคม";
+            }
+            else
+            {
+                return "";
+            }
+        }
+        public ComboBox setCboMonth(ComboBox c)
+        {
+            c.Items.Clear();
+            var items = new[]{
+                new{Text = "มกราคม", Value="01"},
+                new{Text = "กุมภาพันธ์", Value="02"},
+                new{Text = "มีนาคม", Value="03"},
+                new{Text = "เมษายน", Value="04"},
+                new{Text = "พฤษภาคม", Value="05"},
+                new{Text = "มิถุนายน", Value="06"},
+                new{Text = "กรกฎาคม", Value="07"},
+                new{Text = "สิงหาคม", Value="08"},
+                new{Text = "กันยายน", Value="09"},
+                new{Text = "ตุลาคม", Value="10"},
+                new{Text = "พฤศจิกายน", Value="11"},
+                new{Text = "ธันวาคม", Value="12"}
+            };
+            c.DataSource = items;
+            c.DisplayMember = "Text";
+
+            c.ValueMember = "Value";
+            c.SelectedIndex = c.FindStringExact(getMonth(System.DateTime.Now.Month.ToString("00")));
+            return c;
+        }
+        public ComboBox setCboYear(ComboBox c)
+        {
+            c.Items.Clear();
+            c.Items.Add(System.DateTime.Now.Year + 543);
+            c.Items.Add(System.DateTime.Now.Year + 543 - 1);
+            c.Items.Add(System.DateTime.Now.Year + 543 - 2);
+            c.SelectedIndex = c.FindStringExact(String.Concat(System.DateTime.Now.Year + 543));
+            return c;
+        }
     }
 }

@@ -15,7 +15,7 @@ namespace BackOffice
 
         Label lb1 = new Label();
         DateTimePicker dtpDailyDate;
-        Button btnSearch, btnImport;
+        Button btnSearch, btnImport, btnExcel;
         DataGridView dgvView;
         ProgressBar pb1;
 
@@ -58,6 +58,14 @@ namespace BackOffice
             btnImport.Size = new System.Drawing.Size(100, ControlHeight);
             //btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             btnImport.Click += new EventHandler(btnImport_Click);
+
+            btnExcel = new Button();
+            btnExcel.Text = "Export Excel";
+            Controls.Add(btnExcel);
+            btnExcel.Location = new Point(330 + btnSearch.Width + 10, 5);
+            btnExcel.Size = new System.Drawing.Size(100, ControlHeight);
+            //btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            btnExcel.Click += new EventHandler(btnExcel_Click);
 
             dgvView = new DataGridView();
             dgvView.Width = boC.tcW - boC.tcWMinus;
@@ -131,6 +139,10 @@ namespace BackOffice
         {
             ImportData();
         }
+        private void btnExcel_Click(object sender, EventArgs e)
+        {
+            ExcelData();
+        }
         private void ImportData()
         {
             btnImport.Enabled = false;
@@ -159,6 +171,17 @@ namespace BackOffice
             boC.iBITDB.ImportOdrInf(dailyDate);
 
             btnImport.Enabled = true;
+        }
+        private void ExcelData()
+        {
+            //Microsoft.Office.Interop.Excel.Application excelapp = new Microsoft.Office.Interop.Excel.Application();
+            //excelapp.Visible = false;
+            //Microsoft.Office.Interop.Excel._Workbook workbook = (Microsoft.Office.Interop.Excel._Workbook)(excelapp.Workbooks.Add(Type.Missing));
+            //Microsoft.Office.Interop.Excel._Worksheet worksheet = (Microsoft.Office.Interop.Excel._Worksheet)workbook.ActiveSheet;
+            //for (int i = 1; i < dgvAdd.Rows.Count; i++)
+            //{
+
+            //}
         }
         private void getData()
         {

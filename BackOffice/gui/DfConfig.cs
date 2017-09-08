@@ -12,22 +12,28 @@ namespace BackOffice
 {
     class DfConfig:Form
     {
-        int grd0 = 0, grd1 = 100, grd2 = 240, grd3 = 320, grd4 = 570, grd5 = 650, grd6=820, grd7=900, grd8 = 1070, grd9 = 1200;
+        int gapLine = 5;
+        int grd0 = 0, grd1 = 100, grd2 = 240, grd3 = 320, grd4 = 570, grd5 = 650, grd51=700, grd6=820, grd7=900, grd8 = 1070, grd9 = 1200;
         int line1 = 30, line2 = 57, line3=85, line4=105, line41=120, line5=270, ControlHeight=21, lineGap=5;
 
         int colRow = 0, colItmCod = 1, colItmAstCod = 2, colDsc = 3, colInsNam = 4, colTypTime = 5, colRateID = 6, colRateCode = 7, colInsCod=8, colRateTyp=9, colRate=10;
         int colCnt = 9;
         Label lb1, lb2, lb3, lb4, lb5, lb6, lb7, lb8, lb9, lb10, lb11, lb12, lb13,lb14, lb15, lb16, lb17, lb18, lb19;
-        TextBox txtCode, txtNameT, txtNameE, txtSNameT, txtSNameE, txtDtrCode, txtTaxID, txtAddr, txtPhone, txtPrnNo, txtAppointmentCnt, txtBankNo, txtSalaryMin;
+        //TextBox txtDtrCode, txtTaxID, txtAddr, txtPhone, txtPrnNo, txtAppointmentCnt, txtBankNo, txtSalaryMin;
+        MaterialSingleLineTextField txtCode, txtNameT, txtNameE, txtSNameT, txtSNameE, txtDtrCode, txtTaxID, txtAddr, txtPhone, txtPrnNo, txtAppointmentCnt, txtBankNo, txtSalaryMin;
         ComboBox cboPNameT, cboPNameE, cboDtrTyp, cboDtrCat, cboMedicalField;
         GroupBox gb1, gb2;
         DateTimePicker dtpWorkStart;
-        Button btnSearch, btnGen, btnCopy, btnSave;
+        //Button btnSearch, btnGen, btnCopy, btnSave ;
+        MaterialFlatButton btnSearch, btnGen, btnCopy, btnSave,btnExcel;
         DataGridView dgvView;
 
         ComboBoxItem cboI;
 
         BackOfficeControl boC;
+
+        Color cTxtL, cTxtE, cForm;
+
         //ConnectDB conn;
 
         Doctor dtr;
@@ -35,6 +41,7 @@ namespace BackOffice
         {
             this.FormBorderStyle = FormBorderStyle.None;
             boC = boc;
+            cForm = this.BackColor;
             //conn = new ConnectDB("bit");
             initConfig();
         }
@@ -43,6 +50,9 @@ namespace BackOffice
             initCompoment();
             dtr = new Doctor();
             cboI = new ComboBoxItem();
+            cTxtL = txtCode.BackColor;
+            cTxtE = Color.Yellow;
+
             setDgvH();
             cboPNameT = boC.getCboDtrTitleT(cboPNameT);
             cboPNameE = boC.getCboDtrTitleE(cboPNameE);
@@ -58,27 +68,37 @@ namespace BackOffice
             //groupBox1.Location = new System.Drawing.Point(5, 4);
 
             //SELECT* FROM bithis.depmst1 where depgrpcod in ('GS', 'OBGY', 'PED', 'MED')
+            line1 = 30 + gapLine;
+            line2 = 57 + gapLine;
+            line3 = 85 + gapLine;
+            line4 = 105 + gapLine;
+            line41 = 120 + gapLine;
+            line5 = 270 + gapLine;
 
             lb1 = new Label();
             lb1.Font = boC.fV1;
             lb1.Text = "รหัสแพทย์";
             lb1.AutoSize = true;
             Controls.Add(lb1);
-            lb1.Location = new System.Drawing.Point(boC.formFirstLineX, boC.formFirstLineY);
+            lb1.Location = new System.Drawing.Point(boC.formFirstLineX, boC.formFirstLineY + gapLine);
 
-            txtCode = new TextBox();
+            txtCode = new MaterialSingleLineTextField();
             txtCode.Font = boC.fV1;
             txtCode.Text = "";
             txtCode.Size = new System.Drawing.Size(100, ControlHeight);
             Controls.Add(txtCode);
-            txtCode.Location = new System.Drawing.Point(grd1, boC.formFirstLineY);
+            txtCode.Location = new System.Drawing.Point(grd1, boC.formFirstLineY + gapLine);
+            txtCode.Hint = lb1.Text;
+            txtCode.Enter += TxtCode_Enter;
+            txtCode.Leave += TxtCode_Leave;
+            
 
-            btnSearch = new Button();
+            btnSearch = new MaterialFlatButton();
             btnSearch.Font = boC.fV1;
             btnSearch.Text = "...";
             btnSearch.Size = new System.Drawing.Size(30, ControlHeight );
             Controls.Add(btnSearch);
-            btnSearch.Location = new System.Drawing.Point(grd1+txtCode.Width+5, boC.formFirstLineY);
+            btnSearch.Location = new System.Drawing.Point(grd1+txtCode.Width+5, boC.formFirstLineY + gapLine);
             btnSearch.Click += new EventHandler(btnSearch_Click);
 
             lb2 = new Label();
@@ -94,6 +114,7 @@ namespace BackOffice
             cboPNameT.Size = new System.Drawing.Size(100, ControlHeight);
             Controls.Add(cboPNameT);
             cboPNameT.Location = new System.Drawing.Point(grd1, line1);
+            cboPNameT.BackColor = cForm;
 
             lb4 = new Label();
             lb4.Font = boC.fV1;
@@ -102,12 +123,15 @@ namespace BackOffice
             Controls.Add(lb4);
             lb4.Location = new System.Drawing.Point(grd2, line1);
 
-            txtNameT = new TextBox();
+            txtNameT = new MaterialSingleLineTextField();
             txtNameT.Font = boC.fV1;
             txtNameT.Text = "";
             txtNameT.Size = new System.Drawing.Size(200, ControlHeight);
             Controls.Add(txtNameT);
             txtNameT.Location = new System.Drawing.Point(grd3, line1);
+            txtNameT.Hint = lb4.Text+" ภาษาไทย";
+            txtNameT.Enter += TxtNameT_Enter;
+            txtNameT.Leave += TxtNameT_Leave;
 
             lb5 = new Label();
             lb5.Font = boC.fV1;
@@ -116,12 +140,15 @@ namespace BackOffice
             Controls.Add(lb5);
             lb5.Location = new System.Drawing.Point(grd4, line1);
 
-            txtSNameT = new TextBox();
+            txtSNameT = new MaterialSingleLineTextField();
             txtSNameT.Font = boC.fV1;
             txtSNameT.Text = "";
             txtSNameT.Size = new System.Drawing.Size(200, ControlHeight);
             Controls.Add(txtSNameT);
             txtSNameT.Location = new System.Drawing.Point(grd5, line1);
+            txtSNameT.Hint = lb5.Text + " ภาษาไทย";
+            txtSNameT.Enter += TxtSNameT_Enter;
+            txtSNameT.Leave += TxtSNameT_Leave;
 
             lb3 = new Label();
             lb3.Font = boC.fV1;
@@ -144,12 +171,15 @@ namespace BackOffice
             Controls.Add(lb6);
             lb6.Location = new System.Drawing.Point(grd2, line2);
 
-            txtNameE = new TextBox();
+            txtNameE = new MaterialSingleLineTextField();
             txtNameE.Font = boC.fV1;
             txtNameE.Text = "";
             txtNameE.Size = new System.Drawing.Size(200, ControlHeight);
             Controls.Add(txtNameE);
             txtNameE.Location = new System.Drawing.Point(grd3, line2);
+            txtNameE.Hint = " ชื่อภาษาอังกฤษ";
+            txtNameE.Enter += TxtNameE_Enter;
+            txtNameE.Leave += TxtNameE_Leave;
 
             lb7 = new Label();
             lb7.Font = boC.fV1;
@@ -158,19 +188,22 @@ namespace BackOffice
             Controls.Add(lb7);
             lb7.Location = new System.Drawing.Point(grd4, line2);
 
-            txtSNameE = new TextBox();
+            txtSNameE = new MaterialSingleLineTextField();
             txtSNameE.Font = boC.fV1;
             txtSNameE.Text = "";
             txtSNameE.Size = new System.Drawing.Size(200, ControlHeight);
             Controls.Add(txtSNameE);
             txtSNameE.Location = new System.Drawing.Point(grd5, line2);
+            txtSNameE.Hint = " นามสกุลภาษาอังกฤษ";
+            txtSNameE.Enter += TxtSNameE_Enter;
+            txtSNameE.Leave += TxtSNameE_Leave;
 
             gb1 = new GroupBox();
             gb1.Text = "ข้อมูลทั่วไป";
             gb1.Font = boC.fV1;
-            gb1.Size = new System.Drawing.Size(boC.tcW - 20, 150);
+            gb1.Size = new System.Drawing.Size(boC.tcW - 20, 170);
             Controls.Add(gb1);
-            gb1.Location = new System.Drawing.Point(boC.formFirstLineX, line4);
+            gb1.Location = new System.Drawing.Point(boC.formFirstLineX, line4-20);
 
             lb8 = new Label();
             lb8.Font = boC.fV1;
@@ -193,13 +226,16 @@ namespace BackOffice
             gb1.Controls.Add(lb9);
             lb9.Location = new System.Drawing.Point(grd2, line1);
 
-            txtDtrCode = new TextBox();
+            txtDtrCode = new MaterialSingleLineTextField();
             txtDtrCode.Font = boC.fV1;
             txtDtrCode.Text = "";
             txtDtrCode.Size = new System.Drawing.Size(100, ControlHeight);
             gb1.Controls.Add(txtDtrCode);
             txtDtrCode.Location = new System.Drawing.Point(grd3+100, line1);
             txtDtrCode.KeyUp += new KeyEventHandler(txtDtrCode_KeyUp);
+            txtDtrCode.Hint = lb9.Text;
+            txtDtrCode.Enter += TxtDtrCode_Enter;
+            txtDtrCode.Leave += TxtDtrCode_Leave;
 
             lb10 = new Label();
             lb10.Font = boC.fV1;
@@ -250,12 +286,15 @@ namespace BackOffice
             gb1.Controls.Add(lb13);
             lb13.Location = new System.Drawing.Point(boC.formFirstLineX, line2);
 
-            txtTaxID = new TextBox();
+            txtTaxID = new MaterialSingleLineTextField();
             txtTaxID.Font = boC.fV1;
             txtTaxID.Text = "";
             txtTaxID.Size = new System.Drawing.Size(100, ControlHeight);
             gb1.Controls.Add(txtTaxID);
             txtTaxID.Location = new System.Drawing.Point(grd1, line2);
+            txtTaxID.Hint = " เลขที่ผู้เสียภาษี";
+            txtTaxID.Enter += TxtTaxID_Enter;
+            txtTaxID.Leave += TxtTaxID_Leave;
 
             lb14 = new Label();
             lb14.Font = boC.fV1;
@@ -264,12 +303,15 @@ namespace BackOffice
             gb1.Controls.Add(lb14);
             lb14.Location = new System.Drawing.Point(grd2, line2);
 
-            txtAddr = new TextBox();
+            txtAddr = new MaterialSingleLineTextField();
             txtAddr.Font = boC.fV1;
             txtAddr.Text = "";
             txtAddr.Size = new System.Drawing.Size(400, ControlHeight);
             gb1.Controls.Add(txtAddr);
             txtAddr.Location = new System.Drawing.Point(grd3, line2);
+            txtAddr.Hint = lb14.Text + " บ้านเลขที่ ซอย ถนน ตำบล อำเภอ จังหวัด รหัสไปษรณีย์";
+            txtAddr.Enter += TxtAddr_Enter;
+            txtAddr.Leave += TxtAddr_Leave;
 
             lb15 = new Label();
             lb15.Font = boC.fV1;
@@ -278,12 +320,14 @@ namespace BackOffice
             gb1.Controls.Add(lb15);
             lb15.Location = new System.Drawing.Point(grd6, line2);
 
-            txtPhone = new TextBox();
+            txtPhone = new MaterialSingleLineTextField();
             txtPhone.Font = boC.fV1;
             txtPhone.Text = "";
             txtPhone.Size = new System.Drawing.Size(100, ControlHeight);
             gb1.Controls.Add(txtPhone);
             txtPhone.Location = new System.Drawing.Point(grd7, line2);
+            txtPhone.Enter += TxtPhone_Enter;
+            txtPhone.Leave += TxtPhone_Leave;
 
             lb16 = new Label();
             lb16.Font = boC.fV1;
@@ -292,12 +336,14 @@ namespace BackOffice
             gb1.Controls.Add(lb16);
             lb16.Location = new System.Drawing.Point(grd8, line2);
 
-            txtAppointmentCnt = new TextBox();
+            txtAppointmentCnt = new MaterialSingleLineTextField();
             txtAppointmentCnt.Font = boC.fV1;
             txtAppointmentCnt.Text = "";
             txtAppointmentCnt.Size = new System.Drawing.Size(100, ControlHeight);
             gb1.Controls.Add(txtAppointmentCnt);
             txtAppointmentCnt.Location = new System.Drawing.Point(grd9, line2);
+            txtAppointmentCnt.Enter += TxtAppointmentCnt_Enter;
+            txtAppointmentCnt.Leave += TxtAppointmentCnt_Leave;
 
             lb17 = new Label();
             lb17.Font = boC.fV1;
@@ -306,12 +352,14 @@ namespace BackOffice
             gb1.Controls.Add(lb17);
             lb17.Location = new System.Drawing.Point(boC.formFirstLineX, line3);
 
-            txtPrnNo = new TextBox();
+            txtPrnNo = new MaterialSingleLineTextField();
             txtPrnNo.Font = boC.fV1;
             txtPrnNo.Text = "";
             txtPrnNo.Size = new System.Drawing.Size(100, ControlHeight);
             gb1.Controls.Add(txtPrnNo);
             txtPrnNo.Location = new System.Drawing.Point(grd1, line3);
+            txtPrnNo.Enter += TxtPrnNo_Enter;
+            txtPrnNo.Leave += TxtPrnNo_Leave;
 
             lb18 = new Label();
             lb18.Font = boC.fV1;
@@ -320,12 +368,14 @@ namespace BackOffice
             gb1.Controls.Add(lb18);
             lb18.Location = new System.Drawing.Point(grd2, line3);
 
-            txtBankNo = new TextBox();
+            txtBankNo = new MaterialSingleLineTextField();
             txtBankNo.Font = boC.fV1;
             txtBankNo.Text = "";
             txtBankNo.Size = new System.Drawing.Size(200, ControlHeight);
             gb1.Controls.Add(txtBankNo);
             txtBankNo.Location = new System.Drawing.Point(grd3, line3);
+            txtBankNo.Enter += TxtBankNo_Enter;
+            txtBankNo.Leave += TxtBankNo_Leave;
 
             lb19 = new Label();
             lb19.Font = boC.fV1;
@@ -334,14 +384,16 @@ namespace BackOffice
             gb1.Controls.Add(lb19);
             lb19.Location = new System.Drawing.Point(grd4, line3);
 
-            txtSalaryMin = new TextBox();
+            txtSalaryMin = new MaterialSingleLineTextField();
             txtSalaryMin.Font = boC.fV1;
             txtSalaryMin.Text = "";
             txtSalaryMin.Size = new System.Drawing.Size(100, ControlHeight);
             gb1.Controls.Add(txtSalaryMin);
             txtSalaryMin.Location = new System.Drawing.Point(grd5, line3);
+            txtSalaryMin.Enter += TxtSalaryMin_Enter;
+            txtSalaryMin.Leave += TxtSalaryMin_Leave;
 
-            btnGen = new Button();
+            btnGen = new MaterialFlatButton();
             btnGen.Font = boC.fV1;
             btnGen.Text = "gen เงื่อนไขค่าแพทย์";
             btnGen.Size = new System.Drawing.Size(100, ControlHeight+7);
@@ -349,20 +401,28 @@ namespace BackOffice
             btnGen.Location = new System.Drawing.Point(grd1, line41);
             btnGen.Click += new EventHandler(btnGen_Click);
 
-            btnCopy = new Button();
+            btnCopy = new MaterialFlatButton();
             btnCopy.Font = boC.fV1;
             btnCopy.Text = "copy เงื่อนไขค่าแพทย์";
             btnCopy.Size = new System.Drawing.Size(100, ControlHeight+7);
             gb1.Controls.Add(btnCopy);
             btnCopy.Location = new System.Drawing.Point(grd2, line41);
 
-            btnSave = new Button();
+            btnSave = new MaterialFlatButton();
             btnSave.Font = boC.fV1;
-            btnSave.Text = "Save";
+            btnSave.Text = "Save บันทึกข้อมูล";
             btnSave.Size = new System.Drawing.Size(100, ControlHeight + 7);
             gb1.Controls.Add(btnSave);
             btnSave.Location = new System.Drawing.Point(grd4, line41);
             btnSave.Click += new EventHandler(btnSave_Click);
+
+            btnExcel = new MaterialFlatButton();
+            btnExcel.Text = "Export Excel";
+            gb1.Controls.Add(btnExcel);
+            btnExcel.Location = new Point(grd51, line41);
+            btnExcel.Size = new System.Drawing.Size(100, ControlHeight+7);
+            //btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            btnExcel.Click += new EventHandler(btnExcel_Click);
 
             gb2 = new GroupBox();
             gb2.Text = "เงื่อนไขแพทย์ (DF)";
@@ -377,6 +437,165 @@ namespace BackOffice
             gb2.Controls.Add(dgvView);
             dgvView.Location = new System.Drawing.Point(boC.formFirstLineX, line1);
         }
+
+        private void TxtSalaryMin_Leave(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            txtSalaryMin.BackColor = cTxtL;
+        }
+
+        private void TxtSalaryMin_Enter(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            txtSalaryMin.BackColor = cTxtE;
+        }
+
+        private void TxtBankNo_Leave(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            txtBankNo.BackColor = cTxtL;
+        }
+
+        private void TxtBankNo_Enter(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            txtBankNo.BackColor = cTxtE;
+        }
+
+        private void TxtPrnNo_Leave(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            txtPrnNo.BackColor = cTxtL;
+        }
+
+        private void TxtPrnNo_Enter(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            txtPrnNo.BackColor = cTxtE;
+        }
+
+        private void TxtAppointmentCnt_Leave(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            txtAppointmentCnt.BackColor = cTxtL;
+        }
+
+        private void TxtAppointmentCnt_Enter(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            txtAppointmentCnt.BackColor = cTxtE;
+        }
+
+        private void TxtPhone_Leave(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            txtPhone.BackColor = cTxtL;
+        }
+
+        private void TxtPhone_Enter(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            txtPhone.BackColor = cTxtE;
+
+        }
+
+        private void TxtAddr_Leave(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            txtAddr.BackColor = cTxtL;
+        }
+
+        private void TxtAddr_Enter(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            txtAddr.BackColor = cTxtE;
+        }
+
+        private void TxtTaxID_Leave(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            txtTaxID.BackColor = cTxtL;
+        }
+
+        private void TxtTaxID_Enter(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            txtTaxID.BackColor = cTxtE;
+        }
+
+        private void TxtDtrCode_Leave(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            txtDtrCode.BackColor = cTxtL;
+        }
+
+        private void TxtDtrCode_Enter(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            txtDtrCode.BackColor = cTxtE;
+        }
+
+        private void TxtSNameE_Leave(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            txtSNameE.BackColor = cTxtL;
+        }
+
+        private void TxtNameE_Leave(object sender, EventArgs e)
+        {
+
+            txtNameE.BackColor = cTxtL;
+            //throw new NotImplementedException();
+        }
+
+        private void TxtSNameT_Leave(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            txtSNameT.BackColor = cTxtL;
+        }
+
+        private void TxtNameT_Leave(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            txtNameT.BackColor = cTxtL;
+        }
+
+        private void TxtSNameE_Enter(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            txtSNameE.BackColor = cTxtE;
+        }
+
+        private void TxtNameE_Enter(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            txtNameE.BackColor = cTxtE;
+        }
+
+        private void TxtSNameT_Enter(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            txtSNameT.BackColor = cTxtE;
+        }
+
+        private void TxtNameT_Enter(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            txtNameT.BackColor = cTxtE;
+        }
+
+        private void TxtCode_Leave(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            txtCode.BackColor = cTxtL;
+        }
+
+        private void TxtCode_Enter(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            txtCode.BackColor = cTxtE;
+        }
+
         private void setDgvH()
         {
             dgvView.Rows.Clear();
@@ -614,6 +833,50 @@ namespace BackOffice
                 setControl();
             }
         }
+        private void ExcelData()
+        {
+            String visitDate = "", visitTime = "", err = "", err1 = "", pharName = "";
+
+            Microsoft.Office.Interop.Excel.Application excelapp = new Microsoft.Office.Interop.Excel.Application();
+            excelapp.Visible = false;
+            Microsoft.Office.Interop.Excel._Workbook workbook = (Microsoft.Office.Interop.Excel._Workbook)(excelapp.Workbooks.Add(Type.Missing));
+            Microsoft.Office.Interop.Excel._Worksheet worksheet = (Microsoft.Office.Interop.Excel._Worksheet)workbook.ActiveSheet;
+            worksheet.Cells[1, 1] = txtDtrCode.Text;
+            worksheet.Cells[1, 2] = txtNameT.Text;
+            worksheet.Cells[1, 3] = txtSNameT.Text;
+            for (int i = 0; i < dgvView.Rows.Count; i++)
+            {
+                try
+                {
+                    if (dgvView[colRow, i].Value == null)
+                    {
+                        continue;
+                    }
+                    worksheet.Cells[i + 3 + 1, colRow+1] = dgvView[colRow, i].Value.ToString();
+                    worksheet.Cells[i + 3 + 1, colItmCod + 1] = dgvView[colItmCod, i].Value.ToString();
+                    worksheet.Cells[i + 3 + 1, colItmAstCod + 1] = dgvView[colItmAstCod, i].Value.ToString();
+                    worksheet.Cells[i + 3 + 1, colDsc + 1] = dgvView[colDsc, i].Value.ToString();
+                    worksheet.Cells[i + 3 + 1, colInsNam + 1] = dgvView[colInsNam, i].Value.ToString();
+                    worksheet.Cells[i + 3 + 1, colTypTime + 1] = dgvView[colTypTime, i].Value.ToString();
+                    worksheet.Cells[i + 3 + 1, colRateTyp + 1] = dgvView[colRateTyp, i].Value.ToString();
+                    worksheet.Cells[i + 3 + 1, colRate + 1] = dgvView[colRate, i].Value.ToString();
+                    worksheet.Cells[i + 3 + 1, colTypTime + 1] = dgvView[colTypTime, i].Value.ToString();
+                    worksheet.Cells[i + 3 + 1, colTypTime + 1] = dgvView[colTypTime, i].Value.ToString();
+                    worksheet.Cells[i + 3 + 1, colTypTime + 1] = dgvView[colTypTime, i].Value.ToString();
+                    //err = "001 " + dgvView[colPatientHnno, i].Value.ToString();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error " + ex.Message + "\n row " + i, "error " + err);
+                }
+                //if (dgvView[colPatientHnno, i].Value == null)
+                //{
+                //    continue;
+                //}
+            }
+            excelapp.UserControl = true;
+            excelapp.Visible = true;
+        }
         private void txtDtrCode_KeyUp(object sender, KeyEventArgs e)
         {
             if(e.KeyCode == Keys.F2)
@@ -633,6 +896,10 @@ namespace BackOffice
         private void btnSave_Click(object sender, EventArgs e)
         {
             saveDoctor();
+        }
+        private void btnExcel_Click(object sender, EventArgs e)
+        {
+            ExcelData();
         }
     }
 }

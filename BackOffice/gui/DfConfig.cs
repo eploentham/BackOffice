@@ -34,6 +34,8 @@ namespace BackOffice
 
         Color cTxtL, cTxtE, cForm;
 
+        private readonly MaterialSkinManager materialSkinManager;
+
         //ConnectDB conn;
 
         Doctor dtr;
@@ -52,6 +54,8 @@ namespace BackOffice
             cboI = new ComboBoxItem();
             cTxtL = txtCode.BackColor;
             cTxtE = Color.Yellow;
+
+            
 
             setDgvH();
             cboPNameT = boC.getCboDtrTitleT(cboPNameT);
@@ -163,6 +167,7 @@ namespace BackOffice
             cboPNameE.Size = new System.Drawing.Size(100, ControlHeight);
             Controls.Add(cboPNameE);
             cboPNameE.Location = new System.Drawing.Point(grd1, line2);
+            cboPNameE.BackColor = cForm;
 
             lb6 = new Label();
             lb6.Font = boC.fV1;
@@ -250,6 +255,7 @@ namespace BackOffice
             cboDtrTyp.Size = new System.Drawing.Size(150, ControlHeight);
             gb1.Controls.Add(cboDtrTyp);
             cboDtrTyp.Location = new System.Drawing.Point(grd5, line1);
+            cboDtrTyp.BackColor = cForm;
 
             lb11 = new Label();
             lb11.Font = boC.fV1;
@@ -264,6 +270,7 @@ namespace BackOffice
             cboDtrCat.Size = new System.Drawing.Size(150, ControlHeight);
             gb1.Controls.Add(cboDtrCat);
             cboDtrCat.Location = new System.Drawing.Point(grd7, line1);
+            cboDtrCat.BackColor = cForm;
 
             lb12 = new Label();
             lb12.Font = boC.fV1;
@@ -278,6 +285,7 @@ namespace BackOffice
             cboMedicalField.Size = new System.Drawing.Size(150, ControlHeight);
             gb1.Controls.Add(cboMedicalField);
             cboMedicalField.Location = new System.Drawing.Point(grd9, line1);
+            cboMedicalField.BackColor = cForm;
 
             lb13 = new Label();
             lb13.Font = boC.fV1;

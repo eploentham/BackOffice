@@ -21,6 +21,7 @@ namespace BackOffice
         TextBox txtCode;
         DataGridView dgvView;
         Button btnSearch;
+        MaterialListView lV;
 
         BackOfficeControl boC;
         ConnectDB conn;
@@ -42,6 +43,7 @@ namespace BackOffice
             //this.TransparencyKey = Color.LimeGreen;
             setDgvH();
             setDgv();
+            //setLvH();
         }
         private void initCompoment()
         {
@@ -75,6 +77,14 @@ namespace BackOffice
             Controls.Add(dgvView);
             dgvView.Location = new System.Drawing.Point(boC.formFirstLineX, line1);
             dgvView.KeyDown += new KeyEventHandler(dgvView_KeyDown);
+
+            //lV = new MaterialListView();
+            //lV.GridLines = true;
+            //lV.FullRowSelect = true;
+            //lV.Font = boC.fV1;
+            //lV.Size = new System.Drawing.Size(880, 460);
+            //Controls.Add(lV);
+            //lV.Location = new System.Drawing.Point(boC.formFirstLineX, line1);
         }
         private void txtCode_KeyUp(object sender, KeyEventArgs e)
         {
@@ -148,6 +158,29 @@ namespace BackOffice
             Font font = new Font("Microsoft Sans Serif", 10);
 
             dgvView.Font = font;
+            //dgvView.Visible = false;
+        }
+        private void setLvH()
+        {
+            lV.View = View.Details;
+            lV.FullRowSelect = true;
+            var data = new[]
+            {
+                new []{"Lollipop", "392", "0.2", "0"},
+                new []{"KitKat", "518", "26.0", "7"},
+                new []{"Ice cream sandwich", "237", "9.0", "4.3"},
+                new []{"Jelly Bean", "375", "0.0", "0.0"},
+                new []{"Honeycomb", "408", "3.2", "6.5"}
+            };
+
+            //Add
+            foreach (string[] version in data)
+            {
+                var item = new ListViewItem(version);
+                lV.Items.Add(item);
+            }
+            ListViewItem itm;
+            
         }
         private void setDgv()
         {

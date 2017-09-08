@@ -34,8 +34,8 @@ namespace BackOffice
         }
         private void initConfig()
         {
-            initCompoment();            
-            this.Size = new System.Drawing.Size(900, 500);            
+            initCompoment();
+            this.Size = new System.Drawing.Size(900, 500);
             //this.Location = new System.Drawing.Point(boC.formFirstLineX-20, line1-20);
             //this.Opacity = 0.7;
             this.BackColor = Color.DarkSlateGray;

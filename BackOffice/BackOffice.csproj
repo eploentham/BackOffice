@@ -131,6 +131,9 @@
     <Compile Include="gui\tabMain.Designer.cs">
       <DependentUpon>tabMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="gui\TestUX.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="objdb\ConnectDB.cs" />
     <Compile Include="objdb\DfTDoctorDB.cs" />
     <Compile Include="objdb\DfTDoctorDetailDB.cs" />

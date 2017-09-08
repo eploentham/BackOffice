@@ -176,6 +176,8 @@ namespace BackOffice
 
             node = tV1.Nodes["BackOffice"].Nodes.Add("AR", "ลูกหนี้");
             node.Nodes.Add("AR", "ข้อมูลลูกหนี้");
+
+            tV1.Nodes.Add("TestUX", "Test UX");
         }
 
         private void tV1_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -207,6 +209,12 @@ namespace BackOffice
             else if (e.Node.Name.Equals("DfMonthly"))
             {
                 DfMonthly frm = new DfMonthly(boC);
+                frm.FormBorderStyle = FormBorderStyle.None;
+                AddNewTab(frm, e.Node.Text);
+            }
+            else if (e.Node.Name.Equals("TestUX"))
+            {
+                TestUX frm = new TestUX(boC);
                 frm.FormBorderStyle = FormBorderStyle.None;
                 AddNewTab(frm, e.Node.Text);
             }

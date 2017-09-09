@@ -11,16 +11,19 @@ namespace BackOffice
 {
     class ImportHos:Form
     {
+        int gapLine = 5;
         int line1 = 30, line2 = 57, line3 = 85, line4 = 105, line41 = 120, line5 = 270, ControlHeight = 30, lineGap = 5;
 
         Label lb1 = new Label();
         DateTimePicker dtpDailyDate;
-        Button btnSearch, btnImport, btnExcel;
+        MaterialFlatButton btnSearch, btnImport, btnExcel;
         DataGridView dgvView;
         ProgressBar pb1;
 
         BackOfficeControl boC;
         ConnectDB conn;
+
+        Color cTxtL, cTxtE, cForm;
 
         int colCnt = 20, colRow = 0, colPatientName = 1, colHnno = 2, colDate = 3, colTime = 4, colBilNum = 5, colRcpNum = 6, colTotal = 7, colAskAmt = 8, colDisAmt = 9, colPayAmt = 10;
         int colCasAmt = 11, colCrdAmt = 12, colUpdDtm = 13, colAccDte = 14, colPatTyp = 15, colDtrCod = 16, colUidNam = 19, colDtrNam = 17, colUidCod = 18, colInsNam = 19, colDf = 20;
@@ -28,11 +31,19 @@ namespace BackOffice
         {
             this.FormBorderStyle = FormBorderStyle.None;
             boC = boc;
+            cForm = this.BackColor;
             conn = new ConnectDB("bit");
             initConfig();
         }
         private void initConfig()
         {
+            line1 = 30 + gapLine;
+            line2 = 57 + gapLine;
+            line3 = 85 + gapLine;
+            line4 = 105 + gapLine;
+            line41 = 120 + gapLine;
+            line5 = 270 + gapLine;
+
             lb1 = new Label();
             lb1.Text = "วันที่";
             lb1.AutoSize = true;
@@ -43,7 +54,7 @@ namespace BackOffice
             Controls.Add(dtpDailyDate);
             dtpDailyDate.Location = new Point(100, 5);
 
-            btnSearch = new Button();
+            btnSearch = new MaterialFlatButton();
             btnSearch.Text = "ดึงข้อมูล";
             Controls.Add(btnSearch);
             btnSearch.Location = new Point(330, 5);
@@ -51,26 +62,26 @@ namespace BackOffice
             //btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             btnSearch.Click += new EventHandler(btnSearch_Click);
 
-            btnImport = new Button();
+            btnImport = new MaterialFlatButton();
             btnImport.Text = "นำเข้าข้อมูล";
             Controls.Add(btnImport);
-            btnImport.Location = new Point(330+btnSearch.Width+10, 5);
+            btnImport.Location = new Point(330+btnSearch.Width+80, 5);
             btnImport.Size = new System.Drawing.Size(100, ControlHeight);
             //btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             btnImport.Click += new EventHandler(btnImport_Click);
 
-            btnExcel = new Button();
+            btnExcel = new MaterialFlatButton();
             btnExcel.Text = "Export Excel";
             Controls.Add(btnExcel);
-            btnExcel.Location = new Point(330 + btnSearch.Width + 10, 5);
+            btnExcel.Location = new Point(330 + btnSearch.Width + 80 + btnImport.Width + 80, 5);
             btnExcel.Size = new System.Drawing.Size(100, ControlHeight);
             //btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             btnExcel.Click += new EventHandler(btnExcel_Click);
 
             dgvView = new DataGridView();
             dgvView.Width = boC.tcW - boC.tcWMinus;
-            dgvView.Height = boC.tcH - boC.tcHMinus;
-            dgvView.Location = new Point(5, lb1.Top + 30);
+            dgvView.Height = boC.tcH - boC.tcHMinus-10;
+            dgvView.Location = new Point(5, lb1.Top + 40);
             Controls.Add(dgvView);
             setDgvH();
         }

@@ -16,7 +16,7 @@ namespace BackOffice
 
         Label lb1 = new Label();
         DateTimePicker dtpDailyDate;
-        MaterialFlatButton btnSearch, btnImport, btnExcel;
+        MaterialFlatButton btnSearch, btnImport, btnExcel, btnImportMst;
         DataGridView dgvView;
         ProgressBar pb1;
 
@@ -63,17 +63,25 @@ namespace BackOffice
             btnSearch.Click += new EventHandler(btnSearch_Click);
 
             btnImport = new MaterialFlatButton();
-            btnImport.Text = "นำเข้าข้อมูล";
+            btnImport.Text = "นำเข้าข้อมูลประจำวัน";
             Controls.Add(btnImport);
             btnImport.Location = new Point(330+btnSearch.Width+80, 5);
             btnImport.Size = new System.Drawing.Size(100, ControlHeight);
             //btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             btnImport.Click += new EventHandler(btnImport_Click);
 
+            btnImportMst = new MaterialFlatButton();
+            btnImportMst.Text = "นำเข้าข้อมูล Master";
+            Controls.Add(btnImportMst);
+            btnImportMst.Location = new Point(330 + btnSearch.Width + 80, 5);
+            btnImportMst.Size = new System.Drawing.Size(100, ControlHeight);
+            //btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            btnImportMst.Click += new EventHandler(btnImportMst_Click);
+
             btnExcel = new MaterialFlatButton();
             btnExcel.Text = "Export Excel";
             Controls.Add(btnExcel);
-            btnExcel.Location = new Point(330 + btnSearch.Width + 80 + btnImport.Width + 80, 5);
+            btnExcel.Location = new Point(330 + btnSearch.Width + 80 + btnImport.Width + 80 + btnImportMst.Width + 80, 5);
             btnExcel.Size = new System.Drawing.Size(100, ControlHeight);
             //btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             btnExcel.Click += new EventHandler(btnExcel_Click);
@@ -154,6 +162,10 @@ namespace BackOffice
         {
             ExcelData();
         }
+        private void btnImportMst_Click(object sender, EventArgs e)
+        {
+            ImportDataMst();
+        }
         private void ImportData()
         {
             btnImport.Enabled = false;
@@ -165,13 +177,21 @@ namespace BackOffice
 
             boC.iBITDB.ImportOdlInf(dailyDate);
 
-            boC.iBITDB.ImportInsMst();
-
             boC.iBITDB.ImportDrfRcp(dailyDate);
+
+            boC.iBITDB.ImportPspInf(dailyDate);
+
+            boC.iBITDB.ImportOdrInf(dailyDate);            
+
+            btnImport.Enabled = true;
+        }
+        private void ImportDataMst()
+        {
+            btnImport.Enabled = false;
 
             boC.iBITDB.ImportDtlMst();
 
-            boC.iBITDB.ImportPspInf(dailyDate);
+            boC.iBITDB.ImportInsMst();
 
             boC.iBITDB.ImportUidMst();
 
@@ -179,7 +199,11 @@ namespace BackOffice
 
             boC.iBITDB.ImportItmMst();
 
-            boC.iBITDB.ImportOdrInf(dailyDate);
+            boC.iBITDB.ImportGrpMst();
+
+            boC.iBITDB.ImportGrdMst();
+
+            boC.iBITDB.ImportFeeMst();
 
             btnImport.Enabled = true;
         }

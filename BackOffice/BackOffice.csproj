@@ -32,12 +32,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\MySql.Data.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -134,6 +143,13 @@
     <Compile Include="gui\TestUX.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="objdb\BContractDB.cs" />
+    <Compile Include="objdb\BContractPayerDB.cs" />
+    <Compile Include="objdb\BContractPlansDB.cs" />
+    <Compile Include="objdb\BEmplyeeDB.cs" />
+    <Compile Include="objdb\BItemDB.cs" />
+    <Compile Include="objdb\BServicePointDB.cs" />
+    <Compile Include="objdb\BSiteDB.cs" />
     <Compile Include="objdb\ConnectDB.cs" />
     <Compile Include="objdb\DfTDoctorDB.cs" />
     <Compile Include="objdb\DfTDoctorDetailDB.cs" />
@@ -141,6 +157,17 @@
     <Compile Include="objdb\DoctorDB.cs" />
     <Compile Include="objdb\DoctorRateDB.cs" />
     <Compile Include="objdb\ImportBITDB.cs" />
+    <Compile Include="objdb\TBillingDB.cs" />
+    <Compile Include="objdb\TOrderDB.cs" />
+    <Compile Include="objdb\TPatientDB.cs" />
+    <Compile Include="objdb\TVisitDB.cs" />
+    <Compile Include="object1\BContract.cs" />
+    <Compile Include="object1\BContractPayer.cs" />
+    <Compile Include="object1\BContractPlans.cs" />
+    <Compile Include="object1\BEmployee.cs" />
+    <Compile Include="object1\BItem.cs" />
+    <Compile Include="object1\BServicePoint.cs" />
+    <Compile Include="object1\BSite.cs" />
     <Compile Include="object1\ColorScheme.cs" />
     <Compile Include="object1\ComboBoxItem.cs" />
     <Compile Include="object1\DfTDoctor.cs" />
@@ -150,6 +177,10 @@
     <Compile Include="object1\DoctorRate.cs" />
     <Compile Include="object1\MaterialSkinManager.cs" />
     <Compile Include="object1\Persistent.cs" />
+    <Compile Include="object1\TBilling.cs" />
+    <Compile Include="object1\TOrder.cs" />
+    <Compile Include="object1\TPatient.cs" />
+    <Compile Include="object1\TVisit.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resource1.Designer.cs">
@@ -213,6 +244,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
     <None Include="Resources\Roboto-Regular.ttf" />
   </ItemGroup>
   <ItemGroup>

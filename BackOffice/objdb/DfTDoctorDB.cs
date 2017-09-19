@@ -293,7 +293,7 @@ namespace BackOffice
             String sql = "", chk = "";
             try
             {
-                if (p.OrpChtNum == "")
+                if (p.OrpChtNum.Equals(""))
                 {
                     return "";
                 }

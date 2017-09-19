@@ -158,7 +158,7 @@ namespace BackOffice
             String sql = "", chk = "";
             try
             {
-                if (p.DfId == "")
+                if (p.DfId.Equals(""))
                 {
                     return "";
                 }

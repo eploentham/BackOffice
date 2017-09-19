@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BackOffice
 {
-    public class TOrder
+    public class TOrder:Persistent
     {
         public String t_visit_id { get; set; }
         public String b_item_id { get; set; }
@@ -63,5 +63,6 @@ namespace BackOffice
         public String t_order_id { get; set; }
         public String order_price { get; set; }
         public String order_qty { get; set; }
+        public String Active { get; set; }
     }
 }

@@ -99,7 +99,7 @@ namespace BackOffice.objdb
             String sql = "", chk = "";
             try
             {
-                if (p.Code == "")
+                if (p.Code.Equals(""))
                 {
                     return "";
                 }

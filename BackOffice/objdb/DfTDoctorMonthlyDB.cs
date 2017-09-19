@@ -57,7 +57,7 @@ namespace BackOffice.objdb
             String sql = "", chk = "";
             try
             {
-                if (p.DtrCode == "")
+                if (p.DtrCode.Equals(""))
                 {
                     return "";
                 }

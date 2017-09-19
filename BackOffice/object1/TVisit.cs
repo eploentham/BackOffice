@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace BackOffice
 {
-    public class TVisit
+    public class TVisit : Persistent
     {
         public String visit_hn { get; set; }
-        public String visit_vn { get; set; }
+        public String vn { get; set; }
         public String f_visit_type_id { get; set; }
         public String visit_begin_visit_time { get; set; }
         public String visit_financial_discharge_time { get; set; }
@@ -33,9 +33,9 @@ namespace BackOffice
         public String b_service_point_id { get; set; }
         public String visit_staff_observe { get; set; }
         public String visit_dx { get; set; }
-        public String visit_ipd_discharge_status { get; set; }
-        public String visit_money_discharge_status { get; set; }
-        public String visit_doctor_discharge_status { get; set; }
+        public String status_ipd_discharge { get; set; }
+        public String status_money_discharge { get; set; }
+        public String status_doctor_discharge { get; set; }
         public String t_patient_id { get; set; }
         public String visit_staff_financial_discharge { get; set; }
         public String visit_staff_doctor_discharge { get; set; }
@@ -55,9 +55,9 @@ namespace BackOffice
         public String f_refer_cause_id { get; set; }
         public String f_emergency_status_id { get; set; }
         public String visit_emergency_staff { get; set; }
-        public String visit_have_appointment { get; set; }
-        public String visit_have_admit { get; set; }
-        public String visit_have_refer { get; set; }
+        public String status_appointment { get; set; }
+        public String status_admit { get; set; }
+        public String status_refer { get; set; }
         public String t_patient_appointment_id { get; set; }
         public String visit_cal_date_appointment { get; set; }
         public String visit_cause_appointment { get; set; }
@@ -72,8 +72,8 @@ namespace BackOffice
         public String visit_financial_record_date_time { get; set; }
         public String visit_financial_record_staff { get; set; }
         public String service_location { get; set; }
-        public String visit_have_scan_sn_dx { get; set; }
-        public String visit_status_lab_approve { get; set; }
+        public String status_scan_sn_dx { get; set; }
+        public String status_lab_approve { get; set; }
         public String visit_lab_approve_staff { get; set; }
         public String visit_primary_symtom { get; set; }
         public String b_visit_bed_id { get; set; }
@@ -83,5 +83,8 @@ namespace BackOffice
         public String prepare_discharge_message { get; set; }
         public String visit_diagnosis_notice { get; set; }
         public String t_visit_id { get; set; }
+        public String Active { get; set; }
+        public String VnSeq { get; set; }
+        public String VnSum { get; set; }
     }
 }

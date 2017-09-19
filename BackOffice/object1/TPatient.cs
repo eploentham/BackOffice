@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BackOffice
 {
-    public class TPatient
+    public class TPatient:Persistent
     {
         public String patient_hn { get; set; }
         public String f_patient_prefix_id { get; set; }
@@ -66,7 +66,7 @@ namespace BackOffice
         public String user_create { get; set; }
         public String user_modi { get; set; }
         public String user_cancel { get; set; }
-        public String active { get; set; }
+        public String Active { get; set; }
         public String drugallergy { get; set; }
         public String language_for_print { get; set; }
         public String mobile_phone { get; set; }

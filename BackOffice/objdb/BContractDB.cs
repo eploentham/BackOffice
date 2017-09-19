@@ -18,10 +18,10 @@ namespace BackOffice
         private void initConfig()
         {
             bc = new BContract();
-            bc.contract_number = "";
-            bc.contract_description = "";
-            bc.contract_method = "";
-            bc.b_contract_id = "";
+            bc.contract_number = "contract_number";
+            bc.contract_description = "contract_description";
+            bc.contract_method = "contract_method";
+            bc.b_contract_id = "b_contract_id";
         }
     }
 }

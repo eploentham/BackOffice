@@ -175,9 +175,13 @@
     <Compile Include="object1\BDeduct.cs" />
     <Compile Include="object1\BDeductCondition.cs" />
     <Compile Include="object1\BEmployee.cs" />
+    <Compile Include="object1\BGroupChronic.cs" />
+    <Compile Include="object1\BIcd10.cs" />
+    <Compile Include="object1\BIcd9.cs" />
     <Compile Include="object1\BItem.cs" />
     <Compile Include="object1\BItem16Group.cs" />
     <Compile Include="object1\BItemBillingSubGroup.cs" />
+    <Compile Include="object1\bItemdrugstandard.cs" />
     <Compile Include="object1\BItemGroup.cs" />
     <Compile Include="object1\BItemPrice.cs" />
     <Compile Include="object1\BItemSet.cs" />

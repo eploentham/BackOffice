@@ -18,7 +18,7 @@ namespace BackOffice
         private void initConfig()
         {
             bs = new BSite();
-            bs.b_visit_office_id = "b_visit_office_id";
+            bs.BVisitOfficeId = "b_visit_office_id";
             bs.site_name = "site_name";
             bs.site_full_name = "site_full_name";
             bs.site_house = "site_house";

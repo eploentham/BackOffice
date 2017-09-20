@@ -8,7 +8,7 @@ namespace BackOffice
 {
     public class BSite
     {
-        public String b_visit_office_id { get; set; }
+        public String BVisitOfficeId { get; set; }
         public String site_name { get; set; }
         public String site_full_name { get; set; }
         public String site_house { get; set; }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BackOffice
 {
-    public class BCcontractPlans
+    public class BCcontractPlans:Persistent
     {
         public String contract_plans_number { get; set; }
         public String contract_plans_description { get; set; }

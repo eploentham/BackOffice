@@ -40,20 +40,16 @@ namespace BackOffice
             String sql = "", chk = "";
             try
             {
-                if (p.t_visit_id.Equals(""))
+                if (p.contract_number.Equals(""))
                 {
                     return "";
                 }
                 //p.RowNumber = selectMaxRowNumber(p.YearId);
                 p.Active = "1";
-                sql = "Insert Into " + bc.table + "(" + bc.Active + "," + bc.b_contract_id + "," + bc.contract_description + "," +
+                sql = "Insert Into " + bc.table + "(" + bc.Active + "," + bc.contract_description + "," +
                     bc.contract_method + "," + bc.contract_number + ") " +
-                    "Values('" + p.Active + "','" + p.billing_billing_date_time + "','" + p.billing_billing_number + "','" +
-                    p.billing_cancle_date_time + "','" + p.billing_deduct + "','" + p.billing_financial_date + "','" +
-                    p.billing_paid + "','" + p.billing_patient_share + "','" + p.billing_payback + "','" +
-                    p.billing_payer_share + "','" + p.billing_remain + "','" + p.billing_staff_cancle + "','" +
-                    p.billing_staff_record + "','" + p.billing_total + "','" + p.t_billing_id + "','" +
-                    p.t_patient_id + "','" + p.t_visit_id + "') ";
+                    "Values('" + p.Active + "','" + p.contract_description + "','" +
+                    p.contract_method + "','" + p.contract_number + "') ";
                 chk = conn.ExecuteNonQueryAutoIncrement(sql, "orc_ma");
                 //chk = p.RowNumber;
                 //chk = p.Code;

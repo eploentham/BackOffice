@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BackOffice
 {
-    public class BContractPayer
+    public class BContractPayer:Persistent
     {
         public string contract_payer_number { get; set; }
         public string contract_payer_description { get; set; }

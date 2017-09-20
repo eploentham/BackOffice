@@ -18,11 +18,11 @@ namespace BackOffice
         private void initConfig()
         {
             bi16g = new BItem16Group();
-            bi16g.item_16_group_number = "";
-            bi16g.item_16_group_description = "";
-            bi16g.item_16_group_active = "";
-            bi16g.billgroup_id = "";
-            bi16g.b_item_16_group_id = "";
+            bi16g.item_16_group_number = "item_16_group_number";
+            bi16g.item_16_group_description = "item_16_group_description";
+            bi16g.item_16_group_active = "item_16_group_active";
+            bi16g.billgroup_id = "billgroup_id";
+            bi16g.b_item_16_group_id = "b_item_16_group_id";
         }
     }
 }

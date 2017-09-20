@@ -62,5 +62,38 @@ namespace BackOffice
 
             return p;
         }
+        private String insert(TBilling p)
+        {
+            String sql = "", chk = "";
+            try
+            {
+                if (p.t_visit_id.Equals(""))
+                {
+                    return "";
+                }
+                //p.RowNumber = selectMaxRowNumber(p.YearId);
+                p.Active = "1";
+                sql = "Insert Into " + tb.table + "(" + tb.Active + "," + tb.billing_billing_date_time + "," + tb.billing_billing_number + "," +
+                    tb.billing_cancle_date_time + "," + tb.billing_deduct + "," + tb.billing_financial_date + "," +
+                    tb.billing_paid + "," + tb.billing_patient_share + "," + tb.billing_payback + "," +
+                    tb.billing_payer_share + "," + tb.billing_remain + "," + tb.billing_staff_cancle + "," +
+                    tb.billing_staff_record + "," + tb.billing_total + "," + tb.t_billing_id + "," +
+                    tb.t_patient_id + "," + tb.t_visit_id + ") " +
+                    "Values('" + p.Active + "','" + p.billing_billing_date_time + "','" + p.billing_billing_number + "','" +
+                    p.billing_cancle_date_time + "','" + p.billing_deduct + "','" + p.billing_financial_date + "','" +
+                    p.billing_paid + "','" + p.billing_patient_share + "','" + p.billing_payback + "','" +
+                    p.billing_payer_share + "','" + p.billing_remain + "','" + p.billing_staff_cancle + "','" +
+                    p.billing_staff_record + "','" + p.billing_total + "','" + p.t_billing_id + "','" +
+                    p.t_patient_id + "','" + p.t_visit_id + "') ";
+                chk = conn.ExecuteNonQueryAutoIncrement(sql, "orc_ma");
+                //chk = p.RowNumber;
+                //chk = p.Code;
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show("Error " + ex.ToString(), "insert Doctor");
+            }
+            return chk;
+        }
     }
 }

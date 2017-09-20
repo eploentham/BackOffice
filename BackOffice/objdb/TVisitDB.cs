@@ -247,7 +247,7 @@ namespace BackOffice
                     p.visit_record_staff + "','" + p.visit_staff_doctor_discharge + "','" + p.visit_staff_doctor_discharge_date_time + "','" +
                     p.visit_staff_financial_discharge + "','" + p.visit_staff_lock + "','" + p.visit_staff_observe + "','" +
                     p.vn + "','" + p.VnSeq + "','" + p.VnSum + "') ";
-                chk = conn.ExecuteNonQueryAutoIncrement(sql, "orc_ba");
+                chk = conn.ExecuteNonQueryAutoIncrement(sql, "orc_ma");
                 //chk = p.RowNumber;
                 //chk = p.Code;
             }

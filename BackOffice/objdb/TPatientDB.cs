@@ -194,7 +194,7 @@ namespace BackOffice
             p.user_cancel= dt.Rows[0][tp.user_cancel].ToString();
             p.user_create= dt.Rows[0][tp.user_create].ToString();
 
-            p.user_modi= dt.Rows[0][tp.user_modi].ToString();            
+            p.user_modi= dt.Rows[0][tp.user_modi].ToString();
 
             return p;
         }
@@ -212,6 +212,81 @@ namespace BackOffice
             p = dt.Rows.Count > 0 ? setData(new TPatient(), dt) : new TPatient();
 
             return p;
+        }
+        private String insert(TPatient p)
+        {
+            String sql = "", chk = "";
+            try
+            {
+                if (p.patient_hn.Equals(""))
+                {
+                    return "";
+                }
+                //p.RowNumber = selectMaxRowNumber(p.YearId);
+                p.Active = "1";
+                sql = "Insert Into " + tp.table + "(" + tp.Active + "," + tp.contact_amphur + "," + tp.contact_changwat + "," +
+                    tp.contact_firstname + "," + tp.contact_f_relation_id + "," + tp.contact_house + "," +
+                    tp.contact_id + "," + tp.contact_join_id + "," + tp.contact_join_namet + "," +
+                    tp.contact_lastname + "," + tp.contact_mobile_phone + "," + tp.contact_moo + "," +
+                    tp.contact_namet + "," + tp.contact_phone_number + "," + tp.contact_road + "," +
+                    tp.contact_sex_id + "," + tp.contact_tambon + "," + tp.couple_firstname + "," +
+                    tp.couple_f_relation_id + "," + tp.couple_lastname + "," + tp.couple_pid + "," +
+                    tp.date_cancel + "," + tp.date_create + "," + tp.date_modi + "," +
+                    tp.drugallergy + "," + tp.father_firstname + "," + tp.father_lastname + "," +
+                    tp.father_pid + "," + tp.f_blood_group_id + "," + tp.f_discharge_status_id + "," +
+                    tp.f_education_type_id + "," + tp.f_family_status_id + "," + tp.f_foreigner_id + "," +
+                    tp.f_marriage_id + "," + tp.f_nation_id + "," + tp.f_occupation_id + "," +
+                    tp.f_patient_area_status_id + "," + tp.f_patient_prefix_id + "," + tp.f_patient_race_id + "," +
+                    tp.f_religion_id + "," + tp.f_sex_id + "," + tp.has_home_in_pcu + "," +
+                    tp.is_other_country + "," + tp.language_for_print + "," + tp.mather_pid + "," +
+                    tp.mobile_phone + "," + tp.mother_firstname + "," + tp.mother_lastname + "," +
+                    tp.other_country_address + "," + tp.patient_amphur + "," + tp.patient_birthday + "," +
+                    tp.patient_birthday_true + "," + tp.patient_changwat + "," + tp.patient_community_status + "," +
+                    tp.patient_contact_soi + "," + tp.patient_discharge_date_time + "," + tp.patient_firstname + "," +
+                    tp.patient_hn + "," + tp.patient_house + "," + tp.patient_lastname + "," +
+                    tp.patient_merged + "," + tp.patient_moo + "," + tp.patient_move_in_date_time + "," +
+                    tp.patient_phone_number + "," + tp.patient_pid + "," + tp.patient_private_doctor + "," +
+                    tp.patient_road + "," + tp.patient_soi + "," + tp.patient_status_hiv + "," +
+                    tp.patient_tambon + "," + tp.patient_xn + "," + tp.remark1 + "," +
+                    tp.remark2 + "," + tp.ss_patient_hn + "," + tp.user_modi + "," +
+                    tp.user_cancel + "," + tp.user_create + "," + tp.status_chronic + "," +
+                    tp.status_hiv + "," + tp.t_health_family_id + "," + tp.t_patient_id + ") " +
+                    "Values('" + p.Active + "','" + p.contact_amphur + "','" + p.contact_changwat + "','" +
+                    p.contact_firstname + "','" + p.contact_f_relation_id + "','" + p.contact_house + "','" +
+                    p.contact_id + "','" + p.contact_join_id + "','" + p.contact_join_namet + "','" +
+                    p.contact_lastname + "','" + p.contact_mobile_phone + "','" + p.contact_moo + "','" +
+                    p.contact_namet + "','" + p.contact_phone_number + "','" + p.contact_road + "','" +
+                    p.contact_sex_id + "','" + p.contact_tambon + "','" + p.couple_firstname + "','" +
+                    p.couple_f_relation_id + "','" + p.couple_lastname + "','" + p.couple_pid + "','" +
+                    p.date_cancel + "','" + p.date_create + "','" + p.date_modi + "','" +
+                    p.drugallergy + "','" + p.father_firstname + "','" + p.father_lastname + "','" +
+                    p.f_education_type_id + "','" + p.f_family_status_id + "','" + p.f_foreigner_id + "','" +
+                    p.f_marriage_id + "','" + p.f_nation_id + "','" + p.f_occupation_id + "','" +
+                    p.f_patient_area_status_id + "','" + p.f_patient_prefix_id + "','" + p.f_patient_race_id + "','" +
+                    p.f_religion_id + "','" + p.f_sex_id + "','" + p.has_home_in_pcu + "','" +
+                    p.is_other_country + "','" + p.language_for_print + "','" + p.mather_pid + "','" +
+                    p.mobile_phone + "','" + p.mother_firstname + "','" + p.mother_lastname + "','" +
+                    p.other_country_address + "','" + p.patient_amphur + "','" + p.patient_birthday + "','" +
+                    p.patient_birthday_true + "','" + p.patient_changwat + "','" + p.patient_community_status + "','" +
+                    p.patient_contact_soi + "','" + p.patient_discharge_date_time + "','" + p.patient_firstname + "','" +
+                    p.patient_hn + "','" + p.patient_house + "','" + p.patient_lastname + "','" +
+                    p.patient_merged + "','" + p.patient_moo + "','" + p.patient_move_in_date_time + "','" +
+                    p.patient_phone_number + "','" + p.patient_pid + "','" + p.patient_private_doctor + "','" +
+                    p.patient_road + "','" + p.patient_soi + "','" + p.patient_status_hiv + "','" +
+                    p.patient_tambon + "','" + p.patient_xn + "','" + p.remark1 + "','" +
+                    p.remark2 + "','" + p.ss_patient_hn + "','" + p.user_modi + "','" +
+                    p.user_cancel + "','" + p.user_create + "','" + p.status_chronic + "','" +
+                    p.status_hiv + "','" + p.t_health_family_id + "','" + p.t_patient_id + "') ";
+                chk = conn.ExecuteNonQueryAutoIncrement(sql, "orc_ma");
+                //chk = p.RowNumber;
+                //chk = p.Code;
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show("Error " + ex.ToString(), "insert Doctor");
+            }
+
+            return chk;
         }
     }
 }

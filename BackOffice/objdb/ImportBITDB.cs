@@ -12,7 +12,7 @@ namespace BackOffice
 {
     public class ImportBITDB
     {
-        private ConnectDB conn, connBIT, connBA;
+        private ConnectDB conn, connBIT, connBA, connBITDemo;
         private ControlMaster cm;
         public ImportBITDB()
         {
@@ -561,6 +561,51 @@ namespace BackOffice
                 dat1.Append(dat.ToString(0, dat.Length - 1));
                 sql = sql1 + " Values(" + dat1.ToString() + ")";
                 conn.ExecuteNonQuery(sql, "orc_bit");
+            }
+        }
+        public void DeleteDatabase(String dbName)
+        {
+            String sql = "", col = "", sql1 = "";
+            StringBuilder dat = new StringBuilder();
+            StringBuilder dat1 = new StringBuilder();
+            DataTable dt = new DataTable();
+
+            connBITDemo = new ConnectDB("bithis");
+            sql = "SELECT TABLE_NAME "+
+                "FROM INFORMATION_SCHEMA.TABLES "+
+                "WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_CATALOG = '"+ dbName + "' "+
+                "Order by TABLE_NAME";
+            dt = connBITDemo.selectData(sql, "bit_demo");
+            
+            foreach (DataRow row in dt.Rows)
+            {
+
+                sql = "Delete From "+ row["TABLE_NAME"].ToString().Trim();
+                connBITDemo.ExecuteNonQuery(sql, "bit_demo");
+
+                DataTable dt1 = new DataTable();
+                sql = "Select * From "+ row["TABLE_NAME"].ToString().Trim();
+                dt1 = connBIT.selectData(sql, "bit");
+                foreach (DataColumn column in dt1.Columns)
+                {
+                    col += column.ColumnName + ",";
+                }
+                col = col.Length > 0 ? col.Substring(0, col.Length - 1) : "";
+                sql1 = "Insert Into "+ row["TABLE_NAME"].ToString().Trim() + "(" + col + ") ";
+
+                foreach (DataRow row1 in dt1.Rows)
+                {
+                    dat.Clear();
+                    dat1.Clear();
+                    foreach (DataColumn dc in dt1.Columns)
+                    {
+                        //dat += "'"+row[dc].ToString().Trim()+"',";
+                        dat.Append("'").Append(row[dc].ToString().Trim()).Append("'").Append(",");
+                    }
+                    dat1.Append(dat.ToString(0, dat.Length - 1));
+                    sql = sql1 + " Values(" + dat1.ToString() + ")";
+                    conn.ExecuteNonQuery(sql, "bit_demo");
+                }
             }
         }
     }

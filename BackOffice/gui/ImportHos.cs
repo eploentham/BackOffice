@@ -16,7 +16,7 @@ namespace BackOffice
 
         Label lb1 = new Label();
         DateTimePicker dtpDailyDate;
-        MaterialFlatButton btnSearch, btnImport, btnExcel, btnImportMst;
+        MaterialFlatButton btnSearch, btnImport, btnExcel, btnImportMst, btnConvertDemo;
         DataGridView dgvView;
         ProgressBar pb1;
 
@@ -73,7 +73,7 @@ namespace BackOffice
             btnImportMst = new MaterialFlatButton();
             btnImportMst.Text = "นำเข้าข้อมูล Master";
             Controls.Add(btnImportMst);
-            btnImportMst.Location = new Point(330 + btnSearch.Width + 80, 5);
+            btnImportMst.Location = new Point(330 + btnSearch.Width + btnImport.Width + btnImport.Width , 5);
             btnImportMst.Size = new System.Drawing.Size(100, ControlHeight);
             //btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             btnImportMst.Click += new EventHandler(btnImportMst_Click);
@@ -85,6 +85,14 @@ namespace BackOffice
             btnExcel.Size = new System.Drawing.Size(100, ControlHeight);
             //btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             btnExcel.Click += new EventHandler(btnExcel_Click);
+
+            btnConvertDemo = new MaterialFlatButton();
+            btnConvertDemo.Text = "Convert to Demo";
+            Controls.Add(btnConvertDemo);
+            btnConvertDemo.Location = new Point(330 + btnSearch.Width + 80 + btnImport.Width + 80 + btnImportMst.Width + 80 + btnExcel.Width + 80, 5);
+            btnConvertDemo.Size = new System.Drawing.Size(100, ControlHeight);
+            //btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            btnConvertDemo.Click += new EventHandler(btnConvertDemo_Click);
 
             dgvView = new DataGridView();
             dgvView.Width = boC.tcW - boC.tcWMinus;
@@ -166,6 +174,10 @@ namespace BackOffice
         {
             ImportDataMst();
         }
+        private void btnConvertDemo_Click(object sender, EventArgs e)
+        {
+            ConvertDataDemo();
+        }
         private void ImportData()
         {
             btnImport.Enabled = false;
@@ -206,6 +218,10 @@ namespace BackOffice
             boC.iBITDB.ImportFeeMst();
 
             btnImport.Enabled = true;
+        }
+        private void ConvertDataDemo()
+        {
+            boC.iBITDB.DeleteDatabase("BITHIS");
         }
         private void ExcelData()
         {

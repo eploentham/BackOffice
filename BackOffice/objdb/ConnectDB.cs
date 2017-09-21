@@ -15,11 +15,17 @@ namespace BackOffice
         //public String hostDBBIT = "172.25.1.5";
         //public String userDBBIT = "sa";
         //public String passDBBIT = "Orawanhospital1*";
-        public String databaseDBBIT = "bithis";             //bit
+        public String databaseDBBIT = "bithis_m";             //bit
         public String hostDBBIT = "localhost";
         public String userDBBIT = "sa";
         public String passDBBIT = "Ekartc2c5";
         public String portDBBIT = "3306";
+
+        public String databaseDBBITDemo = "bithis";             //bit
+        public String hostDBBITDemo = "localhost";
+        public String userDBBITDemo = "sa";
+        public String passDBBITDemo = "Ekartc2c5";
+        public String portDBBITDemo = "3306";
 
         public String databaseDBORCMA = "hisorc_ma";        //orc master
         public String hostDBORCMA = "localhost";
@@ -39,7 +45,7 @@ namespace BackOffice
         public String passDBORCBIT = "";
         public String portDBORCBIT = "3306";
         
-        public SqlConnection connBIT, connMainHIS1;
+        public SqlConnection connBIT, connMainHIS1, connBITDemo;
         public MySqlConnection connORCMA, connORCBA, connORCBIT;
         public int _rowsAffected = 0;
         public ConnectDB(String host)
@@ -65,12 +71,17 @@ namespace BackOffice
                 connORCBIT = new MySqlConnection();
                 connORCBIT.ConnectionString = "Server=" + hostDBORCBIT + ";Database=" + databaseDBORCBIT + ";Uid=" + userDBORCBIT + ";Pwd=" + passDBORCBIT + ";port = "+ portDBORCBIT + ";Connection Timeout = 300;default command timeout=0; CharSet=utf8;";
             }
+            else if (host == "bithis")
+            {
+                connBITDemo = new SqlConnection();
+                connBITDemo.ConnectionString = "Server=" + hostDBBITDemo + ";Database=" + databaseDBBITDemo + ";Uid=" + userDBBITDemo + ";Pwd=" + passDBBITDemo + ";";
+            }
         }
         public ConnectDB(String hostDB, String databaseDB, String userDB, String passDB)
         {
-            connBIT = new SqlConnection();
+            connBITDemo = new SqlConnection();
             //connMainHIS.ConnectionString = GetConfig(hostName);
-            connBIT.ConnectionString = "Server=" + hostDB + ";Database=" + databaseDB + ";Uid=" + userDB + ";Pwd=" + passDB + ";";
+            connBITDemo.ConnectionString = "Server=" + hostDB + ";Database=" + databaseDB + ";Uid=" + userDB + ";Pwd=" + passDB + ";";
 
         }
 
@@ -170,6 +181,30 @@ namespace BackOffice
                     adap.Dispose();
                 }
             }
+            else if (host == "bit_demo")
+            {
+                SqlCommand comMainhis = new SqlCommand();
+                comMainhis.CommandText = sql;
+                comMainhis.CommandType = CommandType.Text;
+                comMainhis.Connection = connBITDemo;
+                SqlDataAdapter adapMainhis = new SqlDataAdapter(comMainhis);
+                try
+                {
+                    connBITDemo.Open();
+                    adapMainhis.Fill(toReturn);
+                    //return toReturn;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message, ex);
+                }
+                finally
+                {
+                    connBITDemo.Close();
+                    comMainhis.Dispose();
+                    adapMainhis.Dispose();
+                }
+            }
             return toReturn;
         }
 
@@ -267,6 +302,30 @@ namespace BackOffice
                     //_mainConnection.Close();
                     connORCBIT.Close();
                     com.Dispose();
+                }
+            }
+            else if (host == "bit_demo")
+            {
+                SqlCommand comMainhis = new SqlCommand();
+                comMainhis.CommandText = sql;
+                comMainhis.CommandType = CommandType.Text;
+                comMainhis.Connection = connBITDemo;
+                try
+                {
+                    connBITDemo.Open();
+                    _rowsAffected = comMainhis.ExecuteNonQuery();
+                    toReturn = _rowsAffected.ToString();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("ExecuteNonQuery::Error occured.", ex);
+                    toReturn = ex.Message;
+                }
+                finally
+                {
+                    //_mainConnection.Close();
+                    connBITDemo.Close();
+                    comMainhis.Dispose();
                 }
             }
             return toReturn;

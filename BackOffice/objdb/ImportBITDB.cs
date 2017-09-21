@@ -581,7 +581,7 @@ namespace BackOffice
             {
 
                 sql = "Delete From "+ row["TABLE_NAME"].ToString().Trim();
-                connBITDemo.ExecuteNonQuery(sql, "bit_demo");
+                //connBITDemo.ExecuteNonQuery(sql, "bit_demo");
 
                 DataTable dt1 = new DataTable();
                 sql = "Select * From "+ row["TABLE_NAME"].ToString().Trim();

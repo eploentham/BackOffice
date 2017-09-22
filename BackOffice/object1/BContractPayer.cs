@@ -12,5 +12,6 @@ namespace BackOffice
         public string contract_payer_description { get; set; }
         public string contract_payer_active { get; set; }
         public string b_contract_payer_id { get; set; }
+        public String Active { get; set; }
     }
 }

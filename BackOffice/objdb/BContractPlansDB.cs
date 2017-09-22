@@ -34,6 +34,7 @@ namespace BackOffice
             bcp.contract_plans_hide_company = "contract_plans_hide_company";
             bcp.contract_plans_color = "contract_plans_color";
             bcp.b_contract_plans_id = "b_contract_plans_id";
+            bcp.Active = "active";
         }
         private BCcontractPlans setData(BCcontractPlans p, DataTable dt)
         {
@@ -52,6 +53,7 @@ namespace BackOffice
             p.contract_plans_hide_company = dt.Rows[0][bcp.contract_plans_hide_company].ToString();
             p.contract_plans_color = dt.Rows[0][bcp.contract_plans_color].ToString();
             p.b_contract_plans_id = dt.Rows[0][bcp.b_contract_plans_id].ToString();
+            p.Active = dt.Rows[0][bcp.Active].ToString();
 
             return p;
         }
@@ -69,11 +71,11 @@ namespace BackOffice
                 sql = "Insert Into " + bcp.table + "(" + bcp.contract_plans_active + "," + bcp.contract_plans_number + "," + bcp.contract_plans_description + "," +
                     bcp.contract_plans_active_from + "," + bcp.contract_plans_active_to + "," + bcp.contract_plans_pttype + "," +
                     bcp.b_contract_payer_id + "," + bcp.b_contract_id + "," + bcp.contract_plans_money_limit + "," +
-                    bcp.contract_plans_sort_index + "," + bcp.contract_plans_hide_company + "," + bcp.b_contract_id + ") " +
+                    bcp.contract_plans_sort_index + "," + bcp.contract_plans_hide_company + "," + bcp.b_contract_id + "," + bcp.Active + ") " +
                     "Values('" + p.contract_plans_active + "','" + p.contract_plans_number + "','" + p.contract_plans_color + "','" +
                     p.contract_plans_active_from + "','" + p.contract_plans_active_to + "','" + p.contract_plans_pttype + "','" +
                     p.b_contract_payer_id + "','" + p.b_contract_id + "','" + p.contract_plans_money_limit + "','" +
-                    p.contract_plans_sort_index + "','" + p.contract_plans_hide_company + "','" + p.contract_plans_color + "') ";
+                    p.contract_plans_sort_index + "','" + p.contract_plans_hide_company + "','" + p.contract_plans_color + "','1') ";
                 chk = conn.ExecuteNonQueryAutoIncrement(sql, "orc_ma");
                 //chk = p.RowNumber;
                 //chk = p.Code;

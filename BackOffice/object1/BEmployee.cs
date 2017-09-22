@@ -15,7 +15,7 @@ namespace BackOffice
         public String employee_number { get; set; }
         public String employee_last_login { get; set; }
         public String employee_last_logout { get; set; }
-        public String employee_active { get; set; }
+        public String Active { get; set; }
         public String b_service_point_id { get; set; }
         public String f_employee_level_id { get; set; }
         public String f_employee_rule_id { get; set; }

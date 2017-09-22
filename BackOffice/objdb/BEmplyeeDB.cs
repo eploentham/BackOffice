@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,9 +27,10 @@ namespace BackOffice
             be.employee_number = "employee_number";
             be.employee_last_login = "employee_last_login";
             be.employee_last_logout = "employee_last_logout";
-            be.employee_active = "employee_active";
+            be.Active = "active";
             be.b_service_point_id = "b_service_point_id";
             be.f_employee_level_id = "f_employee_level_id";
+
             be.f_employee_rule_id = "f_employee_rule_id";
             be.f_employee_authentication_id = "f_employee_authentication_id";
             be.b_employee_default_tab = "b_employee_default_tab";
@@ -39,6 +41,7 @@ namespace BackOffice
             be.book_bank_namet = "book_bank_namet";
             be.payment_status_id = "payment_status_id";
             be.payment_status_namet = "payment_status_namet";
+
             be.employee_firstnamee = "employee_firstnamee";
             be.employee_lastnamee = "employee_lastnamee";
             be.position_id = "position_id";
@@ -49,6 +52,7 @@ namespace BackOffice
             be.employee_status_approve_control_item = "employee_status_approve_control_item";
             be.security_pin = "security_pin";
             be.limit_appointment = "limit_appointment";
+
             be.doctor_lying = "doctor_lying";
             be.status_funds = "status_funds";
             be.status_contact = "status_contact";
@@ -57,6 +61,24 @@ namespace BackOffice
             be.f_doctor_branch_id = "f_doctor_branch_id";
             be.b_employee_id = "b_employee_id";
             be.charge = "charge";
+        }
+        private BEmployee setData(BEmployee p, DataTable dt)
+        {
+            p.Active = dt.Rows[0][be.Active].ToString();
+            p.b_contract_id = dt.Rows[0][be.b_contract_id].ToString();
+            p.contract_description = dt.Rows[0][be.contract_description].ToString();
+            p.contract_method = dt.Rows[0][be.contract_method].ToString();
+            p.contract_number = dt.Rows[0][be.contract_number].ToString();
+            p.contract_number = dt.Rows[0][be.contract_number].ToString();
+            p.contract_number = dt.Rows[0][be.contract_number].ToString();
+            p.contract_number = dt.Rows[0][be.contract_number].ToString();
+            p.contract_number = dt.Rows[0][be.contract_number].ToString();
+            p.contract_number = dt.Rows[0][be.contract_number].ToString();
+            p.contract_number = dt.Rows[0][be.contract_number].ToString();
+
+
+
+            return p;
         }
     }
 }

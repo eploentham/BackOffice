@@ -22,5 +22,6 @@ namespace BackOffice
         public String contract_plans_hide_company { get; set; }
         public String contract_plans_color { get; set; }
         public String b_contract_plans_id { get; set; }
+        public String Active { get; set; }
     }
 }

@@ -1,12 +1,14 @@
 ﻿using BackOffice;
 using BackOffice.objdb;
 using BackOffice.object1;
+using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace BackOffice
 {
@@ -563,9 +565,12 @@ namespace BackOffice
                 conn.ExecuteNonQuery(sql, "orc_bit");
             }
         }
-        public void DeleteDatabase(String dbName)
+        public void DeleteDatabase(String dbName, Label lb, Form aa)
         {
-            String sql = "", col = "", sql1 = "";
+            string[] stringarrayNoHave = { "BCK_CSR_20160304_zDyd", "BCK_CSR_20160304_zEdt", "Bck_DOC_20160409", "Bck_DocMst_20160405", "Bck_DrfRcp_20160408", "Bck_Xitdinf_20160401", "Bck_XiteInf_20160401", "Datachk", "Datachk2", "Datachk3", "CkgInf", "CkgMst", "CksInf", "CksMst", "CkvInf", "CutCprTyp", "Datachk1", "DTLRPT", "EmrInf", "StkOnHnd", "sysdiagrams", "StkOnHnd", "Table1", "TpgMst", "TpmMst", "Mig_UidMst_20160408", "Mig_TTDOC", "Mig_DocMst_20160408", "Mig_CSR20160303", "MedicalPerformance_MedicalPerformance_update_S", "MedicalPerformance_MedicalPerformance_update_Q", "MedicalPerformance_MedicalPerformance_update_O", "MedicalPerformance_MedicalPerformance_update_M", "MedicalPerformance_MedicalPerformance_T", "MedicalPerformance_MedicalPerformance_S", "MedicalPerformance_MedicalPerformance_R", "MedicalPerformance_MedicalPerformance_Q", "MedicalPerformance_MedicalPerformance_O", "MedicalPerformance_MedicalPerformance_M", "MafInf", "IngMst", "IitMst", "IddInf", "'XItzInf", "XRisInf", "ZBudInf", "PhyInf", "PbaInf", "RcsMst", "RemEnd", "RemEnd2", "RemEnd3", "RrdInf", "RrpInf", "RrqInf", "RsbTmp", "UidMst_20160409_repeat", "ZStfInf", "ZSdfInf" };
+            string[] stringarraySetOn = { "CkgInf", "CkgMst", "CksInf", "CksMst", "CkvInf", "CmrInf", "DB_CubMst", "DB_OlpLog", "CstInf", "DB_DteMst", "DrfRcp", "FrmMst", "ImgInf", "LogInf", "OjnMst", "ImgMst", "IthInf", "MalInf", "SEQ_OCMNUM", "SEQ_RCPNUM", "SEQ_LBQACP", "SEQ_IRCNUM", "SbsInf", "RsbInf", "RPT_RptMst", "RctMst", "RcmMst", "ZOjnMst", "WskInf", "OpsInf", "OrpMan", "RltInf", "SEQ_FAKEBILL", "WskInf" };
+
+            String sql = "", col = "", sql1 = "", sqlOn="", sqlOff="",err="";
             StringBuilder dat = new StringBuilder();
             StringBuilder dat1 = new StringBuilder();
             DataTable dt = new DataTable();
@@ -575,17 +580,41 @@ namespace BackOffice
                 "FROM INFORMATION_SCHEMA.TABLES "+
                 "WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_CATALOG = '"+ dbName + "' "+
                 "Order by TABLE_NAME";
-            dt = connBITDemo.selectData(sql, "bit_demo");
+            dt = connBITDemo.selectDataForConvert(sql, "bit_demo");
             
             foreach (DataRow row in dt.Rows)
             {
+                bool bol = Array.Exists(stringarrayNoHave, E => E == row["TABLE_NAME"].ToString());
+                if (bol)
+                {
+                    continue;
+                }
+                bool bolSetOn = Array.Exists(stringarraySetOn, E => E == row["TABLE_NAME"].ToString());
+                if (bolSetOn)
+                {
+                    sqlOn = "SET IDENTITY_INSERT dbo."+ row["TABLE_NAME"].ToString() + " ON;";
+                    sqlOff = "SET IDENTITY_INSERT dbo." + row["TABLE_NAME"].ToString() + " OFF;";
+                    connBITDemo.ExecuteNonQueryForConvert(sql, "bit_demo");
+                }
+                if (row["TABLE_NAME"].ToString().Trim().Equals("OdrInf"))
+                {
+                    err = "";
+                }
+                else
+                {
+                    //continue;
+                }
 
-                sql = "Delete From "+ row["TABLE_NAME"].ToString().Trim();
-                //connBITDemo.ExecuteNonQuery(sql, "bit_demo");
+                //sql = "Delete From "+ row["TABLE_NAME"].ToString().Trim();
+                sql = "Truncate Table " + row["TABLE_NAME"].ToString().Trim();
+                connBITDemo.ExecuteNonQueryForConvert(sql, "bit_demo");
 
                 DataTable dt1 = new DataTable();
                 sql = "Select * From "+ row["TABLE_NAME"].ToString().Trim();
-                dt1 = connBIT.selectData(sql, "bit");
+                dt1 = connBIT.selectDataForConvert(sql, "bit");
+                col = "";
+                lb.Text = row["TABLE_NAME"].ToString().Trim()+" " + dt1.Rows.Count;
+                aa.Refresh();
                 foreach (DataColumn column in dt1.Columns)
                 {
                     col += column.ColumnName + ",";
@@ -600,11 +629,56 @@ namespace BackOffice
                     foreach (DataColumn dc in dt1.Columns)
                     {
                         //dat += "'"+row[dc].ToString().Trim()+"',";
-                        dat.Append("'").Append(row[dc].ToString().Trim()).Append("'").Append(",");
+                        if (dc.DataType.ToString().Equals("System.DateTime"))
+                        {
+                            DateTime dt2 = new DateTime();
+                            if (!row1[dc].ToString().Trim().Equals(""))
+                            {
+                                dt2 = DateTime.Parse(row1[dc].ToString().Trim());
+                                String year = dt2.Year.ToString();
+                                String month = dt2.Month.ToString("00");
+                                String date = dt2.Day.ToString("00");
+                                String time = dt2.Hour.ToString("00") + ":" + dt2.Minute.ToString("00") + ":" + dt2.Second.ToString("00");
+                                String date1 = year + "-" + month + "-" + date + " " + time;
+                                dat.Append("'").Append(date1).Append("'").Append(",");
+                            }
+                            else
+                            {
+                                dat.Append("'").Append("1900-01-10 0:00:00").Append("'").Append(",");
+                            }
+                            
+                        }
+                        else if (dc.DataType.ToString().Equals("System.binary"))
+                        {
+
+                        }
+                        else
+                        {
+                            dat.Append("'").Append(row1[dc].ToString().Trim().Replace("'", "''")).Append("'").Append(",");
+                        }
                     }
+
                     dat1.Append(dat.ToString(0, dat.Length - 1));
-                    sql = sql1 + " Values(" + dat1.ToString() + ")";
-                    conn.ExecuteNonQuery(sql, "bit_demo");
+                    sql = sql1 + " Values(" + dat1.ToString() + ");";
+                    try
+                    {
+                        if (bolSetOn)
+                        {
+                            connBITDemo.ExecuteNonQueryForConvert(sqlOn + sql+ sqlOff, "bit_demo");
+                        }
+                        else
+                        {
+                            connBITDemo.ExecuteNonQueryForConvert(sql, "bit_demo");
+                        }
+                    }catch(MySqlException ex)
+                    {
+                        Console.WriteLine(ex.Message.ToString());
+                    }
+                    
+                }
+                if (bolSetOn)
+                {
+                    sql = "SET IDENTITY_INSERT dbo." + row["TABLE_NAME"].ToString() + " OFF;";
                 }
             }
         }

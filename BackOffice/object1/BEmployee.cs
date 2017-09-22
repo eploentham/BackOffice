@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BackOffice
 {
-    public class BEmployee
+    public class BEmployee:Persistent
     {
         public String employee_login { get; set; }
         public String employee_password { get; set; }

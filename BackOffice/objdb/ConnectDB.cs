@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -54,7 +55,7 @@ namespace BackOffice
             {
                 connBIT = new SqlConnection();
                 //connMainHIS.ConnectionString = GetConfig(hostName);
-                connBIT.ConnectionString = "Server=" + hostDBBIT + ";Database=" + databaseDBBIT + ";Uid=" + userDBBIT + ";Pwd=" + passDBBIT + ";";
+                connBIT.ConnectionString = "Server=" + hostDBBIT + ";Database=" + databaseDBBIT + ";Uid=" + userDBBIT + ";Pwd=" + passDBBIT + ";Connection Timeout=300;";
             }
             else if (host == "orc_ma")
             {
@@ -74,7 +75,7 @@ namespace BackOffice
             else if (host == "bithis")
             {
                 connBITDemo = new SqlConnection();
-                connBITDemo.ConnectionString = "Server=" + hostDBBITDemo + ";Database=" + databaseDBBITDemo + ";Uid=" + userDBBITDemo + ";Pwd=" + passDBBITDemo + ";";
+                connBITDemo.ConnectionString = "Server=" + hostDBBITDemo + ";Database=" + databaseDBBITDemo + ";Uid=" + userDBBITDemo + ";Pwd=" + passDBBITDemo + ";Connection Timeout=300;";
             }
         }
         public ConnectDB(String hostDB, String databaseDB, String userDB, String passDB)
@@ -104,6 +105,137 @@ namespace BackOffice
                 catch (Exception ex)
                 {
                     throw new Exception(ex.Message, ex);
+                }
+                finally
+                {
+                    connBIT.Close();
+                    comMainhis.Dispose();
+                    adapMainhis.Dispose();
+                }
+            }
+            else if (host == "orc_ma")
+            {
+                MySqlCommand com = new MySqlCommand();
+                com.CommandText = sql;
+                com.Connection = connORCMA;
+                MySqlDataAdapter adap = new MySqlDataAdapter(com);
+                try
+                {
+                    connORCMA.Open();
+                    adap.Fill(toReturn);
+                    //return toReturn;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message, ex);
+                }
+                finally
+                {
+                    connORCMA.Close();
+                    com.Dispose();
+                    adap.Dispose();
+                }
+            }
+            else if (host == "orc_ba")
+            {
+                MySqlCommand com = new MySqlCommand();
+                com.CommandText = sql;
+                com.Connection = connORCBA;
+                MySqlDataAdapter adap = new MySqlDataAdapter(com);
+                try
+                {
+                    connORCBA.Open();
+                    adap.Fill(toReturn);
+                    //return toReturn;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message, ex);
+                }
+                finally
+                {
+                    connORCBA.Close();
+                    com.Dispose();
+                    adap.Dispose();
+                }
+            }
+            else if (host == "orc_bit")
+            {
+                MySqlCommand com = new MySqlCommand();
+                com.CommandText = sql;
+                com.Connection = connORCBIT;
+                MySqlDataAdapter adap = new MySqlDataAdapter(com);
+                try
+                {
+                    connORCBIT.Open();
+                    adap.Fill(toReturn);
+                    //return toReturn;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message, ex);
+                }
+                finally
+                {
+                    connORCBIT.Close();
+                    com.Dispose();
+                    adap.Dispose();
+                }
+            }
+            else if (host == "bit_demo")
+            {
+                SqlCommand comMainhis = new SqlCommand();
+                comMainhis.CommandText = sql;
+                comMainhis.CommandType = CommandType.Text;
+                comMainhis.Connection = connBITDemo;
+                SqlDataAdapter adapMainhis = new SqlDataAdapter(comMainhis);
+                try
+                {
+                    connBITDemo.Open();
+                    adapMainhis.Fill(toReturn);
+                    //return toReturn;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message, ex);
+                }
+                finally
+                {
+                    connBITDemo.Close();
+                    comMainhis.Dispose();
+                    adapMainhis.Dispose();
+                }
+            }
+            return toReturn;
+        }
+        public DataTable selectDataForConvert(String sql, String host)
+        {
+            DataTable toReturn = new DataTable();
+            if (host == "bit")
+            {
+                SqlCommand comMainhis = new SqlCommand();
+                comMainhis.CommandText = sql;
+                comMainhis.CommandType = CommandType.Text;
+                comMainhis.Connection = connBIT;
+                SqlDataAdapter adapMainhis = new SqlDataAdapter(comMainhis);
+                try
+                {
+                    connBIT.Open();
+                    adapMainhis.Fill(toReturn);
+                    //return toReturn;
+                }
+                catch (Exception ex)
+                {
+                    string path = System.Reflection.Assembly.GetExecutingAssembly().Location;
+                    var directory = System.IO.Path.GetDirectoryName(path);
+
+                    using (StreamWriter writer = new StreamWriter(directory + "\\error.txt", true))
+                    {
+                        writer.WriteLine("Message :" + ex.Message + "<br/>" + Environment.NewLine + "StackTrace :" + ex.StackTrace +
+                           "" + Environment.NewLine + "Date :" + DateTime.Now.ToString());
+                        writer.WriteLine(Environment.NewLine + "-----------------------------------------------------------------------------" + Environment.NewLine);
+                    }
+                    //throw new Exception(ex.Message, ex);
                 }
                 finally
                 {
@@ -319,6 +451,142 @@ namespace BackOffice
                 catch (Exception ex)
                 {
                     throw new Exception("ExecuteNonQuery::Error occured.", ex);
+                    toReturn = ex.Message;
+                }
+                finally
+                {
+                    //_mainConnection.Close();
+                    connBITDemo.Close();
+                    comMainhis.Dispose();
+                }
+            }
+            return toReturn;
+        }
+        public String ExecuteNonQueryForConvert(String sql, String host)
+        {
+            String toReturn = "";
+            if (host == "bit")
+            {
+                SqlCommand comMainhis = new SqlCommand();
+                comMainhis.CommandText = sql;
+                comMainhis.CommandType = CommandType.Text;
+                comMainhis.Connection = connBIT;
+                try
+                {
+                    connBIT.Open();
+                    _rowsAffected = comMainhis.ExecuteNonQuery();
+                    toReturn = _rowsAffected.ToString();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("ExecuteNonQuery::Error occured.", ex);
+                    toReturn = ex.Message;
+                }
+                finally
+                {
+                    //_mainConnection.Close();
+                    connBIT.Close();
+                    comMainhis.Dispose();
+                }
+            }
+            else if (host == "orc_ma")
+            {
+                MySqlCommand com = new MySqlCommand();
+                com.CommandText = sql;
+                com.Connection = connORCMA;
+                try
+                {
+                    connORCMA.Open();
+                    _rowsAffected = com.ExecuteNonQuery();
+                    toReturn = _rowsAffected.ToString();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("ExecuteNonQuery::Error occured.", ex);
+                    toReturn = ex.Message;
+                }
+                finally
+                {
+                    //_mainConnection.Close();
+                    connORCMA.Close();
+                    com.Dispose();
+                }
+            }
+            else if (host == "orc_ba")
+            {
+                MySqlCommand com = new MySqlCommand();
+                com.CommandText = sql;
+                com.Connection = connORCBA;
+                try
+                {
+                    connORCBA.Open();
+                    _rowsAffected = com.ExecuteNonQuery();
+                    toReturn = _rowsAffected.ToString();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("ExecuteNonQuery::Error occured.", ex);
+                    toReturn = ex.Message;
+                }
+                finally
+                {
+                    //_mainConnection.Close();
+                    connORCBA.Close();
+                    com.Dispose();
+                }
+            }
+            else if (host == "orc_bit")
+            {
+                MySqlCommand com = new MySqlCommand();
+                com.CommandText = sql;
+                com.Connection = connORCBIT;
+                try
+                {
+                    connORCBIT.Open();
+                    _rowsAffected = com.ExecuteNonQuery();
+                    toReturn = _rowsAffected.ToString();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception("ExecuteNonQuery::Error occured.", ex);
+                    toReturn = ex.Message;
+                }
+                finally
+                {
+                    //_mainConnection.Close();
+                    connORCBIT.Close();
+                    com.Dispose();
+                }
+            }
+            else if (host == "bit_demo")
+            {
+                SqlCommand comMainhis = new SqlCommand();
+                comMainhis.CommandText = sql;
+                comMainhis.CommandType = CommandType.Text;
+                comMainhis.Connection = connBITDemo;
+                try
+                {
+                    connBITDemo.Open();
+                    _rowsAffected = comMainhis.ExecuteNonQuery();
+                    toReturn = _rowsAffected.ToString();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(sql);
+                    Console.WriteLine(ex.Message.ToString());
+
+                    string path = System.Reflection.Assembly.GetExecutingAssembly().Location;
+                    var directory = System.IO.Path.GetDirectoryName(path);
+
+                    using (StreamWriter writer = new StreamWriter(directory + "\\error.txt", true))
+                    {
+                        writer.WriteLine(sql+Environment.NewLine);
+                        writer.WriteLine("Message :" + ex.Message + "<br/>" + Environment.NewLine + "StackTrace :" + ex.StackTrace +
+                           "" + Environment.NewLine + "Date :" + DateTime.Now.ToString());
+                        writer.WriteLine(Environment.NewLine + "-----------------------------------------------------------------------------" + Environment.NewLine);
+                    }
+
+                    //throw new Exception("ExecuteNonQuery::Error occured.", ex);
                     toReturn = ex.Message;
                 }
                 finally

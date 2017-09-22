@@ -15,6 +15,7 @@ namespace BackOffice
         int line1 = 30, line2 = 57, line3 = 85, line4 = 105, line41 = 120, line5 = 270, ControlHeight = 30, lineGap = 5;
 
         Label lb1 = new Label();
+        Label lb2 = new Label();
         DateTimePicker dtpDailyDate;
         MaterialFlatButton btnSearch, btnImport, btnExcel, btnImportMst, btnConvertDemo;
         DataGridView dgvView;
@@ -93,6 +94,12 @@ namespace BackOffice
             btnConvertDemo.Size = new System.Drawing.Size(100, ControlHeight);
             //btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             btnConvertDemo.Click += new EventHandler(btnConvertDemo_Click);
+
+            lb2 = new Label();
+            lb2.Text = "";
+            lb2.AutoSize = true;
+            Controls.Add(lb2);
+            lb2.Location = new Point(330 + btnSearch.Width + 80 + btnImport.Width + 80 + btnImportMst.Width + 80 + btnExcel.Width + 80+ btnConvertDemo.Width+5, 5);
 
             dgvView = new DataGridView();
             dgvView.Width = boC.tcW - boC.tcWMinus;
@@ -221,7 +228,7 @@ namespace BackOffice
         }
         private void ConvertDataDemo()
         {
-            boC.iBITDB.DeleteDatabase("BITHIS");
+            boC.iBITDB.DeleteDatabase("BITHIS_m", lb2, this);
         }
         private void ExcelData()
         {

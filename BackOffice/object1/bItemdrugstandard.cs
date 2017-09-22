@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BackOffice.object1
 {
-    class BItemDrugStandard
+    class BItemDrugStandard:Persistent
     {
         public String item_drug_Standard_number { get; set; }
         public String item_drug_Standard_description { get; set; }

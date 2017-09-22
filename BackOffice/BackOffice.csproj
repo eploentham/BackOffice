@@ -152,6 +152,9 @@
     <Compile Include="objdb\BDeductConditionDB.cs" />
     <Compile Include="objdb\BDeductDB.cs" />
     <Compile Include="objdb\BEmplyeeDB.cs" />
+    <Compile Include="objdb\BGroupChronicDB.cs" />
+    <Compile Include="objdb\BIcd10DB.cs" />
+    <Compile Include="objdb\BIcd9DB.cs" />
     <Compile Include="objdb\BItem16GroupDB.cs" />
     <Compile Include="objdb\BItemBillingSubGroupDB.cs" />
     <Compile Include="objdb\BItemDB.cs" />

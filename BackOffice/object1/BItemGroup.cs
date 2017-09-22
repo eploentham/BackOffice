@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BackOffice
 {
-    public class BItemGroup
+    public class BItemGroup:Persistent
     {
         public String item_group_number { get; set; }
         public String item_group_description { get; set; }
@@ -15,5 +15,6 @@ namespace BackOffice
         public String item_group { get; set; }
         public String b_item_group_id { get; set; }
         public String item_price { get; set; }
+        public String Active { get; set; }
     }
 }

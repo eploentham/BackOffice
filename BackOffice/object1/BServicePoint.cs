@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BackOffice
 {
-    public class BServicePoint
+    public class BServicePoint:Persistent
     {
         public String service_point_number { get; set; }
         public String service_point_description { get; set; }

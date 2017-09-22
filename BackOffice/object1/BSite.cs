@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BackOffice
 {
-    public class BSite
+    public class BSite:Persistent
     {
         public String BVisitOfficeId { get; set; }
         public String site_name { get; set; }

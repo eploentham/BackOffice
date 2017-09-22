@@ -1,8 +1,10 @@
--- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
+CREATE DATABASE  IF NOT EXISTS `hisorc_ma` /*!40100 DEFAULT CHARACTER SET latin1 */;
+USE `hisorc_ma`;
+-- MySQL dump 10.13  Distrib 5.6.17, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: hisorc_ma
+-- Host: localhost    Database: hisorc_ma
 -- ------------------------------------------------------
--- Server version	5.5.5-10.1.25-MariaDB
+-- Server version	5.5.5-10.1.13-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -227,7 +229,7 @@ CREATE TABLE `b_group_chronic` (
   `group_chronic_number` varchar(255) COLLATE utf8_bin NOT NULL,
   `group_chronic_description_th` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `group_chronic_description_en` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `group_chronic_active` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `active` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`b_group_chronic_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -483,6 +485,7 @@ CREATE TABLE `b_item_group` (
   `item_price` decimal(17,2) DEFAULT '0.00',
   `item_group_status` varchar(255) COLLATE utf8_bin DEFAULT '0',
   `item_group` varchar(255) COLLATE utf8_bin DEFAULT '',
+  `active` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`b_item_group_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -558,8 +561,13 @@ CREATE TABLE `b_item_price` (
   `item_price_number` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `b_item_id` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `item_price_active_date` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `item_price` decimal(17,2) DEFAULT NULL,
+  `item_price` decimal(17,2) DEFAULT '0.00',
   `item_price_cost` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `active` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `item_price_opd` decimal(17,2) DEFAULT '0.00',
+  `item_price_ipd` decimal(17,2) DEFAULT '0.00',
+  `date_start` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `date_end` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`b_item_price_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -586,6 +594,7 @@ CREATE TABLE `b_item_set` (
   `b_item_id` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `item_price` decimal(17,2) DEFAULT '0.00',
   `item_set_status` varchar(255) COLLATE utf8_bin DEFAULT '0',
+  `active` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`b_item_set_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -2914,4 +2923,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-09-22  7:44:08
+-- Dump completed on 2017-09-22  9:40:16

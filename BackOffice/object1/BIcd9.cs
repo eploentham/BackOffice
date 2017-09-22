@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BackOffice.object1
+namespace BackOffice
 {
-    class BIcd9
+    class BIcd9:Persistent
     {
         public String icd9_number { get; set; }
         public String icd9_description { get; set; }

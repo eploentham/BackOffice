@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BackOffice
 {
-    public class BGroupChronic
+    public class BGroupChronic:Persistent
     {
         public String group_chronic_number { get; set; }
         public String group_chronic_description_th { get; set; }

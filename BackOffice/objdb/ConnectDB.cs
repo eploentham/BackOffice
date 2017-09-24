@@ -16,13 +16,13 @@ namespace BackOffice
         //public String hostDBBIT = "172.25.1.5";
         //public String userDBBIT = "sa";
         //public String passDBBIT = "Orawanhospital1*";
-        public String databaseDBBIT = "bitorw";             //bit
+        public String databaseDBBIT = "bit_orawan";             //bit
         public String hostDBBIT = "localhost";
         public String userDBBIT = "sa";
         public String passDBBIT = "Ekartc2c5";
         public String portDBBIT = "3306";
 
-        public String databaseDBBITDemo = "bithis_m";             //bit
+        public String databaseDBBITDemo = "bithis_demo";             //bit demo
         public String hostDBBITDemo = "localhost";
         public String userDBBITDemo = "sa";
         public String passDBBITDemo = "Ekartc2c5";

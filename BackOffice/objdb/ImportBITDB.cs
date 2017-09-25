@@ -5,6 +5,7 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -571,11 +572,24 @@ namespace BackOffice
             string[] stringarraySetOn = { "CkgInf", "CkgMst", "CksInf", "CksMst", "CkvInf", "CmrInf", "DB_CubMst", "DB_OlpLog", "CstInf", "DB_DteMst", "DrfRcp", "FrmMst", "ImgInf", "LogInf", "OjnMst", "ImgMst", "IthInf", "MalInf", "SEQ_OCMNUM", "SEQ_RCPNUM", "SEQ_LBQACP", "SEQ_IRCNUM", "SbsInf", "RsbInf", "RPT_RptMst", "RctMst", "RcmMst", "ZOjnMst", "WskInf", "OpsInf", "OrpMan", "RltInf", "SEQ_FAKEBILL", "WskInf" };
             string[] stringarrayInsert = { "feemst", "grdmst", "grpmst", "odrinf", "itmmst", "depmst", "pspinf", "dtlmst", "drfrcp", "insmst", "uidmst", "odlinf", "orpinf" };
             string[] stringarrayNoDelete = { "HspMst" };
+            String reverse = "";
 
             String sql = "", col = "", sql1 = "", sqlOn="", sqlOff="",err="";
             StringBuilder dat = new StringBuilder();
             StringBuilder dat1 = new StringBuilder();
             DataTable dt = new DataTable();
+            DataTable toReverse = new DataTable();
+
+            String databaseDBBITDemo1 = "bithis_demo";             //bit demo
+            String hostDBBITDemo1 = "localhost";
+            String userDBBITDemo1 = "sa";
+            String passDBBITDemo1 = "Ekartc2c5";
+            String portDBBITDemo1 = "3306";
+
+            SqlConnection connBITDemo1;
+
+            connBITDemo1 = new SqlConnection();
+            connBITDemo1.ConnectionString = "Server=" + hostDBBITDemo1 + ";Database=" + databaseDBBITDemo1 + ";Uid=" + userDBBITDemo1 + ";Pwd=" + passDBBITDemo1 + ";Connection Timeout=300;";
 
             connBITDemo = new ConnectDB("bithis");
             sql = "SELECT TABLE_NAME "+
@@ -604,6 +618,33 @@ namespace BackOffice
                 }
                 else
                 {
+                    //continue;
+                }
+                if (row["TABLE_NAME"].ToString().Trim().ToLower().Equals(reverse.ToLower()))
+                {
+                    toReverse.Clear();
+                    sql = "Select * From " + row["TABLE_NAME"].ToString().Trim();
+                    SqlCommand comMainhis = new SqlCommand();
+                    comMainhis.CommandText = sql;
+                    comMainhis.CommandType = CommandType.Text;
+                    comMainhis.Connection = connBITDemo1;
+                    SqlDataAdapter adapMainhis = new SqlDataAdapter(comMainhis);
+                    try
+                    {
+                        connBITDemo1.Open();
+                        adapMainhis.Fill(toReverse);
+                        //return toReturn;
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception(ex.Message, ex);
+                    }
+                    finally
+                    {
+                        connBITDemo1.Close();
+                        comMainhis.Dispose();
+                        adapMainhis.Dispose();
+                    }
                     //continue;
                 }
 
@@ -643,61 +684,118 @@ namespace BackOffice
                 }
                 col = col.Length > 0 ? col.Substring(0, col.Length - 1) : "";
                 sql1 = "Insert Into "+ row["TABLE_NAME"].ToString().Trim() + "(" + col + ") ";
-
-                foreach (DataRow row1 in dt1.Rows)
+                if (row["TABLE_NAME"].ToString().Trim().ToLower().Equals(reverse.ToLower()))
                 {
-                    dat.Clear();
-                    dat1.Clear();
-                    foreach (DataColumn dc in dt1.Columns)
+                    foreach (DataRow row1 in toReverse.Rows)
                     {
-                        //dat += "'"+row[dc].ToString().Trim()+"',";
-                        if (dc.DataType.ToString().Equals("System.DateTime"))
+                        dat.Clear();
+                        dat1.Clear();
+                        foreach (DataColumn dc in toReverse.Columns)
                         {
-                            DateTime dt2 = new DateTime();
-                            if (!row1[dc].ToString().Trim().Equals(""))
+                            //dat += "'"+row[dc].ToString().Trim()+"',";
+                            if (dc.DataType.ToString().Equals("System.DateTime"))
                             {
-                                dt2 = DateTime.Parse(row1[dc].ToString().Trim());
-                                String year = dt2.Year.ToString();
-                                String month = dt2.Month.ToString("00");
-                                String date = dt2.Day.ToString("00");
-                                String time = dt2.Hour.ToString("00") + ":" + dt2.Minute.ToString("00") + ":" + dt2.Second.ToString("00");
-                                String date1 = year + "-" + month + "-" + date + " " + time;
-                                dat.Append("'").Append(date1).Append("'").Append(",");
+                                DateTime dt2 = new DateTime();
+                                if (!row1[dc].ToString().Trim().Equals(""))
+                                {
+                                    dt2 = DateTime.Parse(row1[dc].ToString().Trim());
+                                    String year = dt2.Year.ToString();
+                                    String month = dt2.Month.ToString("00");
+                                    String date = dt2.Day.ToString("00");
+                                    String time = dt2.Hour.ToString("00") + ":" + dt2.Minute.ToString("00") + ":" + dt2.Second.ToString("00");
+                                    String date1 = year + "-" + month + "-" + date + " " + time;
+                                    dat.Append("'").Append(date1).Append("'").Append(",");
+                                }
+                                else
+                                {
+                                    dat.Append("'").Append("1900-01-10 0:00:00").Append("'").Append(",");
+                                }
+                            }
+                            else if (dc.DataType.ToString().Equals("System.binary"))
+                            {
+
                             }
                             else
                             {
-                                dat.Append("'").Append("1900-01-10 0:00:00").Append("'").Append(",");
+                                dat.Append("'").Append(row1[dc].ToString().Trim().Replace("'", "''")).Append("'").Append(",");
                             }
-                            
                         }
-                        else if (dc.DataType.ToString().Equals("System.binary"))
+                        dat1.Append(dat.ToString(0, dat.Length - 1));
+                        sql = sql1 + " Values(" + dat1.ToString() + ");";
+                        try
                         {
-
+                            if (bolSetOn)
+                            {
+                                connBITDemo.ExecuteNonQueryForConvert(sqlOn + sql + sqlOff, "bit_demo");
+                            }
+                            else
+                            {
+                                connBITDemo.ExecuteNonQueryForConvert(sql, "bit_demo");
+                            }
                         }
-                        else
+                        catch (MySqlException ex)
                         {
-                            dat.Append("'").Append(row1[dc].ToString().Trim().Replace("'", "''")).Append("'").Append(",");
+                            Console.WriteLine(ex.Message.ToString());
                         }
                     }
-
-                    dat1.Append(dat.ToString(0, dat.Length - 1));
-                    sql = sql1 + " Values(" + dat1.ToString() + ");";
-                    try
-                    {
-                        if (bolSetOn)
-                        {
-                            connBITDemo.ExecuteNonQueryForConvert(sqlOn + sql+ sqlOff, "bit_demo");
-                        }
-                        else
-                        {
-                            connBITDemo.ExecuteNonQueryForConvert(sql, "bit_demo");
-                        }
-                    }catch(MySqlException ex)
-                    {
-                        Console.WriteLine(ex.Message.ToString());
-                    }
-                    
                 }
+                else
+                {
+                    foreach (DataRow row1 in dt1.Rows)
+                    {
+                        dat.Clear();
+                        dat1.Clear();
+                        foreach (DataColumn dc in dt1.Columns)
+                        {
+                            //dat += "'"+row[dc].ToString().Trim()+"',";
+                            if (dc.DataType.ToString().Equals("System.DateTime"))
+                            {
+                                DateTime dt2 = new DateTime();
+                                if (!row1[dc].ToString().Trim().Equals(""))
+                                {
+                                    dt2 = DateTime.Parse(row1[dc].ToString().Trim());
+                                    String year = dt2.Year.ToString();
+                                    String month = dt2.Month.ToString("00");
+                                    String date = dt2.Day.ToString("00");
+                                    String time = dt2.Hour.ToString("00") + ":" + dt2.Minute.ToString("00") + ":" + dt2.Second.ToString("00");
+                                    String date1 = year + "-" + month + "-" + date + " " + time;
+                                    dat.Append("'").Append(date1).Append("'").Append(",");
+                                }
+                                else
+                                {
+                                    dat.Append("'").Append("1900-01-10 0:00:00").Append("'").Append(",");
+                                }
+
+                            }
+                            else if (dc.DataType.ToString().Equals("System.binary"))
+                            {
+
+                            }
+                            else
+                            {
+                                dat.Append("'").Append(row1[dc].ToString().Trim().Replace("'", "''")).Append("'").Append(",");
+                            }
+                        }
+                        dat1.Append(dat.ToString(0, dat.Length - 1));
+                        sql = sql1 + " Values(" + dat1.ToString() + ");";
+                        try
+                        {
+                            if (bolSetOn)
+                            {
+                                connBITDemo.ExecuteNonQueryForConvert(sqlOn + sql + sqlOff, "bit_demo");
+                            }
+                            else
+                            {
+                                connBITDemo.ExecuteNonQueryForConvert(sql, "bit_demo");
+                            }
+                        }
+                        catch (MySqlException ex)
+                        {
+                            Console.WriteLine(ex.Message.ToString());
+                        }
+                    }
+                }
+                
                 if (bolSetOn)
                 {
                     sql = "SET IDENTITY_INSERT dbo." + row["TABLE_NAME"].ToString() + " OFF;";

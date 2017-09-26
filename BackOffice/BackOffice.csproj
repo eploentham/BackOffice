@@ -213,6 +213,12 @@
     <Compile Include="objdb\TBorrowFilmXrayDB.cs" />
     <Compile Include="objdb\TBorrowOpdCardDB.cs" />
     <Compile Include="objdb\TChronicDB.cs" />
+    <Compile Include="objdb\TDeathDB.cs" />
+    <Compile Include="objdb\TNotifyNoteDB.cs" />
+    <Compile Include="objdb\TOpdSendOrDB.cs" />
+    <Compile Include="objdb\TOpdSendOrDoctorMemberDB.cs" />
+    <Compile Include="objdb\TOperationDB.cs" />
+    <Compile Include="objdb\TOperationDoctorMemberDB.cs" />
     <Compile Include="objdb\TOrderDB.cs" />
     <Compile Include="objdb\TPatientDB.cs" />
     <Compile Include="objdb\TVisitDB.cs" />

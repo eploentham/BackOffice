@@ -204,6 +204,15 @@
     <Compile Include="objdb\TBillingDeductDB.cs" />
     <Compile Include="objdb\TBillingDeductSubGroupDB.cs" />
     <Compile Include="objdb\TBillingInvoiceDB.cs" />
+    <Compile Include="objdb\TBillingInvoiceItemDB.cs" />
+    <Compile Include="objdb\TBillingInvoiceSubGroupDB.cs" />
+    <Compile Include="objdb\TBillingReceiptDB.cs" />
+    <Compile Include="objdb\TBillingReceiptDetailDB.cs" />
+    <Compile Include="objdb\TBillingReceiptItemDB.cs" />
+    <Compile Include="objdb\TBillingReceiptSubGroupDB.cs" />
+    <Compile Include="objdb\TBorrowFilmXrayDB.cs" />
+    <Compile Include="objdb\TBorrowOpdCardDB.cs" />
+    <Compile Include="objdb\TChronicDB.cs" />
     <Compile Include="objdb\TOrderDB.cs" />
     <Compile Include="objdb\TPatientDB.cs" />
     <Compile Include="objdb\TVisitDB.cs" />
@@ -280,7 +289,7 @@
     <Compile Include="object1\TBillingReceiptBillingSubGroup.cs" />
     <Compile Include="object1\TBillingReceiptDetail.cs" />
     <Compile Include="object1\TBillingReceiptItem.cs" />
-    <Compile Include="object1\TBorrowFlimXray.cs" />
+    <Compile Include="object1\TBorrowFilmXray.cs" />
     <Compile Include="object1\TBorrowOpdCard.cs" />
     <Compile Include="object1\TChronic.cs" />
     <Compile Include="object1\TDeath.cs" />

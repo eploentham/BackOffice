@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BackOffice
 {
-    public class TBorrowFlimXray:Persistent
+    public class TBorrowFilmXray:Persistent
     {
         public String patient_hn { get; set; }
         public String patient_xn { get; set; }

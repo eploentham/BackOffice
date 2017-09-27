@@ -46,6 +46,6 @@ namespace BackOffice
         public String f_doctor_branch_id { get; set; }
         public String b_employee_id { get; set; }
         public String charge { get; set; }
-
+        public String f_prefix_id { get; set; }
     }
 }

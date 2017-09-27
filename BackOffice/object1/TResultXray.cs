@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BackOffice
 {
-    public class TResulyXray:Persistent
+    public class TResultXray:Persistent
     {
         public String result_xray_xn { get; set; }
         public String t_patient_id { get; set; }

@@ -26,6 +26,7 @@ namespace BackOffice
         DateTimePicker dtpWorkStart;
         //Button btnSearch, btnGen, btnCopy, btnSave ;
         MaterialFlatButton btnSearch, btnGen, btnCopy, btnSave,btnExcel;
+        
         DataGridView dgvView;
 
         ComboBoxItem cboI;

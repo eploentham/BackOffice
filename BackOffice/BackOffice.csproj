@@ -372,6 +372,16 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="report\Receipt.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Receipt.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="report\Receipt1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Receipt.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Resources\Resource1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -427,6 +437,25 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <EntityDeploy Include="report\Receipt.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Receipt.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="report\Receipt.edmx.diagram">
+      <DependentUpon>Receipt.edmx</DependentUpon>
+    </None>
+    <None Include="report\receipt.rpt" />
+    <None Include="report\Receipt.xsc">
+      <DependentUpon>Receipt.xsd</DependentUpon>
+    </None>
+    <None Include="report\Receipt.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>Receipt1.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="report\Receipt.xss">
+      <DependentUpon>Receipt.xsd</DependentUpon>
+    </None>
     <None Include="Resources\Roboto-Regular.ttf" />
   </ItemGroup>
   <ItemGroup>

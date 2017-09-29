@@ -54,6 +54,8 @@ namespace BackOffice
             dtDtrTit = selectTitleDtr();
             dtDtrCat = selectDtrCat();
             dtDtrTyp = selectDtrTyp();
+
+            dtTit = selectTitle();
         }
         public String getMedecalFieldName(String code)
         {
@@ -102,6 +104,19 @@ namespace BackOffice
                 if (dtDtrTit.Rows[i]["dtlcod"].ToString().Equals(code))
                 {
                     txt = dtDtrTit.Rows[i]["dtlcodnam"].ToString();
+                    break;
+                }
+            }
+            return txt;
+        }
+        public String getTitleNameT1(String code)
+        {
+            String txt = "";
+            for (int i = 0; i < dtTit.Rows.Count; i++)
+            {
+                if (dtTit.Rows[i]["dtlcod"].ToString().Equals(code))
+                {
+                    txt = dtTit.Rows[i]["dtlcodnam"].ToString();
                     break;
                 }
             }

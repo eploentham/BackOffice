@@ -16,7 +16,7 @@ namespace BackOffice
         //public String hostDBBIT = "172.25.1.5";
         //public String userDBBIT = "sa";
         //public String passDBBIT = "Orawanhospital1*";
-        public String databaseDBBIT = "bit_orawan";             //bit
+        public String databaseDBBIT = "bitorw";             //bit
         public String hostDBBIT = "localhost";
         public String userDBBIT = "sa";
         public String passDBBIT = "Ekartc2c5";

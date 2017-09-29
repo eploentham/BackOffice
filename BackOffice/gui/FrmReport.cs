@@ -18,9 +18,12 @@ namespace BackOffice
         HisDB hisDB;
         public FrmReport(BackOfficeControl boc)
         {
+            //MessageBox.Show("111", "11");
             boC = boc;
-            bitC = new BITHisControl();
+            //MessageBox.Show("22", "11");
+            //bitC = new BITHisControl();
             InitializeComponent();
+            //MessageBox.Show("33", "11");
         }
         public void setReport(String rptName, String reportName, String condition, DataTable dt)
         {
@@ -111,39 +114,40 @@ namespace BackOffice
                 chk = ex.Message.ToString();
             }
         }
-        public void setReportQuotation(DataTable dt)
+        public void SetReportReceipt(PrnRecepit prnr, DataTable dt)
         {
+            //MessageBox.Show("2222", "11");
             String chk = "";
             ReportDocument rpt = new ReportDocument();
             try
             {
-                
-                rpt.Load(System.IO.Path.GetDirectoryName(Application.ExecutablePath) + "\\QuotationPrint2.rpt");
-                
+                //MessageBox.Show(System.IO.Path.GetDirectoryName(Application.ExecutablePath), "11");
+                rpt.Load(System.IO.Path.GetDirectoryName(Application.ExecutablePath) + "\\receipt.rpt");                
                 rpt.SetDataSource(dt);
-                
+
                 //rpt.SetDataSource(dt2);
                 //ParameterField myParam = new ParameterField();
                 //myParam.Name = "header1";
                 //myParam.
-                //rpt.SetParameterValue("header1", cc.cp.NameT);
-                //rpt.SetParameterValue("header2", reportName);
-                //rpt.SetParameterValue("header3", condition);
+                rpt.SetParameterValue("header1", "");
+                rpt.SetParameterValue("compName", "โรงพยาบาลอรวรรณ");
+                rpt.SetParameterValue("compAddress1", "8/8 ม.6 ต.แพรกษา อ.เมืองสมุทรปราการ จ.สมุทรปราการ 10280 โทร 02-3342555");
+                rpt.SetParameterValue("compAddress2", "8/8 Moo.6 District Mueang Samutprakan, Sub-district Phraek Sa, Samutprakan, 10280 Tel.02-3342555");
 
-                //rpt.SetParameterValue("quoNumber", qu.QuoNumber);
-                //rpt.SetParameterValue("quoDate", qu.QuoDate);
-                //rpt.SetParameterValue("contactName", qu.ContactName);
-                //rpt.SetParameterValue("compName", qu.CompName);
-                //rpt.SetParameterValue("compAddress1", qu.CompAddress1);
-                //rpt.SetParameterValue("compAddress2", qu.CompAddress2);
-                //rpt.SetParameterValue("compTaxId", qu.CompTaxId);
-                //rpt.SetParameterValue("line1", qu.Line1);
-                ////rpt.SetParameterValue("contactName", qu.ContactName);
-                //rpt.SetParameterValue("custName", qu.CustName);
-                //rpt.SetParameterValue("custAddress", qu.CustAddress);
-                //rpt.SetParameterValue("custTel", qu.CustTel);
-                //rpt.SetParameterValue("custFax", qu.CustFax);
-                //rpt.SetParameterValue("custEmail", qu.CustEmail);
+                rpt.SetParameterValue("line1", "ใบเสร็จรับเงิน ");
+                rpt.SetParameterValue("receiptNumber", prnr.receiptnumber);
+                rpt.SetParameterValue("thaibaht", prnr.thaibaht);
+                rpt.SetParameterValue("taxName", "เลขประจำตัวผู้เสียภาษี(Tax ID)");
+                rpt.SetParameterValue("taxid", "0115555011261");
+                rpt.SetParameterValue("date", prnr.date);
+                rpt.SetParameterValue("hn", prnr.hn);
+                rpt.SetParameterValue("patientFullName", prnr.fullname);
+                rpt.SetParameterValue("doctorName", prnr.doctor);
+                rpt.SetParameterValue("paidType", prnr.paidtype);
+                rpt.SetParameterValue("remark", prnr.remark);
+                rpt.SetParameterValue("cashier", "");
+                rpt.SetParameterValue("positioncashier", prnr.positioncashier);
+                rpt.SetParameterValue("nettotal1", prnr.NetTotal1);
                 //rpt.SetParameterValue("line2", qu.Line2);
                 //rpt.SetParameterValue("staffName", "ผู้เสนอราคา : " + qu.StaffName);
                 //rpt.SetParameterValue("staffName1", "( " + qu.StaffName + " )");
@@ -237,8 +241,13 @@ namespace BackOffice
             catch (Exception ex)
             {
                 chk = ex.Message.ToString();
-                cc.lw.WriteLog("rpt.setReportQuotation Error " + chk);
+                //cc.lw.WriteLog("rpt.setReportQuotation Error " + chk);
             }
+        }
+
+        private void crystalReportViewer1_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

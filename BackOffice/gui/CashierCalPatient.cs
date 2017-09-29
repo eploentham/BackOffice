@@ -27,9 +27,12 @@ namespace BackOffice
         MaterialSingleLineTextField txtHN, txtAmt, txtDiscount, txtNettotal, txtReceiptNum;
         MaterialFlatButton btnSearch, btnPrintReceipt, btnPrintInvoice, btnCal;
         MaterialLabel lb1, lb2, lb3, lb4, lb5,lb6, lb7, lbOcmNum, lbPatientFullName;
+        MaterialRadioButton chkReceipt, chkDetail;
 
         DataGridView dgvView, dgvVn;
         DateTimePicker dtpDateCal;
+
+        DataTable dt = new DataTable();
         //private readonly MaterialSkinManager materialSkinManager;
 
         public CashierCalPatient(BackOfficeControl boc)
@@ -46,8 +49,9 @@ namespace BackOffice
             initCompoment();
             cTxtL = txtHN.BackColor;
             cTxtE = Color.Yellow;
+            chkReceipt.Checked = true;
 
-            setDgvHnH();
+            setDgvReceipt();
         }
         private void initCompoment()
         {
@@ -184,6 +188,14 @@ namespace BackOffice
             btnCal.Location = new System.Drawing.Point(grd2, line3 + dgvView.Height + 50);
             btnCal.Click += new EventHandler(btnPrintInvoice_Click);
 
+            chkDetail = new MaterialRadioButton();
+            chkDetail.Font = boC.fV1;
+            chkDetail.Text = "แสดงรายละเอียด";
+            chkDetail.Size = new System.Drawing.Size(150, ControlHeight);
+            Controls.Add(chkDetail);
+            chkDetail.Location = new System.Drawing.Point(grd5 , line1 - 20);
+            chkDetail.Click += ChkDetail_Click;
+
             btnPrintInvoice = new MaterialFlatButton();
             btnPrintInvoice.Font = boC.fV1;
             btnPrintInvoice.Text = "พิมพ์ ใบงบสรุปค่าใช้จ่าย";
@@ -191,6 +203,14 @@ namespace BackOffice
             Controls.Add(btnPrintInvoice);
             btnPrintInvoice.Location = new System.Drawing.Point(grd5 , line2-20);
             btnPrintInvoice.Click += new EventHandler(btnPrintInvoice_Click);
+
+            chkReceipt = new MaterialRadioButton();
+            chkReceipt.Font = boC.fV1;
+            chkReceipt.Text = "แสดงใบเสร็จรับเงิน";
+            chkReceipt.Size = new System.Drawing.Size(150, ControlHeight);
+            Controls.Add(chkReceipt);
+            chkReceipt.Location = new System.Drawing.Point(grd5 + btnPrintInvoice.Width + 20, line1 - 20);
+            chkReceipt.Click += ChkReceipt_Click;
 
             btnPrintReceipt = new MaterialFlatButton();
             btnPrintReceipt.Font = boC.fV1;
@@ -200,6 +220,18 @@ namespace BackOffice
             btnPrintReceipt.Location = new System.Drawing.Point(grd5 + btnPrintInvoice.Width+20, line2-20);
             btnPrintReceipt.Click += new EventHandler(btnPrintReceipt_Click);
         }
+
+        private void ChkReceipt_Click(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            openPatientRecription();
+        }
+
+        private void ChkDetail_Click(object sender, EventArgs e)
+        {
+            openPatientSearch();
+        }
+
         private void txtDiscount_KeyUp(object sender, KeyEventArgs e)
         {
             calNetTotal();
@@ -215,12 +247,35 @@ namespace BackOffice
         }
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            openPatientSearch();
+            openDialop();
+            if (chkReceipt.Checked)
+            {
+                openPatientRecription();
+            }
+            else
+            {
+                openPatientSearch();
+            }
+            //openPatientSearch();
         }
         private void btnPrintReceipt_Click(object sender, EventArgs e)
         {
+            //MessageBox.Show("2222", "11");
+            PrnRecepit prnr = new PrnRecepit();
+            //String curDate = System.DateTime.Now.ToString("dd/MM/yyyy hh:mm");
+            prnr.hn = "H.N. : "+bitC.HN;
+            prnr.fullname = "ชื่อ (Name) :   "+bitC.PatientFullName;
+            prnr.paidtype = bitC.insCodNam;
+            prnr.date = System.DateTime.Now.ToString("dd/MM/yyyy hh:mm");
+            prnr.doctor = "ชื่อแพทย์ผู้รักษา (Dr.Name) : ";
+            prnr.receiptnumber = "เลขที่ : "+txtReceiptNum.Text;
+            prnr.thaibaht = boC.ThaiBaht(txtNettotal.Text);
+            prnr.NetTotal1 = txtNettotal.Text;
+            prnr.remark = "กรุณาตรวจสอบ และศึกษาการใช้ยาที่ท่านได้รับ  หากมีข้อสงสัยกรุณาสอบถามได้จากเภสัรกรของโรงพยาบาล";
+            prnr.positioncashier = "เจ้าหน้าที่การเงิน(Cashier staff)";
+            //MessageBox.Show("4444", "11");
             FrmReport frm = new FrmReport(boC);
-            //frm.setReportQuotation(qu, dt);
+            frm.SetReportReceipt(prnr,dt);
             frm.ShowDialog(this);
         }
         private void btnPrintInvoice_Click(object sender, EventArgs e)
@@ -241,8 +296,8 @@ namespace BackOffice
             dgvView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvView.Columns[colRow].Width = 50;
             dgvView.Columns[colOdrCod].Width = 80;
-            dgvView.Columns[colOdrCodNam].Width = 300;
-            dgvView.Columns[colItmNam].Width = 300;
+            dgvView.Columns[colOdrCodNam].Width = 350;
+            dgvView.Columns[colItmNam].Width = 350;
             dgvView.Columns[colQty].Width = 80;
             dgvView.Columns[colOdrItmCod].Width = 60;
             dgvView.Columns[colOdrAstCod].Width = 60;            
@@ -259,9 +314,44 @@ namespace BackOffice
             dgvView.Columns[colPrc].HeaderText = "price";
             dgvView.Columns[colAmt].HeaderText = "Amount";
 
-            //dgvView.Columns[colRateID].Visible = false;
-            //dgvView.Columns[colRateCode].Visible = false;
-            //dgvView.Columns[colInsCod].Visible = false;
+            dgvView.Columns[colOdrCod].Visible = true;
+            dgvView.Columns[colOdrCodNam].Visible = true;
+            dgvView.Columns[colOdrItmCod].Visible = true;
+            dgvView.Columns[colOdrAstCod].Visible = true;
+
+            Font font = new Font("Microsoft Sans Serif", 10);
+            dgvView.Font = font;
+        }
+        private void setDgvReceipt()
+        {
+            dgvView.Rows.Clear();
+            dgvView.ColumnCount = colCnt;
+            //dgvView.RowCount = dt.Rows.Count + 1;
+            dgvView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvView.Columns[colRow].Width = 50;
+            dgvView.Columns[colOdrCod].Width = 80;
+            dgvView.Columns[colOdrCodNam].Width = 300;
+            dgvView.Columns[colItmNam].Width = 350;
+            dgvView.Columns[colQty].Width = 80;
+            dgvView.Columns[colOdrItmCod].Width = 60;
+            dgvView.Columns[colOdrAstCod].Width = 60;
+            dgvView.Columns[colPrc].Width = 80;
+            dgvView.Columns[colAmt].Width = 80;
+
+            dgvView.Columns[colRow].HeaderText = "ลำดับ";
+            //dgvView.Columns[colOdrCod].HeaderText = "odr cod";
+            //dgvView.Columns[colOdrCodNam].HeaderText = "cod name";
+            dgvView.Columns[colItmNam].HeaderText = "Itm nam";
+            //dgvView.Columns[colOdrItmCod].HeaderText = "Itm Cod";
+            //dgvView.Columns[colOdrAstCod].HeaderText = "Ast Cod";
+            dgvView.Columns[colQty].HeaderText = "qty";
+            dgvView.Columns[colPrc].HeaderText = "price";
+            dgvView.Columns[colAmt].HeaderText = "Amount";
+
+            dgvView.Columns[colOdrCod].Visible = false;
+            dgvView.Columns[colOdrCodNam].Visible = false;
+            dgvView.Columns[colOdrItmCod].Visible = false;
+            dgvView.Columns[colOdrAstCod].Visible = false;
 
             Font font = new Font("Microsoft Sans Serif", 10);
             dgvView.Font = font;
@@ -272,20 +362,21 @@ namespace BackOffice
         }
         private void openPatientSearch()
         {
+            setDgvHnH();
             int rowCnt = 0;
 
-            bitC.HN = "";
-            String curDate = dtpDateCal.Value.Year.ToString() + dtpDateCal.Value.ToString("MMdd");
-            CashierSearchPatient frm = new CashierSearchPatient(boC, bitC, curDate);
-            frm.StartPosition = FormStartPosition.CenterParent;
-            frm.ShowDialog(this);
+            //bitC.HN = "";
+            //String curDate = dtpDateCal.Value.Year.ToString() + dtpDateCal.Value.ToString("MMdd");
+            //CashierSearchPatient frm = new CashierSearchPatient(boC, bitC, curDate);
+            //frm.StartPosition = FormStartPosition.CenterParent;
+            //frm.ShowDialog(this);
 
             if (!bitC.HN.Equals(""))
             {
                 txtHN.Text = bitC.HN;
                 lbPatientFullName.Text = bitC.PatientFullName+"  "+ bitC.insCodNam +"  "+ bitC.rsvCmt;
                 lbOcmNum.Text = bitC.ocmNum;
-                DataTable dt = new DataTable();
+                
                 Decimal qty = 0, amt=0;
 
                 dt = bitC.getPatientCal(bitC.ocmNum);
@@ -309,6 +400,49 @@ namespace BackOffice
                 calNetTotal();
                 //setControl();
             }
+        }
+        private void openPatientRecription()
+        {
+            setDgvReceipt();
+            int rowCnt = 0;
+
+            if (!bitC.HN.Equals(""))
+            {
+                txtHN.Text = bitC.HN;
+                lbPatientFullName.Text = bitC.PatientFullName + "  " + bitC.insCodNam + "  " + bitC.rsvCmt;
+                lbOcmNum.Text = bitC.ocmNum;
+
+                Decimal qty = 0, amt = 0;
+
+                dt = bitC.getPatientCalRecription(bitC.ocmNum);
+                dgvView.Rows.Clear();
+                rowCnt = dt.Rows.Count;
+                dgvView.RowCount = rowCnt;
+                for (int i = 0; i < rowCnt; i++)
+                {
+                    dgvView[colRow, i].Value = (i + 1);
+                    //dgvView[colOdrCod, i].Value = dt.Rows[i]["odrcod"].ToString().Trim();
+                    //dgvView[colOdrCodNam, i].Value = dt.Rows[i]["odrcodnam"].ToString().Trim();
+                    //dgvView[colOdrItmCod, i].Value = dt.Rows[i]["odritmcod"].ToString().Trim();
+                    //dgvView[colOdrAstCod, i].Value = dt.Rows[i]["odrastcod"].ToString().Trim();
+                    //dgvView[colQty, i].Value = dt.Rows[i]["odrqty"].ToString().Trim();
+                    //dgvView[colPrc, i].Value = dt.Rows[i]["odrprc"].ToString().Trim();
+                    dgvView[colAmt, i].Value = dt.Rows[i]["odramt"].ToString().Trim();
+                    dgvView[colItmNam, i].Value = dt.Rows[i]["itmkornam"].ToString().Trim();
+                    amt += (Decimal.Parse(dt.Rows[i]["odramt"].ToString().Trim()));
+                }
+                txtAmt.Text = amt.ToString();
+                calNetTotal();
+                //setControl();
+            }
+        }
+        private void openDialop()
+        {
+            bitC.HN = "";
+            String curDate = dtpDateCal.Value.Year.ToString() + dtpDateCal.Value.ToString("MMdd");
+            CashierSearchPatient frm = new CashierSearchPatient(boC, bitC, curDate);
+            frm.StartPosition = FormStartPosition.CenterParent;
+            frm.ShowDialog(this);
         }
     }
 }

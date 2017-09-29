@@ -11,6 +11,21 @@
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -21,6 +36,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -323,6 +339,7 @@
     <Compile Include="object1\IniFile.cs" />
     <Compile Include="object1\MaterialSkinManager.cs" />
     <Compile Include="object1\Persistent.cs" />
+    <Compile Include="object1\PrnRecepit.cs" />
     <Compile Include="object1\TBilling.cs" />
     <Compile Include="object1\TBillingDeduct.cs" />
     <Compile Include="object1\TBillingDeductSubGroup.cs" />
@@ -372,10 +389,8 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="report\Receipt.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Receipt.edmx</DependentUpon>
+    <Compile Include="report\Receipt.cs">
+      <DependentUpon>Receipt.xsd</DependentUpon>
     </Compile>
     <Compile Include="report\Receipt1.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -437,13 +452,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-    <EntityDeploy Include="report\Receipt.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Receipt.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="report\Receipt.edmx.diagram">
-      <DependentUpon>Receipt.edmx</DependentUpon>
-    </None>
     <None Include="report\receipt.rpt" />
     <None Include="report\Receipt.xsc">
       <DependentUpon>Receipt.xsd</DependentUpon>
@@ -495,6 +503,18 @@
     <None Include="Resources\rsz_close.png" />
     <None Include="Resources\close.png" />
     <None Include="Resources\Image1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

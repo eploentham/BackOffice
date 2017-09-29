@@ -16,32 +16,32 @@ namespace BackOffice
         //public String hostDBBIT = "172.25.1.5";
         //public String userDBBIT = "sa";
         //public String passDBBIT = "Orawanhospital1*";
-        public String databaseDBBIT = "bithis";             //bit
-        public String hostDBBIT = "localhost";
+        public String databaseDBBIT = "bithis_demo1";             //bit
+        public String hostDBBIT = "172.25.1.153";
         public String userDBBIT = "sa";
         public String passDBBIT = "Orawanhospital1*";
         public String portDBBIT = "3306";
 
         public String databaseDBBITDemo = "bithis_demo";             //bit demo
-        public String hostDBBITDemo = "localhost";
+        public String hostDBBITDemo = "172.25.1.153";
         public String userDBBITDemo = "sa";
         public String passDBBITDemo = "Orawanhospital1*";
         public String portDBBITDemo = "3306";
 
         public String databaseDBORCMA = "hisorc_ma";        //orc master
-        public String hostDBORCMA = "localhost";
+        public String hostDBORCMA = "172.25.1.153";
         public String userDBORCMA = "root";
         public String passDBORCMA = "Ekartc2c5";
         public String portDBORCMA = "3306";
 
         public String databaseDBORCBA = "hisorc_ba";        // orc backoffice
-        public String hostDBORCBA = "localhost";
+        public String hostDBORCBA = "172.25.1.153";
         public String userDBORCBA = "root";
         public String passDBORCBA = "Ekartc2c5";
         public String portDBORCBA = "3306";
 
         public String databaseDBORCBIT = "bithis";        // orc BIT
-        public String hostDBORCBIT = "localhost";
+        public String hostDBORCBIT = "172.25.1.153";
         public String userDBORCBIT = "root";
         public String passDBORCBIT = "Ekartc2c5";
         public String portDBORCBIT = "3306";
@@ -236,7 +236,7 @@ namespace BackOffice
                            "" + Environment.NewLine + "Date :" + DateTime.Now.ToString());
                         writer.WriteLine(Environment.NewLine + "-----------------------------------------------------------------------------" + Environment.NewLine);
                     }
-                    //throw new Exception(ex.Message, ex);
+                    throw new Exception(ex.Message, ex);
                 }
                 finally
                 {
@@ -587,7 +587,7 @@ namespace BackOffice
                         writer.WriteLine(Environment.NewLine + "-----------------------------------------------------------------------------" + Environment.NewLine);
                     }
 
-                    //throw new Exception("ExecuteNonQuery::Error occured.", ex);
+                    throw new Exception("ExecuteNonQuery::Error occured.", ex);
                     toReturn = ex.Message;
                 }
                 finally

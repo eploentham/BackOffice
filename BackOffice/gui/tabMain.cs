@@ -22,14 +22,16 @@ namespace BackOffice
         Image CloseImage;
         public tabMain()
         {
+            //MessageBox.Show("2222", "1111");
             InitializeComponent();
+            //MessageBox.Show("2222", "1111");
             initConfig();
         }
         private void initConfig()
         {
             //string screenWidth = Screen.PrimaryScreen.Bounds.Width.ToString();
             //string screenHeight = Screen.PrimaryScreen.Bounds.Height.ToString();
-
+            //MessageBox.Show("2222","1111");
             boC = new BackOfficeControl();
             //Font ftV1 = new Font(tabControl1.Font.Name,9.75f, FontStyle.Bold);
             //ftV1.f

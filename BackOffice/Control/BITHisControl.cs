@@ -35,11 +35,24 @@ namespace BackOffice
         {
             DataTable dt = new DataTable();
             String sql = "";
-            sql = "Select odr.*, itm.itmkornam, itmcodnam " +
+            sql = "Select odr.*, itm.itmkornam, itmcodnam, 0.0 as discount, odr.odramt as nettotal " +
                 "From OdrInf odr " +
                 "left join ItmMst itm On itm.itmcod = odr.odritmcod and itm.itmastcod = odr.odrastcod " +
                 //"left join InsMst insm on insm.InsCod = ocm.ocmInsCod " +
-                "Where odr.OdrOcmNum = " + ocmNum ;
+                "Where odr.OdrOcmNum = " + ocmNum+" and odr.odritmcod <> ''" ;
+            dt = connBIT.selectData(sql, "bit");
+            return dt;
+        }
+        public DataTable getPatientCalRecription(String ocmNum)
+        {
+            DataTable dt = new DataTable();
+            String sql = "";
+            sql = "Select sum(odr.odramt) as odramt, sum(odrqty) as odrqty, itm.itmkornam, itmcodnam, 0.0 as discount, sum(odr.odramt) as nettotal " +
+                "From OdrInf odr " +
+                "left join ItmMst itm On itm.itmcod = odr.odritmcod and itm.itmastcod = odr.odrastcod " +
+                //"left join InsMst insm on insm.InsCod = ocm.ocmInsCod " +
+                "Where odr.OdrOcmNum = " + ocmNum + " and odr.odritmcod <> ''" +
+                "Group By itm.itmkornam, itmcodnam";
             dt = connBIT.selectData(sql, "bit");
             return dt;
         }

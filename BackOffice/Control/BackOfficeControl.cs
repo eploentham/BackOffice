@@ -33,8 +33,11 @@ namespace BackOffice
 
         public String DtrCode="";
         public DataTable dtDep, dtDtrTit, dtTit, dtDtrCat, dtDtrTyp;
+        private IniFile iniFile;
         public BackOfficeControl()
         {
+            iniFile = new IniFile(Environment.CurrentDirectory + "\\" + Application.ProductName + ".ini");
+
             connORCBIT = new ConnectDB("orc_bit");
             connBIT = new ConnectDB("bit");
             connORCBA = new ConnectDB("orc_ba");
@@ -56,6 +59,42 @@ namespace BackOffice
             dtDtrTyp = selectDtrTyp();
 
             dtTit = selectTitle();
+        }
+        public void GetConfig()
+        {
+            //initC.clearInput = iniFile.Read("clearinput");
+            //initC.connectDatabaseServer = iniFile.Read("connectserver");
+            //initC.ServerIP = iniFile.Read("host");
+            //initC.User = iniFile.Read("username");
+            //initC.Password = iniFile.Read("password");
+            //initC.Database = iniFile.Read("database");
+
+            //initC.PathData = iniFile.Read("pathimage");
+            //initC.pathImageLogo = iniFile.Read("pathimagelogo");
+            //initC.delImage = iniFile.Read("delimage");
+            //initC.StatusServer = iniFile.Read("statusserver");
+            //initC.NameShareData = iniFile.Read("namesharedata");
+            //initC.pathShareImage = iniFile.Read("pathshareimage");
+            //initC.use32Bit = iniFile.Read("use32bit");
+            //initC.PathReport = iniFile.Read("pathreport");
+            //initC.ConnectShareData = iniFile.Read("connectsharedata");
+            //initC.IPServer = iniFile.Read("ipserver");
+
+            //initC.quoLine1 = iniFile.Read("quotationline1");
+            //initC.quoLine2 = iniFile.Read("quotationline2");
+            //initC.quoLine3 = iniFile.Read("quotationline3");
+            //initC.quoLine4 = iniFile.Read("quotationline4");
+            //initC.quoLine5 = iniFile.Read("quotationline5");
+            //initC.quoLine6 = iniFile.Read("quotationline6");
+
+            //initC.grdQuoColor = iniFile.Read("gridquotationcolor");
+
+            //initC.HideCostQuotation = iniFile.Read("hidecostquotation");
+            //if (initC.grdQuoColor.Equals(""))
+            //{
+            //    initC.grdQuoColor = "#b7e1cd";
+            //}
+            //initC.Password = regE.getPassword();
         }
         public String getMedecalFieldName(String code)
         {

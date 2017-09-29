@@ -16,39 +16,40 @@ namespace BackOffice
         //public String hostDBBIT = "172.25.1.5";
         //public String userDBBIT = "sa";
         //public String passDBBIT = "Orawanhospital1*";
-        public String databaseDBBIT = "bitorw";             //bit
+        public String databaseDBBIT = "bithis";             //bit
         public String hostDBBIT = "localhost";
         public String userDBBIT = "sa";
-        public String passDBBIT = "Ekartc2c5";
+        public String passDBBIT = "Orawanhospital1*";
         public String portDBBIT = "3306";
 
         public String databaseDBBITDemo = "bithis_demo";             //bit demo
         public String hostDBBITDemo = "localhost";
         public String userDBBITDemo = "sa";
-        public String passDBBITDemo = "Ekartc2c5";
+        public String passDBBITDemo = "Orawanhospital1*";
         public String portDBBITDemo = "3306";
 
         public String databaseDBORCMA = "hisorc_ma";        //orc master
         public String hostDBORCMA = "localhost";
         public String userDBORCMA = "root";
-        public String passDBORCMA = "";
+        public String passDBORCMA = "Ekartc2c5";
         public String portDBORCMA = "3306";
 
         public String databaseDBORCBA = "hisorc_ba";        // orc backoffice
         public String hostDBORCBA = "localhost";
         public String userDBORCBA = "root";
-        public String passDBORCBA = "";
+        public String passDBORCBA = "Ekartc2c5";
         public String portDBORCBA = "3306";
 
         public String databaseDBORCBIT = "bithis";        // orc BIT
         public String hostDBORCBIT = "localhost";
         public String userDBORCBIT = "root";
-        public String passDBORCBIT = "";
+        public String passDBORCBIT = "Ekartc2c5";
         public String portDBORCBIT = "3306";
         
         public SqlConnection connBIT, connMainHIS1, connBITDemo;
         public MySqlConnection connORCMA, connORCBA, connORCBIT;
         public int _rowsAffected = 0;
+        private IniFile iniFile;
         public ConnectDB(String host)
         {
             if (host == "bit")

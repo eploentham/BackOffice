@@ -219,7 +219,9 @@ namespace BackOffice
         }
         private void btnPrintReceipt_Click(object sender, EventArgs e)
         {
-            openPatientSearch();
+            FrmReport frm = new FrmReport(boC);
+            //frm.setReportQuotation(qu, dt);
+            frm.ShowDialog(this);
         }
         private void btnPrintInvoice_Click(object sender, EventArgs e)
         {

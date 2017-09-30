@@ -89,5 +89,16 @@ namespace BackOffice
             dt = conn.selectData(sql, "orc_bit");
             return dt;
         }
+        public DataTable selectUsrDoctor()
+        {
+            DataTable dt = new DataTable();
+            String sql = "";
+            sql = "Select uid.* " +
+                "From uidmst1 uid " +
+                "Where uidprtcod = 'DTR'";
+            DataTable dtInc = new DataTable();
+            dt = conn.selectData(sql, "orc_bit");
+            return dt;
+        }
     }
 }

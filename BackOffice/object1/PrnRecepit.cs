@@ -8,6 +8,6 @@ namespace BackOffice
 {
     public class PrnRecepit
     {
-        public String hn = "", fullname = "", date = "", doctor = "", paidtype = "", receiptnumber="", thaibaht="", NetTotal1="", remark="", positioncashier="";
+        public String hn = "", fullname = "", date = "", doctor = "", paidtype = "", receiptnumber="", thaibaht="", NetTotal1="", remark="", positioncashier="", cashier="", line1="";
     }
 }

@@ -134,7 +134,7 @@ namespace BackOffice
                 rpt.SetParameterValue("compAddress1", "8/8 ม.6 ต.แพรกษา อ.เมืองสมุทรปราการ จ.สมุทรปราการ 10280 โทร 02-3342555");
                 rpt.SetParameterValue("compAddress2", "8/8 Moo.6 District Mueang Samutprakan, Sub-district Phraek Sa, Samutprakan, 10280 Tel.02-3342555");
 
-                rpt.SetParameterValue("line1", "ใบเสร็จรับเงิน ");
+                rpt.SetParameterValue("line1", prnr.line1);
                 rpt.SetParameterValue("receiptNumber", prnr.receiptnumber);
                 rpt.SetParameterValue("thaibaht", prnr.thaibaht);
                 rpt.SetParameterValue("taxName", "เลขประจำตัวผู้เสียภาษี(Tax ID)");
@@ -145,7 +145,7 @@ namespace BackOffice
                 rpt.SetParameterValue("doctorName", prnr.doctor);
                 rpt.SetParameterValue("paidType", prnr.paidtype);
                 rpt.SetParameterValue("remark", prnr.remark);
-                rpt.SetParameterValue("cashier", "");
+                rpt.SetParameterValue("cashier", prnr.cashier);
                 rpt.SetParameterValue("positioncashier", prnr.positioncashier);
                 rpt.SetParameterValue("nettotal1", prnr.NetTotal1);
                 //rpt.SetParameterValue("line2", qu.Line2);

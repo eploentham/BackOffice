@@ -26,10 +26,10 @@ namespace BackOffice
 
         MaterialSingleLineTextField txtHN, txtAmt, txtDiscount, txtNettotal, txtReceiptNum;
         MaterialFlatButton btnSearch, btnPrintReceipt, btnPrintInvoice, btnCal;
-        MaterialLabel lb1, lb2, lb3, lb4, lb5,lb6, lb7, lb8, lbOcmNum, lbPatientFullName;
+        MaterialLabel lb1, lb2, lb3, lb4, lb5,lb6, lb7, lb8, lb9, lbOcmNum, lbPatientFullName;
         MaterialRadioButton chkReceipt, chkDetail;
 
-        ComboBox cboUsrCashier;
+        ComboBox cboUsrCashier, cboDoctor;
 
         DataGridView dgvView, dgvVn;
         DateTimePicker dtpDateCal;
@@ -52,7 +52,8 @@ namespace BackOffice
             cTxtL = txtHN.BackColor;
             cTxtE = Color.Yellow;
             chkReceipt.Checked = true;
-
+            cboUsrCashier = boC.getCboUsrCashier(cboUsrCashier);
+            cboDoctor = boC.getCboUsrDoctor(cboDoctor);
             setDgvReceipt();
         }
         private void initCompoment()
@@ -187,7 +188,7 @@ namespace BackOffice
             btnCal.Text = "คำนวณใหม่";
             btnCal.Size = new System.Drawing.Size(30, ControlHeight);
             Controls.Add(btnCal);
-            btnCal.Location = new System.Drawing.Point(grd2, line3 + dgvView.Height + 50);
+            btnCal.Location = new System.Drawing.Point(grd3, line3 + dgvView.Height + 50);
             btnCal.Click += new EventHandler(btnPrintInvoice_Click);
 
             chkDetail = new MaterialRadioButton();
@@ -227,14 +228,28 @@ namespace BackOffice
             lb8.Text = "เจ้าหน้าที่การเงิน :";
             lb8.AutoSize = true;
             Controls.Add(lb8);
-            lb8.Location = new System.Drawing.Point(grd1, line3 + dgvView.Height + 50);
+            lb8.Location = new System.Drawing.Point(boC.formFirstLineX, line3 + dgvView.Height + 50);
             cboUsrCashier = new ComboBox();
             cboUsrCashier.Font = boC.fV1;
             cboUsrCashier.Text = "";
-            cboUsrCashier.Size = new System.Drawing.Size(100, ControlHeight);
+            cboUsrCashier.Size = new System.Drawing.Size(150, ControlHeight);
             Controls.Add(cboUsrCashier);
             cboUsrCashier.Location = new System.Drawing.Point(grd1+70, line3 + dgvView.Height + 50);
             cboUsrCashier.BackColor = cForm;
+
+            lb9 = new MaterialLabel();
+            lb9.Font = boC.fV1;
+            lb9.Text = "Doctor :";
+            lb9.AutoSize = true;
+            Controls.Add(lb9);
+            lb9.Location = new System.Drawing.Point(boC.formFirstLineX, line3 + dgvView.Height + 80);
+            cboDoctor = new ComboBox();
+            cboDoctor.Font = boC.fV1;
+            cboDoctor.Text = "";
+            cboDoctor.Size = new System.Drawing.Size(150, ControlHeight);
+            Controls.Add(cboDoctor);
+            cboDoctor.Location = new System.Drawing.Point(grd1 + 70, line3 + dgvView.Height + 80);
+            cboDoctor.BackColor = cForm;
         }
 
         private void ChkReceipt_Click(object sender, EventArgs e)
@@ -277,22 +292,50 @@ namespace BackOffice
         private void btnPrintReceipt_Click(object sender, EventArgs e)
         {
             //MessageBox.Show("2222", "11");
+            String[] aaa = bitC.HN.Split(' ');
+            String hn = "", yrhn="";
+            if (aaa.Length>0)
+            {
+                if (aaa[1].Trim().Length > 0)
+                {
+                    hn = aaa[1].Trim() + " / " + aaa[0].Trim();
+                }
+                else if (aaa[2].Trim().Length > 0)
+                {
+                    hn = aaa[2].Trim() + " / " + aaa[0].Trim();
+                }
+                else if (aaa[3].Trim().Length > 0)
+                {
+                    hn = aaa[3].Trim() + " / " + aaa[0].Trim();
+                }
+            }
+            else
+            {
+                hn = bitC.HN;
+            }
             PrnRecepit prnr = new PrnRecepit();
+            prnr.receiptnumber = "เลขที่ : " + boC.docReceiptNumber();
             //String curDate = System.DateTime.Now.ToString("dd/MM/yyyy hh:mm");
-            prnr.hn = "H.N. : "+bitC.HN;
+            prnr.hn = "H.N. : "+hn;
             prnr.fullname = "ชื่อ (Name) :   "+bitC.PatientFullName;
             prnr.paidtype = bitC.insCodNam;
-            prnr.date = System.DateTime.Now.ToString("dd/MM/yyyy hh:mm");
-            prnr.doctor = "ชื่อแพทย์ผู้รักษา (Dr.Name) : ";
-            prnr.receiptnumber = "เลขที่ : "+txtReceiptNum.Text;
+            prnr.date = "วันที่" + System.DateTime.Now.ToString("dd/MM/yyyy hh:mm");
+            prnr.doctor = "ชื่อแพทย์ผู้รักษา (Dr.Name) : " + cboDoctor.Text;
+            prnr.line1 = "ใบเสร็จรับเงิน RECEIPT " + "(ต้นฉบับ)";
             prnr.thaibaht = boC.ThaiBaht(txtNettotal.Text);
             prnr.NetTotal1 = txtNettotal.Text;
-            prnr.remark = "กรุณาตรวจสอบ และศึกษาการใช้ยาที่ท่านได้รับ  หากมีข้อสงสัยกรุณาสอบถามได้จากเภสัรกรของโรงพยาบาล";
+            prnr.remark = "กรุณาตรวจสอบ และศึกษาการใช้ยาที่ท่านได้รับ  หากมีข้อสงสัยกรุณาสอบถามได้จากเภสัชกรของโรงพยาบาล";
             prnr.positioncashier = "เจ้าหน้าที่การเงิน(Cashier staff)";
+            prnr.cashier = cboUsrCashier.Text;
             //MessageBox.Show("4444", "11");
             FrmReport frm = new FrmReport(boC);
             frm.SetReportReceipt(prnr,dt);
             frm.ShowDialog(this);
+
+            FrmReport frm1 = new FrmReport(boC);
+            prnr.line1 = "ใบเสร็จรับเงิน RECEIPT "+"(สำเนา)";
+            frm1.SetReportReceipt(prnr, dt);
+            frm1.ShowDialog(this);
         }
         private void btnPrintInvoice_Click(object sender, EventArgs e)
         {

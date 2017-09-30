@@ -13,7 +13,7 @@ namespace BackOffice
 {
     public class BackOfficeControl
     {
-        ConnectDB connORCBIT, connBIT, connORCBA;
+        ConnectDB connORCBIT, connBIT, connORCBA, connORCMA;
 
         static String fontName = "Microsoft Sans Serif";
         public String backColor1 = "#1E1E1E";
@@ -43,6 +43,7 @@ namespace BackOffice
             connORCBIT = new ConnectDB("orc_bit");
             connBIT = new ConnectDB("bit");
             connORCBA = new ConnectDB("orc_ba");
+            connORCMA = new ConnectDB("orc_ma");
             fontSize9 = 9.75f;
             fontSize8 = 8.25f;
             fV1B = new Font(fontName, fontSize9, FontStyle.Bold);
@@ -352,6 +353,20 @@ namespace BackOffice
             }
             return c;
         }
+        public ComboBox getCboUsrDoctor(ComboBox c)
+        {
+            ComboBoxItem item = new ComboBoxItem();
+            DataTable dt = cm.selectUsrDoctor();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                item = new ComboBoxItem();
+                item.Value = dt.Rows[i]["uidcod"].ToString();
+                item.Text = dt.Rows[i]["uidnam"].ToString();
+                c.Items.Add(item);
+                //c.Items.Add(new );
+            }
+            return c;
+        }
         public String getValueCboItem(ComboBox c)
         {
             ComboBoxItem iSale;
@@ -577,38 +592,38 @@ namespace BackOffice
             DataTable dt = new DataTable();
             String sql = "", prefix="", number="";
             sql = "Select receipt_number, receipt_prefix From b_site";
-            dt = connORCBA.selectData(sql, "orc_bit");
+            dt = connORCMA.selectData(sql, "orc_ma");
             if(dt.Rows.Count > 0)
             {
                 prefix = dt.Rows[0]["receipt_prefix"].ToString();
                 number = "000000" + dt.Rows[0]["receipt_number"].ToString();
                 number = number.Substring(number.Length - 6);
             }
-            return prefix + number;
+            return prefix+"-"+System.DateTime.Now.Year.ToString().Substring(2) + "-" + number;
         }
         public String getInvoiceNumber()
         {
             DataTable dt = new DataTable();
             String sql = "", prefix = "", number = "";
             sql = "Select invoice_number, invoice_prefix From b_site";
-            dt = connORCBA.selectData(sql, "orc_bit");
+            dt = connORCMA.selectData(sql, "orc_ma");
             if (dt.Rows.Count > 0)
             {
                 prefix = dt.Rows[0]["invoice_prefix"].ToString();
                 number = "000000" + dt.Rows[0]["invoice_number"].ToString();
                 number = number.Substring(number.Length - 6);
             }
-            return prefix + number;
+            return prefix + "-" + System.DateTime.Now.Year.ToString().Substring(2) + "-" + number;
         }
         public void genReceiptNumber()
         {
             String sql = "Update b_site Set receipt_number = receipt_number+1";
-            connORCBA.ExecuteNonQuery(sql, "orc_ba");
+            connORCMA.ExecuteNonQuery(sql, "orc_ma");
         }
         public void genInvoiceNumber()
         {
             String sql = "Update b_site Set invoice_number = invoice_number+1";
-            connORCBA.ExecuteNonQuery(sql, "orc_ba");
+            connORCMA.ExecuteNonQuery(sql, "orc_ma");
         }
         public String docReceiptNumber()
         {

@@ -1,3 +1,6 @@
+insert into b_site(b_site_id,receipt_number, invoice_number, receipt_prefix, invoice_prefix)
+values ('1','0','0','RO','IO');
+
 SELECT o.NAME,
   i.rowcnt
 FROM sysindexes AS i

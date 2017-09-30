@@ -34,9 +34,11 @@ namespace BackOffice
         public String DtrCode="";
         public DataTable dtDep, dtDtrTit, dtTit, dtDtrCat, dtDtrTyp;
         private IniFile iniFile;
+        public InitC initC;
         public BackOfficeControl()
         {
             iniFile = new IniFile(Environment.CurrentDirectory + "\\" + Application.ProductName + ".ini");
+            initC = new InitC();
 
             connORCBIT = new ConnectDB("orc_bit");
             connBIT = new ConnectDB("bit");
@@ -62,29 +64,35 @@ namespace BackOffice
         }
         public void GetConfig()
         {
-            //initC.clearInput = iniFile.Read("clearinput");
-            //initC.connectDatabaseServer = iniFile.Read("connectserver");
-            //initC.ServerIP = iniFile.Read("host");
-            //initC.User = iniFile.Read("username");
-            //initC.Password = iniFile.Read("password");
-            //initC.Database = iniFile.Read("database");
+            initC.databaseDBBIT = iniFile.Read("databaseDBBIT");    //bit
+            initC.hostDBBIT = iniFile.Read("hostDBBIT");
+            initC.userDBBIT = iniFile.Read("userDBBIT");
+            initC.passDBBIT = iniFile.Read("passDBBIT");
+            initC.portDBBIT = iniFile.Read("portDBBIT");
 
-            //initC.PathData = iniFile.Read("pathimage");
-            //initC.pathImageLogo = iniFile.Read("pathimagelogo");
-            //initC.delImage = iniFile.Read("delimage");
-            //initC.StatusServer = iniFile.Read("statusserver");
-            //initC.NameShareData = iniFile.Read("namesharedata");
-            //initC.pathShareImage = iniFile.Read("pathshareimage");
-            //initC.use32Bit = iniFile.Read("use32bit");
-            //initC.PathReport = iniFile.Read("pathreport");
-            //initC.ConnectShareData = iniFile.Read("connectsharedata");
-            //initC.IPServer = iniFile.Read("ipserver");
+            initC.databaseDBBITDemo = iniFile.Read("databaseDBBITDemo");    //bit demo
+            initC.hostDBBITDemo = iniFile.Read("hostDBBITDemo");
+            initC.userDBBITDemo = iniFile.Read("userDBBITDemo");
+            initC.passDBBITDemo = iniFile.Read("passDBBITDemo");
+            initC.portDBBITDemo = iniFile.Read("portDBBITDemo");
 
-            //initC.quoLine1 = iniFile.Read("quotationline1");
-            //initC.quoLine2 = iniFile.Read("quotationline2");
-            //initC.quoLine3 = iniFile.Read("quotationline3");
-            //initC.quoLine4 = iniFile.Read("quotationline4");
-            //initC.quoLine5 = iniFile.Read("quotationline5");
+            initC.databaseDBORCMA = iniFile.Read("databaseDBORCMA");      //orc master
+            initC.hostDBORCMA = iniFile.Read("hostDBORCMA");
+            initC.userDBORCMA = iniFile.Read("userDBORCMA");
+            initC.passDBORCMA = iniFile.Read("passDBORCMA");
+            initC.portDBORCMA = iniFile.Read("portDBORCMA");
+
+            initC.databaseDBORCBA = iniFile.Read("databaseDBORCBA");        // orc backoffice
+            initC.hostDBORCBA = iniFile.Read("hostDBORCBA");
+            initC.userDBORCBA = iniFile.Read("userDBORCBA");
+            initC.passDBORCBA = iniFile.Read("passDBORCBA");
+            initC.portDBORCBA = iniFile.Read("portDBORCBA");
+
+            initC.databaseDBORCBIT = iniFile.Read("databaseDBORCBIT");        // orc BIT
+            initC.hostDBORCBIT = iniFile.Read("hostDBORCBIT");
+            initC.userDBORCBIT = iniFile.Read("userDBORCBIT");
+            initC.passDBORCBIT = iniFile.Read("passDBORCBIT");
+            initC.portDBORCBIT = iniFile.Read("portDBORCBIT");
             //initC.quoLine6 = iniFile.Read("quotationline6");
 
             //initC.grdQuoColor = iniFile.Read("gridquotationcolor");
@@ -330,6 +338,20 @@ namespace BackOffice
             }
             return c;
         }
+        public ComboBox getCboUsrCashier(ComboBox c)
+        {
+            ComboBoxItem item = new ComboBoxItem();
+            DataTable dt = cm.selectUsrCashier();
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                item = new ComboBoxItem();
+                item.Value = dt.Rows[i]["uidcod"].ToString();
+                item.Text = dt.Rows[i]["uidnam"].ToString();
+                c.Items.Add(item);
+                //c.Items.Add(new );
+            }
+            return c;
+        }
         public String getValueCboItem(ComboBox c)
         {
             ComboBoxItem iSale;
@@ -379,6 +401,7 @@ namespace BackOffice
             dt = connORCBIT.selectData(sql, "orc_bit");
             return dt;
         }
+        
         public void saveDoctor(Doctor dtr)
         {
             dtrDB.insertDoctor(dtr);
@@ -548,6 +571,54 @@ namespace BackOffice
             c.Items.Add(System.DateTime.Now.Year + 543 - 2);
             c.SelectedIndex = c.FindStringExact(String.Concat(System.DateTime.Now.Year + 543));
             return c;
+        }
+        public String getReceiptNumber()
+        {
+            DataTable dt = new DataTable();
+            String sql = "", prefix="", number="";
+            sql = "Select receipt_number, receipt_prefix From b_site";
+            dt = connORCBA.selectData(sql, "orc_bit");
+            if(dt.Rows.Count > 0)
+            {
+                prefix = dt.Rows[0]["receipt_prefix"].ToString();
+                number = "000000" + dt.Rows[0]["receipt_number"].ToString();
+                number = number.Substring(number.Length - 6);
+            }
+            return prefix + number;
+        }
+        public String getInvoiceNumber()
+        {
+            DataTable dt = new DataTable();
+            String sql = "", prefix = "", number = "";
+            sql = "Select invoice_number, invoice_prefix From b_site";
+            dt = connORCBA.selectData(sql, "orc_bit");
+            if (dt.Rows.Count > 0)
+            {
+                prefix = dt.Rows[0]["invoice_prefix"].ToString();
+                number = "000000" + dt.Rows[0]["invoice_number"].ToString();
+                number = number.Substring(number.Length - 6);
+            }
+            return prefix + number;
+        }
+        public void genReceiptNumber()
+        {
+            String sql = "Update b_site Set receipt_number = receipt_number+1";
+            connORCBA.ExecuteNonQuery(sql, "orc_ba");
+        }
+        public void genInvoiceNumber()
+        {
+            String sql = "Update b_site Set invoice_number = invoice_number+1";
+            connORCBA.ExecuteNonQuery(sql, "orc_ba");
+        }
+        public String docReceiptNumber()
+        {
+            genReceiptNumber();
+            return getReceiptNumber();
+        }
+        public String docInvoiceNumber()
+        {
+            genInvoiceNumber();
+            return getInvoiceNumber();
         }
     }
 }

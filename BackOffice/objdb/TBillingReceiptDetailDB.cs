@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,6 +32,21 @@ namespace BackOffice
 
             tbrd.pkField = "t_billing_receipt_detail_id";
             tbrd.table = "t_billing_receipt_detail";
+        }
+        private TBillingReceiptDetail setData(TBillingReceiptDetail p, DataTable dt)
+        {
+            p.billing_receipt_detail_creditor_code = dt.Rows[0][tbrd.billing_receipt_detail_creditor_code].ToString();
+            p.billing_receipt_detail_creditor_name = dt.Rows[0][tbrd.billing_receipt_detail_creditor_name].ToString();
+            p.billing_receipt_detail_credit_number = dt.Rows[0][tbrd.billing_receipt_detail_credit_number].ToString();
+            p.billing_receipt_detail_paid = dt.Rows[0][tbrd.billing_receipt_detail_paid].ToString();
+            p.billing_receipt_detail_remark = dt.Rows[0][tbrd.billing_receipt_detail_remark].ToString();
+            p.b_billing_receipt_creditor_id = dt.Rows[0][tbrd.b_billing_receipt_creditor_id].ToString();
+            p.f_billing_receipt_type_id = dt.Rows[0][tbrd.f_billing_receipt_type_id].ToString();
+            p.t_billing_receipt_detail_id = dt.Rows[0][tbrd.t_billing_receipt_detail_id].ToString();
+            p.t_billing_receipt_id = dt.Rows[0][tbrd.t_billing_receipt_id].ToString();
+            p.t_patient_id = dt.Rows[0][tbrd.t_patient_id].ToString();
+
+            return p;
         }
     }
 }

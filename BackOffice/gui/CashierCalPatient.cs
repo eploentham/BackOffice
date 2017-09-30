@@ -26,8 +26,10 @@ namespace BackOffice
 
         MaterialSingleLineTextField txtHN, txtAmt, txtDiscount, txtNettotal, txtReceiptNum;
         MaterialFlatButton btnSearch, btnPrintReceipt, btnPrintInvoice, btnCal;
-        MaterialLabel lb1, lb2, lb3, lb4, lb5,lb6, lb7, lbOcmNum, lbPatientFullName;
+        MaterialLabel lb1, lb2, lb3, lb4, lb5,lb6, lb7, lb8, lbOcmNum, lbPatientFullName;
         MaterialRadioButton chkReceipt, chkDetail;
+
+        ComboBox cboUsrCashier;
 
         DataGridView dgvView, dgvVn;
         DateTimePicker dtpDateCal;
@@ -219,6 +221,20 @@ namespace BackOffice
             Controls.Add(btnPrintReceipt);
             btnPrintReceipt.Location = new System.Drawing.Point(grd5 + btnPrintInvoice.Width+20, line2-20);
             btnPrintReceipt.Click += new EventHandler(btnPrintReceipt_Click);
+
+            lb8 = new MaterialLabel();
+            lb8.Font = boC.fV1;
+            lb8.Text = "เจ้าหน้าที่การเงิน :";
+            lb8.AutoSize = true;
+            Controls.Add(lb8);
+            lb8.Location = new System.Drawing.Point(grd1, line3 + dgvView.Height + 50);
+            cboUsrCashier = new ComboBox();
+            cboUsrCashier.Font = boC.fV1;
+            cboUsrCashier.Text = "";
+            cboUsrCashier.Size = new System.Drawing.Size(100, ControlHeight);
+            Controls.Add(cboUsrCashier);
+            cboUsrCashier.Location = new System.Drawing.Point(grd1+70, line3 + dgvView.Height + 50);
+            cboUsrCashier.BackColor = cForm;
         }
 
         private void ChkReceipt_Click(object sender, EventArgs e)

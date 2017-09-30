@@ -78,5 +78,16 @@ namespace BackOffice
 
             return dt;
         }
+        public DataTable selectUsrCashier()
+        {
+            DataTable dt = new DataTable();
+            String sql = "";
+            sql = "Select uid.* " +
+                "From uidmst1 uid " +
+                "Where uiddepcod = 'FIN'";
+            DataTable dtInc = new DataTable();
+            dt = conn.selectData(sql, "orc_bit");
+            return dt;
+        }
     }
 }

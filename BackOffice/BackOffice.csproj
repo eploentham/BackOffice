@@ -337,6 +337,7 @@
     <Compile Include="object1\FVisitStatus.cs" />
     <Compile Include="object1\FVisitType.cs" />
     <Compile Include="object1\IniFile.cs" />
+    <Compile Include="object1\InitC.cs" />
     <Compile Include="object1\MaterialSkinManager.cs" />
     <Compile Include="object1\Persistent.cs" />
     <Compile Include="object1\PrnRecepit.cs" />

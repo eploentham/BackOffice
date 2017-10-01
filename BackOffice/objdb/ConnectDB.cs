@@ -16,13 +16,13 @@ namespace BackOffice
         //public String hostDBBIT = "172.25.1.5";
         //public String userDBBIT = "sa";
         //public String passDBBIT = "Orawanhospital1*";
-        public String databaseDBBIT = "bithis_demo1";             //bit
+        public String databaseDBBIT = "bithis_orc";             //bit
         public String hostDBBIT = "172.25.1.153";
         public String userDBBIT = "sa";
         public String passDBBIT = "Orawanhospital1*";
         public String portDBBIT = "3306";
 
-        public String databaseDBBITDemo = "bithis_demo";             //bit demo
+        public String databaseDBBITDemo = "bithis";             //bit demo
         public String hostDBBITDemo = "172.25.1.153";
         public String userDBBITDemo = "sa";
         public String passDBBITDemo = "Orawanhospital1*";
@@ -587,7 +587,7 @@ namespace BackOffice
                         writer.WriteLine(Environment.NewLine + "-----------------------------------------------------------------------------" + Environment.NewLine);
                     }
 
-                    throw new Exception("ExecuteNonQuery::Error occured.", ex);
+                    //throw new Exception("ExecuteNonQuery::Error occured.", ex);
                     toReturn = ex.Message;
                 }
                 finally

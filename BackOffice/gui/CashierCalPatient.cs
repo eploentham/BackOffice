@@ -24,7 +24,7 @@ namespace BackOffice
 
         Color cTxtL, cTxtE, cForm;
 
-        MaterialSingleLineTextField txtHN, txtAmt, txtDiscount, txtNettotal, txtReceiptNum;
+        MaterialSingleLineTextField txtHN, txtAmt, txtDiscount, txtNettotal, txtItmName;
         MaterialFlatButton btnSearch, btnPrintReceipt, btnPrintInvoice, btnCal;
         MaterialLabel lb1, lb2, lb3, lb4, lb5,lb6, lb7, lb8, lb9, lbOcmNum, lbPatientFullName;
         MaterialRadioButton chkReceipt, chkDetail;
@@ -34,7 +34,8 @@ namespace BackOffice
         DataGridView dgvView, dgvVn;
         DateTimePicker dtpDateCal;
 
-        DataTable dt = new DataTable();
+        DataTable dtItem = new DataTable();
+        DataTable dtReceipt = new DataTable();
         //private readonly MaterialSkinManager materialSkinManager;
 
         public CashierCalPatient(BackOfficeControl boc)
@@ -125,7 +126,7 @@ namespace BackOffice
 
             dgvView = new DataGridView();
             dgvView.Font = boC.fV1;
-            dgvView.Size = new System.Drawing.Size(boC.tcW - 20, 600);
+            dgvView.Size = new System.Drawing.Size(boC.tcW - 20, 550);
             Controls.Add(dgvView);
             dgvView.Location = new System.Drawing.Point(boC.formFirstLineX, line3);
 
@@ -172,16 +173,18 @@ namespace BackOffice
 
             lb7 = new MaterialLabel();
             lb7.Font = boC.fV1;
-            lb7.Text = "เลขที่ใบเสร็จ :";
+            lb7.Text = "เพิ่มรายการ :";
             lb7.AutoSize = true;
             Controls.Add(lb7);
-            lb7.Location = new System.Drawing.Point(grd2, line3 + dgvView.Height + 20);
-            txtReceiptNum = new MaterialSingleLineTextField();
-            txtReceiptNum.Font = boC.fV1;
-            txtReceiptNum.Text = "";
-            txtReceiptNum.Size = new System.Drawing.Size(200, ControlHeight);
-            Controls.Add(txtReceiptNum);
-            txtReceiptNum.Location = new System.Drawing.Point(grd3, line3 + dgvView.Height +20);
+            lb7.Location = new System.Drawing.Point(boC.formFirstLineX, line3 + dgvView.Height + 20);
+            txtItmName = new MaterialSingleLineTextField();
+            txtItmName.Font = boC.fV1;
+            txtItmName.Text = "";
+            txtItmName.Size = new System.Drawing.Size(200, ControlHeight);
+            Controls.Add(txtItmName);
+            txtItmName.Location = new System.Drawing.Point(grd1+70, line3 + dgvView.Height +20);
+            txtItmName.Enter += TxtItmName_Enter;
+            txtItmName.Leave += TxtItmName_Leave;
 
             btnCal = new MaterialFlatButton();
             btnCal.Font = boC.fV1;
@@ -252,6 +255,18 @@ namespace BackOffice
             cboDoctor.BackColor = cForm;
         }
 
+        private void TxtItmName_Leave(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            txtItmName.BackColor = cTxtL;
+        }
+
+        private void TxtItmName_Enter(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            txtItmName.BackColor = cTxtE;
+        }
+
         private void ChkReceipt_Click(object sender, EventArgs e)
         {
             //throw new NotImplementedException();
@@ -291,7 +306,42 @@ namespace BackOffice
         }
         private void btnPrintReceipt_Click(object sender, EventArgs e)
         {
+            String receiptNumber = boC.docReceiptNumber();
             //MessageBox.Show("2222", "11");
+            TBillingReceipt tbr = new TBillingReceipt();
+            tbr.billing_receipt_active = "1";
+            tbr.billing_receipt_date_time = System.DateTime.Now.ToString("yyyy-MM-dd");
+            tbr.receipt_number = receiptNumber;
+            tbr.billing_receipt_number = "";
+            tbr.billing_receipt_paid = txtNettotal.Text;
+            tbr.t_patient_id = bitC.HN;
+            tbr.t_visit_id = "";
+            tbr.billing_receipt_number = "OcmNum" + lbOcmNum.Text;
+            boC.hisDB.tbrDB.insert(tbr);
+            TBillingInvoice tbi = new TBillingInvoice();
+            tbi.billing_invoice_active = "1";
+            tbi.billing_invoice_number = receiptNumber;
+            tbi.receipt_number = receiptNumber;
+            tbi.t_patient_id = bitC.HN;
+            tbi.t_visit_id = "";
+            tbi.t_billing_invoice_date_time = System.DateTime.Now.ToString("yyyy-MM-dd");
+            tbi.primary_symptom = "";
+            tbi.discharge_date_time = System.DateTime.Now.ToString("yyyy-MM-dd");
+            tbi.billing_invoice_total = txtNettotal.Text;
+            tbi.billing_invoice_patient_share = "0";
+            tbi.billing_invoice_payer_share = "0";
+            tbi.billing_invoice_total = "0";
+            String tbiId = boC.hisDB.tbiDB.insert(tbi);
+            //if (dtItem.Rows.Count > 0)
+            //{
+            //    for(int i = 0; i < dtItem.Rows.Count; i++)
+            //    {
+            //        TBillingInvoiceItem tbii = new TBillingInvoiceItem();
+            //        tbii.billing_invoice_item_active = "1";
+            //        tbii.t_billing_invoice_id = tbiId;
+            //        tbii.b_item_id = "";
+            //    }
+            //}
             String[] aaa = bitC.HN.Split(' ');
             String hn = "", yrhn="";
             if (aaa.Length>0)
@@ -314,7 +364,7 @@ namespace BackOffice
                 hn = bitC.HN;
             }
             PrnRecepit prnr = new PrnRecepit();
-            prnr.receiptnumber = "เลขที่ : " + boC.docReceiptNumber();
+            prnr.receiptnumber = "เลขที่ : " + receiptNumber;
             //String curDate = System.DateTime.Now.ToString("dd/MM/yyyy hh:mm");
             prnr.hn = "H.N. : "+hn;
             prnr.fullname = "ชื่อ (Name) :   "+bitC.PatientFullName;
@@ -329,12 +379,12 @@ namespace BackOffice
             prnr.cashier = cboUsrCashier.Text;
             //MessageBox.Show("4444", "11");
             FrmReport frm = new FrmReport(boC);
-            frm.SetReportReceipt(prnr,dt);
+            frm.SetReportReceipt(prnr,dtReceipt);
             frm.ShowDialog(this);
 
             FrmReport frm1 = new FrmReport(boC);
             prnr.line1 = "ใบเสร็จรับเงิน RECEIPT "+"(สำเนา)";
-            frm1.SetReportReceipt(prnr, dt);
+            frm1.SetReportReceipt(prnr, dtReceipt);
             frm1.ShowDialog(this);
         }
         private void btnPrintInvoice_Click(object sender, EventArgs e)
@@ -434,26 +484,26 @@ namespace BackOffice
             {
                 txtHN.Text = bitC.HN;
                 lbPatientFullName.Text = bitC.PatientFullName+"  "+ bitC.insCodNam +"  "+ bitC.rsvCmt;
-                lbOcmNum.Text = bitC.ocmNum;
+                lbOcmNum.Text = bitC.ocmNum.Trim();
                 
                 Decimal qty = 0, amt=0;
-
-                dt = bitC.getPatientCal(bitC.ocmNum);
+                dtItem.Clear();
+                dtItem = bitC.getPatientCal(bitC.ocmNum);
                 dgvView.Rows.Clear();
-                rowCnt = dt.Rows.Count;
+                rowCnt = dtItem.Rows.Count;
                 dgvView.RowCount = rowCnt;
                 for (int i = 0; i < rowCnt; i++)
                 {
                     dgvView[colRow, i].Value = (i + 1);
-                    dgvView[colOdrCod, i].Value = dt.Rows[i]["odrcod"].ToString().Trim();
-                    dgvView[colOdrCodNam, i].Value = dt.Rows[i]["odrcodnam"].ToString().Trim();
-                    dgvView[colOdrItmCod, i].Value = dt.Rows[i]["odritmcod"].ToString().Trim();
-                    dgvView[colOdrAstCod, i].Value = dt.Rows[i]["odrastcod"].ToString().Trim();
-                    dgvView[colQty, i].Value = dt.Rows[i]["odrqty"].ToString().Trim();
-                    dgvView[colPrc, i].Value = dt.Rows[i]["odrprc"].ToString().Trim();
-                    dgvView[colAmt, i].Value = dt.Rows[i]["odramt"].ToString().Trim();
-                    dgvView[colItmNam, i].Value = dt.Rows[i]["itmkornam"].ToString().Trim();
-                    amt += (Decimal.Parse(dt.Rows[i]["odramt"].ToString().Trim()));
+                    dgvView[colOdrCod, i].Value = dtItem.Rows[i]["odrcod"].ToString().Trim();
+                    dgvView[colOdrCodNam, i].Value = dtItem.Rows[i]["odrcodnam"].ToString().Trim();
+                    dgvView[colOdrItmCod, i].Value = dtItem.Rows[i]["odritmcod"].ToString().Trim();
+                    dgvView[colOdrAstCod, i].Value = dtItem.Rows[i]["odrastcod"].ToString().Trim();
+                    dgvView[colQty, i].Value = dtItem.Rows[i]["odrqty"].ToString().Trim();
+                    dgvView[colPrc, i].Value = dtItem.Rows[i]["odrprc"].ToString().Trim();
+                    dgvView[colAmt, i].Value = dtItem.Rows[i]["odramt"].ToString().Trim();
+                    dgvView[colItmNam, i].Value = dtItem.Rows[i]["itmkornam"].ToString().Trim();
+                    amt += (Decimal.Parse(dtItem.Rows[i]["odramt"].ToString().Trim()));
                 }
                 txtAmt.Text = amt.ToString();
                 calNetTotal();
@@ -472,10 +522,12 @@ namespace BackOffice
                 lbOcmNum.Text = bitC.ocmNum;
 
                 Decimal qty = 0, amt = 0;
-
-                dt = bitC.getPatientCalRecription(bitC.ocmNum);
+                dtItem.Clear();
+                dtItem = bitC.getPatientCal(bitC.ocmNum);
+                dtReceipt.Clear();
+                dtReceipt = bitC.getPatientCalRecription(bitC.ocmNum);
                 dgvView.Rows.Clear();
-                rowCnt = dt.Rows.Count;
+                rowCnt = dtReceipt.Rows.Count;
                 dgvView.RowCount = rowCnt;
                 for (int i = 0; i < rowCnt; i++)
                 {
@@ -486,9 +538,9 @@ namespace BackOffice
                     //dgvView[colOdrAstCod, i].Value = dt.Rows[i]["odrastcod"].ToString().Trim();
                     //dgvView[colQty, i].Value = dt.Rows[i]["odrqty"].ToString().Trim();
                     //dgvView[colPrc, i].Value = dt.Rows[i]["odrprc"].ToString().Trim();
-                    dgvView[colAmt, i].Value = dt.Rows[i]["odramt"].ToString().Trim();
-                    dgvView[colItmNam, i].Value = dt.Rows[i]["itmkornam"].ToString().Trim();
-                    amt += (Decimal.Parse(dt.Rows[i]["odramt"].ToString().Trim()));
+                    dgvView[colAmt, i].Value = dtReceipt.Rows[i]["odramt"].ToString().Trim();
+                    dgvView[colItmNam, i].Value = dtReceipt.Rows[i]["itmkornam"].ToString().Trim();
+                    amt += (Decimal.Parse(dtReceipt.Rows[i]["odramt"].ToString().Trim()));
                 }
                 txtAmt.Text = amt.ToString();
                 calNetTotal();

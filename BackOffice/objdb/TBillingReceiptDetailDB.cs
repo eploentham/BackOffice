@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BackOffice
 {
-    class TBillingReceiptDetailDB
+    public class TBillingReceiptDetailDB
     {
         TBillingReceiptDetail tbrd;
         ConnectDB conn;

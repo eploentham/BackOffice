@@ -570,7 +570,7 @@ namespace BackOffice
         {
             string[] stringarrayNoHave = { "BCK_CSR_20160304_zDyd", "BCK_CSR_20160304_zEdt", "Bck_DOC_20160409", "Bck_DocMst_20160405", "Bck_DrfRcp_20160408", "Bck_Xitdinf_20160401", "Bck_XiteInf_20160401", "Datachk", "Datachk2", "Datachk3", "CkgInf", "CkgMst", "CksInf", "CksMst", "CkvInf", "CutCprTyp", "Datachk1", "DTLRPT", "EmrInf", "StkOnHnd", "sysdiagrams", "StkOnHnd", "Table1", "TpgMst", "TpmMst", "Mig_UidMst_20160408", "Mig_TTDOC", "Mig_DocMst_20160408", "Mig_CSR20160303", "MedicalPerformance_MedicalPerformance_update_S", "MedicalPerformance_MedicalPerformance_update_Q", "MedicalPerformance_MedicalPerformance_update_O", "MedicalPerformance_MedicalPerformance_update_M", "MedicalPerformance_MedicalPerformance_T", "MedicalPerformance_MedicalPerformance_S", "MedicalPerformance_MedicalPerformance_R", "MedicalPerformance_MedicalPerformance_Q", "MedicalPerformance_MedicalPerformance_O", "MedicalPerformance_MedicalPerformance_M", "MafInf", "IngMst", "IitMst", "IddInf", "'XItzInf", "XRisInf", "ZBudInf", "PhyInf", "PbaInf", "RcsMst", "RemEnd", "RemEnd2", "RemEnd3", "RrdInf", "RrpInf", "RrqInf", "RsbTmp", "UidMst_20160409_repeat", "ZStfInf", "ZSdfInf" };
             string[] stringarraySetOn = { "CkgInf", "CkgMst", "CksInf", "CksMst", "CkvInf", "CmrInf", "DB_CubMst", "DB_OlpLog", "CstInf", "DB_DteMst", "DrfRcp", "FrmMst", "ImgInf", "LogInf", "OjnMst", "ImgMst", "IthInf", "MalInf", "SEQ_OCMNUM", "SEQ_RCPNUM", "SEQ_LBQACP", "SEQ_IRCNUM", "SbsInf", "RsbInf", "RPT_RptMst", "RctMst", "RcmMst", "ZOjnMst", "WskInf", "OpsInf", "OrpMan", "RltInf", "SEQ_FAKEBILL", "WskInf" };
-            string[] stringarrayInsert = { "feemst", "grdmst", "grpmst", "odrinf", "itmmst", "depmst", "pspinf", "dtlmst", "drfrcp", "insmst", "uidmst", "odlinf", "orpinf" };
+            string[] stringarrayInsert = { "feemst", "grdmst", "grpmst", "odrinf", "itmmst", "depmst", "pspinf", "drfrcp", "insmst", "uidmst", "odlinf", "orpinf" };
             string[] stringarrayNoDelete = { "HspMst" };
             String reverse = "";
 
@@ -650,12 +650,12 @@ namespace BackOffice
 
                 //sql = "Delete From "+ row["TABLE_NAME"].ToString().Trim();   //     HspMst                
 
-                //bool bolarrayNoDelete = Array.Exists(stringarrayNoDelete, E => E == row["TABLE_NAME"].ToString());
-                //if (!bolarrayNoDelete)
-                //{
-                //    sql = "Truncate Table " + row["TABLE_NAME"].ToString().Trim();
-                //    connBITDemo.ExecuteNonQueryForConvert(sql, "bit_demo");
-                //}
+                bool bolarrayNoDelete = Array.Exists(stringarrayNoDelete, E => E == row["TABLE_NAME"].ToString());
+                if (!bolarrayNoDelete)
+                {
+                    sql = "Truncate Table " + row["TABLE_NAME"].ToString().Trim();
+                    connBITDemo.ExecuteNonQueryForConvert(sql, "bit_demo");
+                }
                 //continue;
                 //bool bolarrayNoDelete = Array.Exists(stringarrayNoDelete, E => E == row["TABLE_NAME"].ToString());
                 //if (!bolarrayNoDelete)

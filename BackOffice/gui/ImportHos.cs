@@ -228,7 +228,7 @@ namespace BackOffice
         }
         private void ConvertDataDemo()
         {
-            boC.iBITDB.DeleteDatabase("BITHIS_demo", lb2, this);
+            boC.iBITDB.DeleteDatabase("BITHIS", lb2, this);
         }
         private void ExcelData()
         {

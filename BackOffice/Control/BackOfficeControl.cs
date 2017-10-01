@@ -35,6 +35,8 @@ namespace BackOffice
         public DataTable dtDep, dtDtrTit, dtTit, dtDtrCat, dtDtrTyp;
         private IniFile iniFile;
         public InitC initC;
+
+        public HisDB hisDB;
         public BackOfficeControl()
         {
             iniFile = new IniFile(Environment.CurrentDirectory + "\\" + Application.ProductName + ".ini");
@@ -55,6 +57,7 @@ namespace BackOffice
             dfDB = new DfTDoctorDB(connORCBIT,connORCBA);
             dfDDB = new DfTDoctorDetailDB(connORCBIT, connORCBA);
             cm = new ControlMaster(connORCBIT, connBIT);
+            hisDB = new HisDB(connORCMA);
 
             dtDep = cm.selectMedicalField();
             dtDtrTit = selectTitleDtr();

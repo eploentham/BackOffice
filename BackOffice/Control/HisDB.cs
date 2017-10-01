@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace BackOffice
 { 
-    class HisDB
+    public class HisDB
     {
+        ConnectDB conn;
+
         BContractDB bcDB;
         BContractPayerDB bcpaDB;
         BContractPlansDB bcplDB;
@@ -46,5 +48,27 @@ namespace BackOffice
         FPrefixDB fpDB;
         FReferCauseDB frcDB;
         FRelationDB frDB;
+
+        public TBillingDB tbDB;
+        public TBillingInvoiceDB tbiDB;
+        public TBillingReceiptDB tbrDB;
+        public TBillingReceiptDetailDB tbrdDB;
+        public TBillingReceiptItemDB tbriDB;
+        public TBillingReceiptSubGroupDB tbrsgDB;
+        public HisDB(ConnectDB connorc_ma)
+        {
+            conn = connorc_ma;
+            initConfig();
+        }
+        private void initConfig()
+        {
+            tbDB = new TBillingDB(conn);
+            tbiDB = new TBillingInvoiceDB(conn);
+            tbrDB = new TBillingReceiptDB(conn);
+            tbrdDB = new TBillingReceiptDetailDB(conn);
+            tbriDB = new TBillingReceiptItemDB(conn);
+            tbrsgDB = new TBillingReceiptSubGroupDB(conn);
+
+        }
     }
 }

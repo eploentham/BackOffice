@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BackOffice
 {
-    class TBillingReceiptSubGroupDB
+    public class TBillingReceiptSubGroupDB
     {
         TBillingReceiptBillingSubGroup tbrbsg;
         ConnectDB conn;

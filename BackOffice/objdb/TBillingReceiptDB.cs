@@ -4,10 +4,11 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace BackOffice
 {
-    class TBillingReceiptDB
+    public class TBillingReceiptDB
     {
         TBillingReceipt tbr;
         ConnectDB conn;
@@ -50,7 +51,7 @@ namespace BackOffice
 
             return p;
         }
-        private String insert(TBillingReceipt p)
+        public String insert(TBillingReceipt p)
         {
             String sql = "", chk = "";
             try
@@ -63,11 +64,11 @@ namespace BackOffice
                 p.billing_receipt_active = "1";
                 sql = "Insert Into " + tbr.table + "(" + tbr.billing_receipt_active + "," + tbr.billing_receipt_date_time + "," + tbr.billing_receipt_number + "," +
                     tbr.billing_receipt_paid + "," + tbr.billing_receipt_staff_record + "," + tbr.f_billing_receipt_model_id + "," +
-                    tbr.receipt_number + "," + tbr.t_billing_id + "," + tbr.t_billing_receipt_id + "," +
+                    tbr.receipt_number + "," + tbr.t_billing_id + "," +
                     tbr.t_patient_id + "," + tbr.t_visit_id + ") " +
                     "Values('" + p.billing_receipt_active + "','" + p.billing_receipt_date_time + "','" + p.billing_receipt_number + "','" +
                     p.billing_receipt_paid + "','" + p.billing_receipt_staff_record + "','" + p.f_billing_receipt_model_id + "','" +
-                    p.receipt_number + "','" + p.t_billing_id + "','" + p.t_billing_receipt_id + "','" +
+                    p.receipt_number + "','" + p.t_billing_id + "','" +
                     p.t_patient_id + "','" + p.t_visit_id + "') ";
                 chk = conn.ExecuteNonQueryAutoIncrement(sql, "orc_ma");
                 //chk = p.RowNumber;
@@ -77,9 +78,10 @@ namespace BackOffice
 
             catch (Exception ex)
             {
-                //MessageBox.Show("Error " + ex.ToString(), "insert Doctor");
+                MessageBox.Show("Error " + ex.ToString(), "insert TBillingReceipt");
             }
             return chk;
         }
+
     }
 }

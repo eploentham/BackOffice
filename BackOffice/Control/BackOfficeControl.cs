@@ -59,6 +59,7 @@ namespace BackOffice
             cm = new ControlMaster(connORCBIT, connBIT);
             hisDB = new HisDB(connORCMA);
 
+            GetConfig();
             dtDep = cm.selectMedicalField();
             dtDtrTit = selectTitleDtr();
             dtDtrCat = selectDtrCat();

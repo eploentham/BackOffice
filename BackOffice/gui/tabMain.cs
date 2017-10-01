@@ -179,6 +179,7 @@ namespace BackOffice
             node = tV1.Nodes["BackOffice"].Nodes.Add("AR", "ลูกหนี้");
             node.Nodes.Add("AR", "ข้อมูลลูกหนี้");
             tV1.Nodes.Add("CashierCalPatient", "คิดเงิน ผู้ป่วย");
+            tV1.Nodes.Add("RegHnSearch", "ค้นหา ผู้ป่วย");
             tV1.Nodes.Add("TestUX", "Test UX");
         }
 
@@ -223,6 +224,12 @@ namespace BackOffice
             else if (e.Node.Name.Equals("CashierCalPatient"))
             {
                 CashierCalPatient frm = new CashierCalPatient(boC);
+                frm.FormBorderStyle = FormBorderStyle.None;
+                AddNewTab(frm, e.Node.Text);
+            }
+            else if (e.Node.Name.Equals("RegHnSearch"))
+            {
+                RegHnSearch frm = new RegHnSearch(boC);
                 frm.FormBorderStyle = FormBorderStyle.None;
                 AddNewTab(frm, e.Node.Text);
             }

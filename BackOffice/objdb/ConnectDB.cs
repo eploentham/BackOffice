@@ -16,7 +16,7 @@ namespace BackOffice
         //public String hostDBBIT = "172.25.1.5";
         //public String userDBBIT = "sa";
         //public String passDBBIT = "Orawanhospital1*";
-        public String databaseDBBIT = "bithis_orc";             //bit
+        public String databaseDBBIT = "bithis_orawan";             //bit
         public String hostDBBIT = "172.25.1.153";
         public String userDBBIT = "sa";
         public String passDBBIT = "Orawanhospital1*";
@@ -151,7 +151,7 @@ namespace BackOffice
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(ex.Message, ex);
+                    //throw new Exception(ex.Message, ex);
                 }
                 finally
                 {
@@ -174,7 +174,7 @@ namespace BackOffice
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(ex.Message, ex);
+                    //throw new Exception(ex.Message, ex);
                 }
                 finally
                 {

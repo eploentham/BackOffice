@@ -56,5 +56,39 @@ namespace BackOffice
             dt = connBIT.selectData(sql, "bit");
             return dt;
         }
+        public DataTable getPatientAll()
+        {
+            DataTable dt = new DataTable();
+            String sql = "";
+            sql = "Select pbs.* " +
+                "From pbsinf pbs ";
+                //"left join ItmMst itm On itm.itmcod = odr.odritmcod and itm.itmastcod = odr.odrastcod " +
+                //"left join InsMst insm on insm.InsCod = ocm.ocmInsCod " +
+                //"Where odr.OdrOcmNum = " + ocmNum + " and odr.odritmcod <> ''";
+            dt = connBIT.selectData(sql, "bit");
+            return dt;
+        }
+        public DataTable getPatientAll(String hn)
+        {
+            DataTable dt = new DataTable();
+            String sql = "", where="";
+            String[] aa;
+            aa = hn.Split(' ');
+            if (aa.Length ==1)
+            {
+                
+                where = " where pbspatnam like '%" + aa[0]+ "%'";
+            }
+            else if (aa.Length == 2)
+            {
+                //aa = hn.Split(' ');
+                where = " where pbspatnam like '%" + aa[0] + "%' and pbssurnam like '%" + aa[1] + "%'";
+            }
+            
+            sql = "Select pbs.* " +
+                "From pbsinf pbs  " + where;                
+            dt = connBIT.selectData(sql, "bit");
+            return dt;
+        }
     }
 }

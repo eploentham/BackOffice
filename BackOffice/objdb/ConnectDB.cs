@@ -50,13 +50,16 @@ namespace BackOffice
         public MySqlConnection connORCMA, connORCBA, connORCBIT;
         public int _rowsAffected = 0;
         private IniFile iniFile;
-        public ConnectDB(String host)
+        InitC initC;
+        public ConnectDB(String host, InitC initc)
         {
+            initC = initc;
+            //initC.hostDBBIT;
             if (host == "bit")
             {
                 connBIT = new SqlConnection();
                 //connMainHIS.ConnectionString = GetConfig(hostName);
-                connBIT.ConnectionString = "Server=" + hostDBBIT + ";Database=" + databaseDBBIT + ";Uid=" + userDBBIT + ";Pwd=" + passDBBIT + ";Connection Timeout=300;";
+                connBIT.ConnectionString = "Server=" + initC.hostDBBIT + ";Database=" + initC.databaseDBBIT + ";Uid=" + initC.userDBBIT + ";Pwd=" + initC.passDBBIT + ";Connection Timeout=300;";
             }
             else if (host == "orc_ma")
             {
@@ -76,7 +79,7 @@ namespace BackOffice
             else if (host == "bithis")
             {
                 connBITDemo = new SqlConnection();
-                connBITDemo.ConnectionString = "Server=" + hostDBBITDemo + ";Database=" + databaseDBBITDemo + ";Uid=" + userDBBITDemo + ";Pwd=" + passDBBITDemo + ";Connection Timeout=300;";
+                connBITDemo.ConnectionString = "Server=" + initC.hostDBBITDemo + ";Database=" + initC.databaseDBBITDemo + ";Uid=" + initC.userDBBITDemo + ";Pwd=" + initC.passDBBITDemo + ";Connection Timeout=300;";
             }
         }
         public ConnectDB(String hostDB, String databaseDB, String userDB, String passDB)

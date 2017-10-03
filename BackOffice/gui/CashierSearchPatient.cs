@@ -34,7 +34,7 @@ namespace BackOffice
             boC = boc;
             bitC = bitc;
             curDate = curdate;
-            conn = new ConnectDB("bit");
+            conn = new ConnectDB("bit", boC.initC);
             initConfig();
         }
         private void initConfig()

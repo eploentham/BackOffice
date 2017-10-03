@@ -19,10 +19,11 @@ namespace BackOffice
         private ControlMaster cm;
         public ImportBITDB()
         {
-            conn = new ConnectDB("orc_bit");
-            connBIT = new ConnectDB("bit");
-            connBA = new ConnectDB("orc_ba");
-            cm = new ControlMaster(conn, connBIT);
+            cm = new ControlMaster();
+
+            conn = new ConnectDB("orc_bit", cm.initC);
+            connBIT = new ConnectDB("bit", cm.initC);
+            connBA = new ConnectDB("orc_ba", cm.initC);            
         }
         public void ImportOrpInf(String curDate)
         {
@@ -592,7 +593,7 @@ namespace BackOffice
             connBITDemo1 = new SqlConnection();
             connBITDemo1.ConnectionString = "Server=" + hostDBBITDemo1 + ";Database=" + databaseDBBITDemo1 + ";Uid=" + userDBBITDemo1 + ";Pwd=" + passDBBITDemo1 + ";Connection Timeout=300;";
 
-            connBITDemo = new ConnectDB("bithis");
+            connBITDemo = new ConnectDB("bithis", cm.initC);
             sql = "SELECT TABLE_NAME "+
                 "FROM INFORMATION_SCHEMA.TABLES "+
                 "WHERE TABLE_TYPE = 'BASE TABLE' AND TABLE_CATALOG = '"+ dbName + "' "+

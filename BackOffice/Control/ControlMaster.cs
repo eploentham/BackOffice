@@ -13,20 +13,69 @@ namespace BackOffice
     {
         ConnectDB conn, connBIT;
         DataTable dtTit = new DataTable();
+        public InitC initC;
+        private IniFile iniFile;
         public ControlMaster()
         {
-            conn = new ConnectDB("orc_bit");
-            connBIT = new ConnectDB("bit");
+            iniFile = new IniFile(Environment.CurrentDirectory + "\\" + Application.ProductName + ".ini");
+            initC = new InitC();
+            conn = new ConnectDB("orc_bit", initC);
+            connBIT = new ConnectDB("bit", initC);
             initConfig();
         }
         public ControlMaster(ConnectDB orc_bit, ConnectDB bit)
         {
+            iniFile = new IniFile(Environment.CurrentDirectory + "\\" + Application.ProductName + ".ini");
+            initC = new InitC();
             conn = orc_bit;
             connBIT = bit;
             initConfig();
         }
+        public void GetConfig()
+        {
+            initC.databaseDBBIT = iniFile.Read("databaseDBBIT");    //bit
+            initC.hostDBBIT = iniFile.Read("hostDBBIT");
+            initC.userDBBIT = iniFile.Read("userDBBIT");
+            initC.passDBBIT = iniFile.Read("passDBBIT");
+            initC.portDBBIT = iniFile.Read("portDBBIT");
+
+            initC.databaseDBBITDemo = iniFile.Read("databaseDBBITDemo");    //bit demo
+            initC.hostDBBITDemo = iniFile.Read("hostDBBITDemo");
+            initC.userDBBITDemo = iniFile.Read("userDBBITDemo");
+            initC.passDBBITDemo = iniFile.Read("passDBBITDemo");
+            initC.portDBBITDemo = iniFile.Read("portDBBITDemo");
+
+            initC.databaseDBORCMA = iniFile.Read("databaseDBORCMA");      //orc master
+            initC.hostDBORCMA = iniFile.Read("hostDBORCMA");
+            initC.userDBORCMA = iniFile.Read("userDBORCMA");
+            initC.passDBORCMA = iniFile.Read("passDBORCMA");
+            initC.portDBORCMA = iniFile.Read("portDBORCMA");
+
+            initC.databaseDBORCBA = iniFile.Read("databaseDBORCBA");        // orc backoffice
+            initC.hostDBORCBA = iniFile.Read("hostDBORCBA");
+            initC.userDBORCBA = iniFile.Read("userDBORCBA");
+            initC.passDBORCBA = iniFile.Read("passDBORCBA");
+            initC.portDBORCBA = iniFile.Read("portDBORCBA");
+
+            initC.databaseDBORCBIT = iniFile.Read("databaseDBORCBIT");        // orc BIT
+            initC.hostDBORCBIT = iniFile.Read("hostDBORCBIT");
+            initC.userDBORCBIT = iniFile.Read("userDBORCBIT");
+            initC.passDBORCBIT = iniFile.Read("passDBORCBIT");
+            initC.portDBORCBIT = iniFile.Read("portDBORCBIT");
+            //initC.quoLine6 = iniFile.Read("quotationline6");
+
+            //initC.grdQuoColor = iniFile.Read("gridquotationcolor");
+
+            //initC.HideCostQuotation = iniFile.Read("hidecostquotation");
+            //if (initC.grdQuoColor.Equals(""))
+            //{
+            //    initC.grdQuoColor = "#b7e1cd";
+            //}
+            //initC.Password = regE.getPassword();
+        }
         private void initConfig()
         {
+            GetConfig();
             dtTit = selectTitle();
         }
         public ComboBox getCboTitle(ComboBox c)

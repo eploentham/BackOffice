@@ -41,7 +41,7 @@ namespace BackOffice
         private void initConfig()
         {
             boC = new BackOfficeControl();
-            conn = new ConnectDB("bit");
+            conn = new ConnectDB("bit", boC.initC);
             txtHostDB.Text = conn.hostDBBIT;
             txtNameDB.Text = conn.databaseDBBIT;
             txtUserDB.Text = conn.userDBBIT;

@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace BackOffice
 {
@@ -13,9 +14,13 @@ namespace BackOffice
 
         public String HN = "", PatientFullName="",ocmNum="", insCodNam="", rsvCmt="";
 
+        public InitC initC;
+        private IniFile iniFile;
+
         public BITHisControl()
         {
-            connBIT = new ConnectDB("bit");
+            iniFile = new IniFile(Environment.CurrentDirectory + "\\" + Application.ProductName + ".ini");
+            connBIT = new ConnectDB("bit", initC);
         }
         public DataTable getPatientToday(String curDate)
         {

@@ -26,7 +26,7 @@ namespace BackOffice
         {
             
             //boC = new BackOfficeControl();
-            conn = new ConnectDB("bit");
+            conn = new ConnectDB("bit", boC.initC);
             //this.BackColor = System.Drawing.ColorTranslator.FromHtml(boC.backColor1);
             //foreach (Control x in this.Controls)
             //{

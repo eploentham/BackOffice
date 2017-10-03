@@ -49,7 +49,7 @@ namespace BackOffice
         {
             this.FormBorderStyle = FormBorderStyle.None;
             boC = boc;
-            conn = new ConnectDB("bit");
+            conn = new ConnectDB("bit", boc.initC);
             initConfig();
 
         }

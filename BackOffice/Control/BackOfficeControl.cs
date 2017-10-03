@@ -41,11 +41,12 @@ namespace BackOffice
         {
             iniFile = new IniFile(Environment.CurrentDirectory + "\\" + Application.ProductName + ".ini");
             initC = new InitC();
+            GetConfig();
 
-            connORCBIT = new ConnectDB("orc_bit");
-            connBIT = new ConnectDB("bit");
-            connORCBA = new ConnectDB("orc_ba");
-            connORCMA = new ConnectDB("orc_ma");
+            connORCBIT = new ConnectDB("orc_bit", initC);
+            connBIT = new ConnectDB("bit", initC);
+            connORCBA = new ConnectDB("orc_ba", initC);
+            connORCMA = new ConnectDB("orc_ma", initC);
             fontSize9 = 9.75f;
             fontSize8 = 8.25f;
             fV1B = new Font(fontName, fontSize9, FontStyle.Bold);

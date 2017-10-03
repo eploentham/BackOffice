@@ -38,7 +38,7 @@ namespace BackOffice
         {
             this.FormBorderStyle = FormBorderStyle.None;
             boC = boc;
-            conn = new ConnectDB("bit");
+            conn = new ConnectDB("bit", boC.initC);
             initConfig();
         }
         private void initConfig()

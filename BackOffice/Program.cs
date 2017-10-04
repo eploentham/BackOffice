@@ -14,9 +14,13 @@ namespace BackOffice
         [STAThread]
         static void Main()
         {
+            ControlMaster cm = new ControlMaster();
+            BackOfficeControl boC = new BackOfficeControl(cm); ;
+            //boC.cM = cm;
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new tabMain());
+            Application.Run(new tabMain(cm));
         }
     }
 }

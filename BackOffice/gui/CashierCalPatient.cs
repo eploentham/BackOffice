@@ -18,6 +18,7 @@ namespace BackOffice
         int colRow = 0, colOdrCod = 1, colOdrCodNam = 2, colItmNam=3, colOdrItmCod = 4, colOdrAstCod = 5, colQty=6, colPrc=7, colAmt=8;
         int colCnt = 9;
 
+        ControlMaster cM;
         BackOfficeControl boC;
         BITHisControl bitC;
         HisDB hisDB;
@@ -38,11 +39,12 @@ namespace BackOffice
         DataTable dtReceipt = new DataTable();
         //private readonly MaterialSkinManager materialSkinManager;
 
-        public CashierCalPatient(BackOfficeControl boc)
+        public CashierCalPatient(ControlMaster cm, BackOfficeControl boc)
         {
             this.FormBorderStyle = FormBorderStyle.None;
+            cM = cm;
             boC = boc;
-            bitC = new BITHisControl();
+            bitC = new BITHisControl(cM);
 
             cForm = this.BackColor;
             initConfig();
@@ -89,6 +91,7 @@ namespace BackOffice
             txtHN.Hint = lb1.Text;
             txtHN.Enter += TxtCode_Enter;
             txtHN.Leave += TxtCode_Leave;
+            txtHN.KeyUp += new KeyEventHandler(txtHN_KeyUp);
 
             btnSearch = new MaterialFlatButton();
             btnSearch.Font = boC.fV1;
@@ -254,7 +257,26 @@ namespace BackOffice
             cboDoctor.Location = new System.Drawing.Point(grd1 + 70, line3 + dgvView.Height + 80);
             cboDoctor.BackColor = cForm;
         }
-
+        private void txtHN_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (txtHN.Text.Length > 4)
+                {
+                    String[] aaa;
+                    if (txtHN.Text.Length > 4)
+                    {
+                        aaa = txtHN.Text.Split('/');
+                        if (aaa.Length >= 2)
+                        {
+                            bitC.HN = aaa[1].Trim() + "  " + aaa[0].Trim();
+                        }
+                        openPatientSearch();
+                    }
+                    
+                }
+            }
+        }
         private void TxtItmName_Leave(object sender, EventArgs e)
         {
             //throw new NotImplementedException();

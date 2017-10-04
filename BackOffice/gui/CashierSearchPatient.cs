@@ -23,7 +23,9 @@ namespace BackOffice
         TextBox txtCode;
         DataGridView dgvView;
         Button btnSearch;
+
         MaterialListView lV;
+        MaterialRadioButton chkOpd, chkIpd;
 
         BackOfficeControl boC;
         BITHisControl bitC;
@@ -43,6 +45,7 @@ namespace BackOffice
             this.Size = new System.Drawing.Size(900, 500);
             this.BackColor = Color.DarkSlateGray;
             //bitC = new BITHisControl();
+            chkOpd.Checked=true;
             setDgvH();
             setDgv();
         }
@@ -72,12 +75,40 @@ namespace BackOffice
             btnSearch.Location = new System.Drawing.Point(grd1 + txtCode.Width + 5, boC.formFirstLineY);
             //btnSearch.Click += new EventHandler(btnSearch_Click);
 
+            chkOpd = new MaterialRadioButton();
+            chkOpd.Font = boC.fV1;
+            chkOpd.Text = "OPD";
+            chkOpd.Size = new System.Drawing.Size(150, ControlHeight);
+            Controls.Add(chkOpd);
+            chkOpd.Location = new System.Drawing.Point(grd5, line1 - 20);
+            chkOpd.Click += ChkOpd_Click;
+
+            chkIpd = new MaterialRadioButton();
+            chkIpd.Font = boC.fV1;
+            chkIpd.Text = "IPD";
+            chkIpd.Size = new System.Drawing.Size(150, ControlHeight);
+            Controls.Add(chkIpd);
+            chkIpd.Location = new System.Drawing.Point(grd5, line1 - 20);
+            chkIpd.Click += ChkIpd_Click;
+
             dgvView = new DataGridView();
             dgvView.Font = boC.fV1;
             dgvView.Size = new System.Drawing.Size(880, 460);
             Controls.Add(dgvView);
             dgvView.Location = new System.Drawing.Point(boC.formFirstLineX, line1);
             dgvView.KeyDown += new KeyEventHandler(dgvView_KeyDown);
+        }
+        private void ChkIpd_Click(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            setDgvH();
+            setDgv();
+        }
+        private void ChkOpd_Click(object sender, EventArgs e)
+        {
+            //throw new NotImplementedException();
+            setDgvH();
+            setDgv();
         }
         private void dgvView_KeyDown(object sender, KeyEventArgs e)
         {
@@ -164,7 +195,7 @@ namespace BackOffice
         private void setDgv()
         {
             DataTable dt = new DataTable();
-            dt = bitC.getPatientToday(curDate);
+            dt = bitC.getPatientOPD(curDate);
             dgvView.RowCount = dt.Rows.Count;
             for (int i = 0; i < dt.Rows.Count; i++)
             {

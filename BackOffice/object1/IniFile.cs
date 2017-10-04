@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BackOffice
 {
-    class IniFile
+    public class IniFile
     {
         string Path;
         string EXE = Assembly.GetExecutingAssembly().GetName().Name;

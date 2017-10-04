@@ -16,12 +16,14 @@ namespace BackOffice
 {
     public partial class tabMain : Form
     {
+        ControlMaster cM;
         BackOfficeControl boC;
         private Point _imageLocation = new Point(13, 5);
         private Point _imgHitArea = new Point(13, 2);
         Image CloseImage;
-        public tabMain()
+        public tabMain(ControlMaster cm)
         {
+            cM = cm;
             //MessageBox.Show("2222", "1111");
             InitializeComponent();
             //MessageBox.Show("2222", "1111");
@@ -32,7 +34,7 @@ namespace BackOffice
             //string screenWidth = Screen.PrimaryScreen.Bounds.Width.ToString();
             //string screenHeight = Screen.PrimaryScreen.Bounds.Height.ToString();
             //MessageBox.Show("2222","1111");
-            boC = new BackOfficeControl();
+            boC = new BackOfficeControl(cM);
             //Font ftV1 = new Font(tabControl1.Font.Name,9.75f, FontStyle.Bold);
             //ftV1.f
             //ftV1.Size = 12;
@@ -223,13 +225,13 @@ namespace BackOffice
             }
             else if (e.Node.Name.Equals("CashierCalPatient"))
             {
-                CashierCalPatient frm = new CashierCalPatient(boC);
+                CashierCalPatient frm = new CashierCalPatient(cM, boC);
                 frm.FormBorderStyle = FormBorderStyle.None;
                 AddNewTab(frm, e.Node.Text);
             }
             else if (e.Node.Name.Equals("RegHnSearch"))
             {
-                RegHnSearch frm = new RegHnSearch(boC);
+                RegHnSearch frm = new RegHnSearch(cM,boC);
                 frm.FormBorderStyle = FormBorderStyle.None;
                 AddNewTab(frm, e.Node.Text);
             }

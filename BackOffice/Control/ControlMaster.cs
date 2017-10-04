@@ -14,7 +14,7 @@ namespace BackOffice
         ConnectDB conn, connBIT;
         DataTable dtTit = new DataTable();
         public InitC initC;
-        private IniFile iniFile;
+        public IniFile iniFile;
         public ControlMaster()
         {
             iniFile = new IniFile(Environment.CurrentDirectory + "\\" + Application.ProductName + ".ini");
@@ -23,14 +23,14 @@ namespace BackOffice
             connBIT = new ConnectDB("bit", initC);
             initConfig();
         }
-        public ControlMaster(ConnectDB orc_bit, ConnectDB bit)
-        {
-            iniFile = new IniFile(Environment.CurrentDirectory + "\\" + Application.ProductName + ".ini");
-            initC = new InitC();
-            conn = orc_bit;
-            connBIT = bit;
-            initConfig();
-        }
+        //public ControlMaster(ConnectDB orc_bit, ConnectDB bit)
+        //{
+        //    iniFile = new IniFile(Environment.CurrentDirectory + "\\" + Application.ProductName + ".ini");
+        //    initC = new InitC();
+        //    conn = orc_bit;
+        //    connBIT = bit;
+        //    initConfig();
+        //}
         public void GetConfig()
         {
             initC.databaseDBBIT = iniFile.Read("databaseDBBIT");    //bit

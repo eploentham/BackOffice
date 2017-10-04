@@ -12,12 +12,30 @@ namespace BackOffice
 {
     public partial class ImportData : Form
     {
+        ControlMaster cM;
         public ConnectDB conn;
         BackOfficeControl boC;
         Boolean flagHost = false;
         int colCnt = 20, colRow = 0, colPatientName = 1, colHnno = 2, colDate = 3, colTime = 4, colBilNum = 5, colRcpNum = 6, colTotal = 7, colAskAmt = 8, colDisAmt = 9, colPayAmt = 10;
         int colCasAmt = 11, colCrdAmt = 12, colUpdDtm = 13, colAccDte = 14, colPatTyp = 15, colDtrCod = 16, colUidNam = 19, colDtrNam = 17, colUidCod = 18, colInsNam = 19, colDf = 20;
 
+        public ImportData(ControlMaster cm)
+        {
+            cM = cm;
+            InitializeComponent();
+
+            initConfig();
+            showHideHost();
+        }
+        private void initConfig()
+        {
+            boC = new BackOfficeControl(cM);
+            conn = new ConnectDB("bit", boC.initC);
+            txtHostDB.Text = conn.hostDBBIT;
+            txtNameDB.Text = conn.databaseDBBIT;
+            txtUserDB.Text = conn.userDBBIT;
+            txtPassDB.Text = conn.passDBBIT;
+        }
         private void btnDF_Click(object sender, EventArgs e)
         {
             dfView frm = new dfView(boC);
@@ -25,7 +43,7 @@ namespace BackOffice
         }
         private void btnTestConnect_Click(object sender, EventArgs e)
         {
-            tabMain tabm = new tabMain();
+            tabMain tabm = new tabMain(cM);
             tabm.Show();
         }
         private void ImportData_Load(object sender, EventArgs e)
@@ -37,23 +55,8 @@ namespace BackOffice
         {
             setResize();
         }
-                
-        private void initConfig()
-        {
-            boC = new BackOfficeControl();
-            conn = new ConnectDB("bit", boC.initC);
-            txtHostDB.Text = conn.hostDBBIT;
-            txtNameDB.Text = conn.databaseDBBIT;
-            txtUserDB.Text = conn.userDBBIT;
-            txtPassDB.Text = conn.passDBBIT;
-        }
-        public ImportData()
-        {
-            InitializeComponent();
-            
-            initConfig();
-            showHideHost();
-        }
+        
+        
 
         private void btnHost_Click(object sender, EventArgs e)
         {

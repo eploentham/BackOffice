@@ -14,15 +14,17 @@ namespace BackOffice
 
         public String HN = "", PatientFullName="",ocmNum="", insCodNam="", rsvCmt="";
 
+        ControlMaster cM;
         public InitC initC;
         private IniFile iniFile;
 
-        public BITHisControl()
+        public BITHisControl(ControlMaster cm)
         {
-            iniFile = new IniFile(Environment.CurrentDirectory + "\\" + Application.ProductName + ".ini");
-            connBIT = new ConnectDB("bit", initC);
+            cM = cm;
+            //iniFile = new IniFile(Environment.CurrentDirectory + "\\" + Application.ProductName + ".ini");
+            connBIT = new ConnectDB("bit", cM.initC);
         }
-        public DataTable getPatientToday(String curDate)
+        public DataTable getPatientOPD(String curDate)
         {
             DataTable dt = new DataTable();
             String sql = "";
@@ -33,6 +35,21 @@ namespace BackOffice
                 "left join pbsinf pbs On pbs.pbschtnum = ocm.ocmchtnum " +
                 "left join InsMst insm on insm.InsCod = ocm.ocmInsCod " +
                 "Where ocm.ocmorgdtm >= '" + curDate+ "0000' and ocm.ocmorgdtm <= '" + curDate + "2359'";
+            dt = connBIT.selectData(sql, "bit");
+            return dt;
+        }
+        public DataTable getPatientIPDNoDischarge()
+        {
+            DataTable dt = new DataTable();
+            String sql = "";
+
+            sql = "Select ocm.ocmnum, ocm.ocmchtnum, ocm.ocmpattyp, ocm.ocmdepcod, ocm.ocminscod, pbs.pbstitcod, ocm.ocmrsvcmt, " +
+                "pbs.pbspatnam, pbs.pbssurnam,pbs.pbstitcod, pbs.pbssextyp, ocm.ocmorgdtm, insm.InsCodNam " +
+                "From ocminf ocm " +
+                "left join pbsinf pbs On pbs.pbschtnum = ocm.ocmchtnum " +
+                "left join InsMst insm on insm.InsCod = ocm.ocmInsCod " +
+                "left join ircinf irc on irc.chtnum = ocm.ocmchtnum "+
+                "Where ocm.ocmorgdtm >= '" + curDate + "0000' and ocm.ocmorgdtm <= '" + curDate + "2359'";
             dt = connBIT.selectData(sql, "bit");
             return dt;
         }

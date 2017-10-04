@@ -27,7 +27,7 @@ namespace BackOffice
         public ImportBITDB iBITDB;
         public DoctorDB dtrDB;
         public DoctorRateDB dtrRDB;
-        public ControlMaster cm;
+        //public ControlMaster cm;
         public DfTDoctorDB dfDB;
         public DfTDoctorDetailDB dfDDB;
 
@@ -35,13 +35,16 @@ namespace BackOffice
         public DataTable dtDep, dtDtrTit, dtTit, dtDtrCat, dtDtrTyp;
         private IniFile iniFile;
         public InitC initC;
+        public ControlMaster cM;
 
         public HisDB hisDB;
-        public BackOfficeControl()
+        public BackOfficeControl(ControlMaster cm)
         {
-            iniFile = new IniFile(Environment.CurrentDirectory + "\\" + Application.ProductName + ".ini");
-            initC = new InitC();
-            GetConfig();
+            cM = cm;
+            //iniFile = new IniFile(Environment.CurrentDirectory + "\\" + Application.ProductName + ".ini");
+            //initC = new InitC();
+            initC = cM.initC;
+            //GetConfig();
 
             connORCBIT = new ConnectDB("orc_bit", initC);
             connBIT = new ConnectDB("bit", initC);
@@ -57,10 +60,10 @@ namespace BackOffice
             dtrRDB = new DoctorRateDB(connORCBA);
             dfDB = new DfTDoctorDB(connORCBIT,connORCBA);
             dfDDB = new DfTDoctorDetailDB(connORCBIT, connORCBA);
-            cm = new ControlMaster(connORCBIT, connBIT);
+            //cm = new ControlMaster(connORCBIT, connBIT);
             hisDB = new HisDB(connORCMA);
 
-            GetConfig();
+            //GetConfig();
             dtDep = cm.selectMedicalField();
             dtDtrTit = selectTitleDtr();
             dtDtrCat = selectDtrCat();
@@ -68,48 +71,48 @@ namespace BackOffice
 
             dtTit = selectTitle();
         }
-        public void GetConfig()
-        {
-            initC.databaseDBBIT = iniFile.Read("databaseDBBIT");    //bit
-            initC.hostDBBIT = iniFile.Read("hostDBBIT");
-            initC.userDBBIT = iniFile.Read("userDBBIT");
-            initC.passDBBIT = iniFile.Read("passDBBIT");
-            initC.portDBBIT = iniFile.Read("portDBBIT");
+        //public void GetConfig()
+        //{
+        //    initC.databaseDBBIT = cM.iniFile.Read("databaseDBBIT");    //bit
+        //    initC.hostDBBIT = iniFile.Read("hostDBBIT");
+        //    initC.userDBBIT = iniFile.Read("userDBBIT");
+        //    initC.passDBBIT = iniFile.Read("passDBBIT");
+        //    initC.portDBBIT = iniFile.Read("portDBBIT");
 
-            initC.databaseDBBITDemo = iniFile.Read("databaseDBBITDemo");    //bit demo
-            initC.hostDBBITDemo = iniFile.Read("hostDBBITDemo");
-            initC.userDBBITDemo = iniFile.Read("userDBBITDemo");
-            initC.passDBBITDemo = iniFile.Read("passDBBITDemo");
-            initC.portDBBITDemo = iniFile.Read("portDBBITDemo");
+        //    initC.databaseDBBITDemo = iniFile.Read("databaseDBBITDemo");    //bit demo
+        //    initC.hostDBBITDemo = iniFile.Read("hostDBBITDemo");
+        //    initC.userDBBITDemo = iniFile.Read("userDBBITDemo");
+        //    initC.passDBBITDemo = iniFile.Read("passDBBITDemo");
+        //    initC.portDBBITDemo = iniFile.Read("portDBBITDemo");
 
-            initC.databaseDBORCMA = iniFile.Read("databaseDBORCMA");      //orc master
-            initC.hostDBORCMA = iniFile.Read("hostDBORCMA");
-            initC.userDBORCMA = iniFile.Read("userDBORCMA");
-            initC.passDBORCMA = iniFile.Read("passDBORCMA");
-            initC.portDBORCMA = iniFile.Read("portDBORCMA");
+        //    initC.databaseDBORCMA = iniFile.Read("databaseDBORCMA");      //orc master
+        //    initC.hostDBORCMA = iniFile.Read("hostDBORCMA");
+        //    initC.userDBORCMA = iniFile.Read("userDBORCMA");
+        //    initC.passDBORCMA = iniFile.Read("passDBORCMA");
+        //    initC.portDBORCMA = iniFile.Read("portDBORCMA");
 
-            initC.databaseDBORCBA = iniFile.Read("databaseDBORCBA");        // orc backoffice
-            initC.hostDBORCBA = iniFile.Read("hostDBORCBA");
-            initC.userDBORCBA = iniFile.Read("userDBORCBA");
-            initC.passDBORCBA = iniFile.Read("passDBORCBA");
-            initC.portDBORCBA = iniFile.Read("portDBORCBA");
+        //    initC.databaseDBORCBA = iniFile.Read("databaseDBORCBA");        // orc backoffice
+        //    initC.hostDBORCBA = iniFile.Read("hostDBORCBA");
+        //    initC.userDBORCBA = iniFile.Read("userDBORCBA");
+        //    initC.passDBORCBA = iniFile.Read("passDBORCBA");
+        //    initC.portDBORCBA = iniFile.Read("portDBORCBA");
 
-            initC.databaseDBORCBIT = iniFile.Read("databaseDBORCBIT");        // orc BIT
-            initC.hostDBORCBIT = iniFile.Read("hostDBORCBIT");
-            initC.userDBORCBIT = iniFile.Read("userDBORCBIT");
-            initC.passDBORCBIT = iniFile.Read("passDBORCBIT");
-            initC.portDBORCBIT = iniFile.Read("portDBORCBIT");
-            //initC.quoLine6 = iniFile.Read("quotationline6");
+        //    initC.databaseDBORCBIT = iniFile.Read("databaseDBORCBIT");        // orc BIT
+        //    initC.hostDBORCBIT = iniFile.Read("hostDBORCBIT");
+        //    initC.userDBORCBIT = iniFile.Read("userDBORCBIT");
+        //    initC.passDBORCBIT = iniFile.Read("passDBORCBIT");
+        //    initC.portDBORCBIT = iniFile.Read("portDBORCBIT");
+        //    //initC.quoLine6 = iniFile.Read("quotationline6");
 
-            //initC.grdQuoColor = iniFile.Read("gridquotationcolor");
+        //    //initC.grdQuoColor = iniFile.Read("gridquotationcolor");
 
-            //initC.HideCostQuotation = iniFile.Read("hidecostquotation");
-            //if (initC.grdQuoColor.Equals(""))
-            //{
-            //    initC.grdQuoColor = "#b7e1cd";
-            //}
-            //initC.Password = regE.getPassword();
-        }
+        //    //initC.HideCostQuotation = iniFile.Read("hidecostquotation");
+        //    //if (initC.grdQuoColor.Equals(""))
+        //    //{
+        //    //    initC.grdQuoColor = "#b7e1cd";
+        //    //}
+        //    //initC.Password = regE.getPassword();
+        //}
         public String getMedecalFieldName(String code)
         {
             String txt = "";
@@ -333,7 +336,7 @@ namespace BackOffice
         public ComboBox getCboMedicalField(ComboBox c)
         {
             ComboBoxItem item = new ComboBoxItem();
-            DataTable dt = cm.selectMedicalField();
+            DataTable dt = cM.selectMedicalField();
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 item = new ComboBoxItem();
@@ -347,7 +350,7 @@ namespace BackOffice
         public ComboBox getCboUsrCashier(ComboBox c)
         {
             ComboBoxItem item = new ComboBoxItem();
-            DataTable dt = cm.selectUsrCashier();
+            DataTable dt = cM.selectUsrCashier();
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 item = new ComboBoxItem();
@@ -361,7 +364,7 @@ namespace BackOffice
         public ComboBox getCboUsrDoctor(ComboBox c)
         {
             ComboBoxItem item = new ComboBoxItem();
-            DataTable dt = cm.selectUsrDoctor();
+            DataTable dt = cM.selectUsrDoctor();
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 item = new ComboBoxItem();

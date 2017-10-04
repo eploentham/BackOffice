@@ -18,6 +18,7 @@ namespace BackOffice
         int colRow = 0, colHn = 1, colPatNam = 2, colPatSur = 3, colAddr = 4, colQty = 6, colPrc = 7, colAmt = 8;
         int colCnt = 9;
 
+        ControlMaster cM;
         BackOfficeControl boC;
         BITHisControl bitC;
         HisDB hisDB;
@@ -29,11 +30,12 @@ namespace BackOffice
         MaterialFlatButton btnSearch;
         DataGridView dgvView;
 
-        public RegHnSearch(BackOfficeControl boc)
+        public RegHnSearch(ControlMaster cm,BackOfficeControl boc)
         {
             this.FormBorderStyle = FormBorderStyle.None;
+            cM = cm;
             boC = boc;
-            bitC = new BITHisControl();
+            bitC = new BITHisControl(cM);
 
             cForm = this.BackColor;
             initConfig();

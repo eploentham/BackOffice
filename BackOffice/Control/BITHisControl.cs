@@ -48,8 +48,8 @@ namespace BackOffice
                 "From ocminf ocm " +
                 "left join pbsinf pbs On pbs.pbschtnum = ocm.ocmchtnum " +
                 "left join InsMst insm on insm.InsCod = ocm.ocmInsCod " +
-                "left join ircinf irc on irc.chtnum = ocm.ocmchtnum "+
-                "Where ocm.ocmorgdtm >= '" + curDate + "0000' and ocm.ocmorgdtm <= '" + curDate + "2359'";
+                "inner join ircinf irc on irc.chtnum = ocm.ocmchtnum " +
+                "";
             dt = connBIT.selectData(sql, "bit");
             return dt;
         }

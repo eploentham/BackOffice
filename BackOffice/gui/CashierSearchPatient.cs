@@ -11,7 +11,7 @@ namespace BackOffice
 {
     class CashierSearchPatient : Form
     {
-        int grd0 = 0, grd1 = 100, grd2 = 240, grd3 = 320, grd4 = 570, grd5 = 650, grd6 = 820, grd7 = 900, grd8 = 1070, grd9 = 1200;
+        int grd0 = 0, grd1 = 100, grd2 = 240, grd3 = 320, grd4 = 570, grd5 = 650, grd51=660, grd6 = 820, grd7 = 900, grd8 = 1070, grd9 = 1200;
         int line1 = 30, line2 = 57, line3 = 85, line4 = 105, line41 = 120, line5 = 270, ControlHeight = 21, lineGap = 5;
 
         int colRow = 0, colHN = 1, colVN=2, colPatientFullName = 3, colIncName = 4, colOcmNum = 5, colOcmOrgDtm = 6, colRsvCmt=7;
@@ -78,17 +78,17 @@ namespace BackOffice
             chkOpd = new MaterialRadioButton();
             chkOpd.Font = boC.fV1;
             chkOpd.Text = "OPD";
-            chkOpd.Size = new System.Drawing.Size(150, ControlHeight);
+            chkOpd.Size = new System.Drawing.Size(60, ControlHeight);
             Controls.Add(chkOpd);
-            chkOpd.Location = new System.Drawing.Point(grd5, line1 - 20);
+            chkOpd.Location = new System.Drawing.Point(grd4, line1 - 20);
             chkOpd.Click += ChkOpd_Click;
 
             chkIpd = new MaterialRadioButton();
             chkIpd.Font = boC.fV1;
             chkIpd.Text = "IPD";
-            chkIpd.Size = new System.Drawing.Size(150, ControlHeight);
+            chkIpd.Size = new System.Drawing.Size(60, ControlHeight);
             Controls.Add(chkIpd);
-            chkIpd.Location = new System.Drawing.Point(grd5, line1 - 20);
+            chkIpd.Location = new System.Drawing.Point(grd51, line1 - 20);
             chkIpd.Click += ChkIpd_Click;
 
             dgvView = new DataGridView();
@@ -102,7 +102,7 @@ namespace BackOffice
         {
             //throw new NotImplementedException();
             setDgvH();
-            setDgv();
+            setDgvIpd();
         }
         private void ChkOpd_Click(object sender, EventArgs e)
         {
@@ -196,6 +196,22 @@ namespace BackOffice
         {
             DataTable dt = new DataTable();
             dt = bitC.getPatientOPD(curDate);
+            dgvView.RowCount = dt.Rows.Count;
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                dgvView[colRow, i].Value = (i + 1);
+                dgvView[colHN, i].Value = dt.Rows[i]["ocmchtnum"].ToString().Trim();
+                dgvView[colPatientFullName, i].Value = boC.getTitleNameT1(dt.Rows[i]["pbstitcod"].ToString().Trim()) + " " + dt.Rows[i]["pbspatnam"].ToString().Trim() + " " + dt.Rows[i]["pbssurnam"].ToString().Trim();
+                dgvView[colIncName, i].Value = dt.Rows[i]["InsCodNam"].ToString().Trim();
+                dgvView[colOcmNum, i].Value = dt.Rows[i]["ocmnum"].ToString().Trim();
+                dgvView[colOcmOrgDtm, i].Value = dt.Rows[i]["ocmorgdtm"].ToString().Trim();
+                dgvView[colRsvCmt, i].Value = dt.Rows[i]["ocmrsvcmt"].ToString().Trim();
+            }
+        }
+        private void setDgvIpd()
+        {
+            DataTable dt = new DataTable();
+            dt = bitC.getPatientIPDNoDischarge();
             dgvView.RowCount = dt.Rows.Count;
             for (int i = 0; i < dt.Rows.Count; i++)
             {
